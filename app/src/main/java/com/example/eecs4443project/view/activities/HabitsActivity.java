@@ -1,59 +1,49 @@
-package com.example.eecs4443project;
+package com.example.eecs4443project.view.activities;
 
 import android.content.Intent;
-import android.database.Cursor;
 import android.os.Bundle;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.eecs4443project.view.adapters.HabitDashboardAdapter;
+import com.example.eecs4443project.R;
+import com.example.eecs4443project.data.entity.Habit;
+import com.example.eecs4443project.viewmodel.HabitViewModel;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-import java.util.ArrayList;
+public class HabitsActivity extends AppCompatActivity implements HabitDashboardAdapter.HabitClickListener {
 
-public class HabitsActivity extends AppCompatActivity {
-
-    DatabaseHelper db;
-    ArrayList<Habit> habits;
+    private HabitViewModel habitViewModel;
+    private HabitDashboardAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_habits);
 
-        db = new DatabaseHelper(this);
-
+        // Set up RecyclerView
         RecyclerView recycler = findViewById(R.id.habitsRecycler);
         recycler.setLayoutManager(new LinearLayoutManager(this));
 
-        habits = new ArrayList<>();
+        adapter = new HabitDashboardAdapter(this, this);
+        recycler.setAdapter(adapter);
 
-        // Dummy habits
+        // Set up ViewModel
+        habitViewModel = new ViewModelProvider(this).get(HabitViewModel.class);
+
+        // Observe LiveData from Room
+        habitViewModel.getAllHabits().observe(this, habits -> {
+            adapter.setHabits(habits);
+        });
+
+        // TEMP: Dummy habits
         //remove
-        habits.add(new Habit(1, "Drink Water", "Stay hydrated", 1));
-        habits.add(new Habit(2, "Workout", "Exercise daily", 0));
-        habits.add(new Habit(3, "Read Book", "Read 20 pages", 1));
-        habits.add(new Habit(4, "Meditate", "10 minutes daily", 0));
-        habits.add(new Habit(5, "Study Algorithms", "Practice CLRS problems", 1));
-
-        //db logic, uncomment add habits page works
-        /*
-        Cursor cursor = db.getReadableDatabase()
-                .rawQuery("SELECT * FROM habits ORDER BY starred DESC", null);
-
-        while (cursor.moveToNext()) {
-            habits.add(new Habit(
-                    cursor.getInt(0),
-                    cursor.getString(1),
-                    cursor.getString(2),
-                    cursor.getInt(3)
-            ));
-
-        }
-        */
+        habitViewModel.insertDummyHabits();
 
         // NAV BAR
         BottomNavigationView nav = findViewById(R.id.bottomNav);
@@ -87,7 +77,30 @@ public class HabitsActivity extends AppCompatActivity {
 
             return false;
         });
+    }
 
-        recycler.setAdapter(new HabitDashboardAdapter(this, habits));
+    // Implement methods from HabitClickListener
+    @Override
+    public void onHabitClicked(Habit habit) {
+        Intent intent = new Intent(this, HabitDetailActivity.class);
+        intent.putExtra("habit_id", habit.getId());
+        intent.putExtra("title", habit.getTitle());
+        intent.putExtra("desc", habit.getDescription());
+        startActivity(intent);
+    }
+
+    @Override
+    public void onHabitLongPressed(Habit habit) {
+        new AlertDialog.Builder(this)
+                .setTitle("Delete Habit")
+                .setMessage("Are you sure?")
+                .setPositiveButton("Yes", (d, i) -> habitViewModel.delete(habit))
+                .setNegativeButton("No", null)
+                .show();
+    }
+
+    @Override
+    public void onStarToggled(Habit habit) {
+        habitViewModel.toggleStar(habit);
     }
 }

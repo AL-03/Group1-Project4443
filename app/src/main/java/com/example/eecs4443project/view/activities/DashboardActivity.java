@@ -1,33 +1,35 @@
-package com.example.eecs4443project;
+package com.example.eecs4443project.view.activities;
 
 import android.content.Intent;
-import android.database.Cursor;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.eecs4443project.data.entity.Habit;
+import com.example.eecs4443project.view.adapters.ReminderAdapter;
+import com.example.eecs4443project.viewmodel.ReminderViewModel;
+import com.example.eecs4443project.view.adapters.HabitDashboardAdapter;
+import com.example.eecs4443project.viewmodel.HabitViewModel;
+import com.example.eecs4443project.R;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import java.util.ArrayList;
 import java.util.Calendar;
 
 public class DashboardActivity extends AppCompatActivity {
-
-    DatabaseHelper db;
-    ArrayList<Habit> habits;
-    ArrayList<Reminder> reminders;
+    private HabitViewModel habitViewModel;
+    private ReminderViewModel reminderViewModel;
+    private HabitDashboardAdapter habitAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dashboard);
-
-        db = new DatabaseHelper(this);
 
         String username = getIntent().getStringExtra("USERNAME");
         if (username == null) username = "User";
@@ -42,44 +44,56 @@ public class DashboardActivity extends AppCompatActivity {
         habitsRecycler.setLayoutManager(new LinearLayoutManager(this));
         TextView emptyHabits = findViewById(R.id.emptyHabitsText);
 
-        habits = new ArrayList<>();
+        habitAdapter = new HabitDashboardAdapter(this, new HabitDashboardAdapter.HabitClickListener() {
+            @Override public void onHabitClicked(Habit h) {}
+            @Override public void onHabitLongPressed(Habit h) {}
+            @Override public void onStarToggled(Habit h) {}
+        });
+        habitsRecycler.setAdapter(habitAdapter);
 
-        Cursor cursor = db.getReadableDatabase()
-                .rawQuery("SELECT * FROM habits WHERE starred = 1", null);
+        // Set up HabitViewModel
+        habitViewModel = new ViewModelProvider(this).get(HabitViewModel.class);
 
-        while (cursor.moveToNext()) {
-            habits.add(new Habit(
-                    cursor.getInt(0),
-                    cursor.getString(1),
-                    cursor.getString(2),
-                    cursor.getInt(3)
-            ));
-        }
+        // Observe LiveData from Room + ANALYTICS
+        habitViewModel.getAllHabits().observe(this, habits -> {
+            habitAdapter.setHabits(habits);
 
-        if (habits.size() == 0) emptyHabits.setVisibility(View.VISIBLE);
+            if (habits.isEmpty()) {
+                emptyHabits.setVisibility(View.VISIBLE);
+            } else {
+                emptyHabits.setVisibility(View.GONE);
+            }
 
-        habitsRecycler.setAdapter(new HabitDashboardAdapter(this, habits));
-
-        // ANALYTICS
-        stats.setText("You have " + habits.size() + " favourite habits");
+            stats.setText("You have " + habits.size() + " favourite habits");
+        });
 
         // REMINDERS
         RecyclerView reminderRecycler = findViewById(R.id.reminderRecycler);
         reminderRecycler.setLayoutManager(new LinearLayoutManager(this));
         TextView emptyReminders = findViewById(R.id.emptyRemindersText);
 
-        reminders = new ArrayList<>();
+        ReminderAdapter reminderAdapter = new ReminderAdapter();
+        reminderRecycler.setAdapter(reminderAdapter);
 
-        // Dummy Data
-        reminders.add(new Reminder(1, "Submit Assignment", "2026-03-22", "10:00"));
-        reminders.add(new Reminder(2, "Doctor Appointment", "2026-03-23", "14:30"));
-        reminders.add(new Reminder(3, "Team Meeting", "2026-03-24", "09:00"));
+        // Set up ReminderViewModel
+        reminderViewModel = new ViewModelProvider(this).get(ReminderViewModel.class);
+        // Observe LiveData from Room
+        reminderViewModel.getAllReminders().observe(this, reminders -> {
+            reminderAdapter.setReminders(reminders);
 
-        if (reminders.size() == 0) emptyReminders.setVisibility(View.VISIBLE);
+            if (reminders.isEmpty()) {
+                emptyReminders.setVisibility(View.VISIBLE);
+            } else {
+                emptyReminders.setVisibility(View.GONE);
+            }
+        });
 
-        reminderRecycler.setAdapter(new ReminderAdapter(reminders));
+        // TEMP: Dummy habits and reminders
+        //remove
+        habitViewModel.insertDummyHabits();
+        reminderViewModel.insertDummyReminders();
 
-
+        // TODO: Make into a fragment (to avoid repeats)
         // NAV BAR
         BottomNavigationView nav = findViewById(R.id.bottomNav);
         nav.setSelectedItemId(R.id.nav_dashboard);

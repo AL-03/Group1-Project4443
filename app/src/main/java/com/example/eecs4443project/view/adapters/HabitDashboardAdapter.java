@@ -1,8 +1,7 @@
-package com.example.eecs4443project;
+package com.example.eecs4443project.view.adapters;
 
 import android.content.Context;
 import android.content.Intent;
-import android.database.sqlite.SQLiteDatabase;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,18 +12,35 @@ import android.widget.TextView;
 import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.eecs4443project.R;
+import com.example.eecs4443project.data.entity.Habit;
+import com.example.eecs4443project.view.activities.HabitDetailActivity;
+
 import java.util.ArrayList;
+import java.util.List;
 
 public class HabitDashboardAdapter extends RecyclerView.Adapter<HabitDashboardAdapter.ViewHolder> {
 
     Context context;
-    ArrayList<Habit> habits;
-    DatabaseHelper db;
+    List<Habit> habits = new ArrayList<>();
+    // Ensures adapter (view) doesn't directly interact with the data (model)
+    HabitClickListener listener;
 
-    public HabitDashboardAdapter(Context context, ArrayList<Habit> habits) {
+    // Implemented by HabitsActivity
+    public interface HabitClickListener {
+        void onHabitClicked(Habit habit);
+        void onHabitLongPressed(Habit habit);
+        void onStarToggled(Habit habit);
+    }
+
+    public HabitDashboardAdapter(Context context, HabitClickListener listener) {
         this.context = context;
+        this.listener = listener;
+    }
+
+    public void setHabits(List<Habit> habits) {
         this.habits = habits;
-        db = new DatabaseHelper(context);
+        notifyDataSetChanged();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
@@ -50,51 +66,24 @@ public class HabitDashboardAdapter extends RecyclerView.Adapter<HabitDashboardAd
     public void onBindViewHolder(ViewHolder holder, int position) {
         Habit habit = habits.get(position);
 
-        holder.title.setText(habit.title);
+        holder.title.setText(habit.getTitle());
         holder.progress.setProgress(70);
 
         holder.star.setImageResource(
-                habit.starred == 1 ?
+                habit.getStarred() == 1 ?
                         android.R.drawable.btn_star_big_on :
                         android.R.drawable.btn_star_big_off
         );
 
         // star Toggle
-        holder.star.setOnClickListener(v -> {
-            int newVal = habit.starred == 1 ? 0 : 1;
-            habit.starred = newVal;
-
-            SQLiteDatabase dbWrite = db.getWritableDatabase();
-            dbWrite.execSQL("UPDATE habits SET starred=? WHERE id=?",
-                    new Object[]{newVal, habit.id});
-
-            notifyItemChanged(position);
-        });
+        holder.star.setOnClickListener(v -> listener.onStarToggled(habit));
 
         // click to get the detail view
-        holder.itemView.setOnClickListener(v -> {
-            Intent intent = new Intent(context, HabitDetailActivity.class);
-            intent.putExtra("title", habit.title);
-            intent.putExtra("desc", habit.description);
-            context.startActivity(intent);
-        });
+        holder.itemView.setOnClickListener(v -> {listener.onHabitClicked(habit);});
 
         // long click to delete the habit
         holder.itemView.setOnLongClickListener(v -> {
-            new AlertDialog.Builder(context)
-                    .setTitle("Delete Habit")
-                    .setMessage("Are you sure?")
-                    .setPositiveButton("Yes", (d, i) -> {
-                        db.getWritableDatabase().execSQL(
-                                "DELETE FROM habits WHERE id=?",
-                                new Object[]{habit.id}
-                        );
-                        habits.remove(position);
-                        notifyDataSetChanged();
-                    })
-                    .setNegativeButton("No", null)
-                    .show();
-
+            listener.onHabitLongPressed(habit);
             return true;
         });
     }

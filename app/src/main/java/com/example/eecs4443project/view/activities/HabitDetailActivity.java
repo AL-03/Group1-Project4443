@@ -1,9 +1,11 @@
-package com.example.eecs4443project;
+package com.example.eecs4443project.view.activities;
 
 import android.os.Bundle;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.example.eecs4443project.R;
 
 public class HabitDetailActivity extends AppCompatActivity {
 
