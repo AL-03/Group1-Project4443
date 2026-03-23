@@ -9,6 +9,7 @@ import com.example.eecs4443project.data.dao.HabitDao;
 import com.example.eecs4443project.data.entity.Habit;
 
 import java.util.List;
+import java.util.concurrent.Executors;
 
 public class HabitRepository {
     private HabitDao habitDao;
@@ -36,18 +37,24 @@ public class HabitRepository {
         AppDatabase.databaseWriteExecutor.execute(() -> habitDao.deleteHabit(habit));
     }
 
-    public void toggleStar(int id, int newVal) {
-        AppDatabase.databaseWriteExecutor.execute(() -> habitDao.updateStar(id, newVal));
+
+    public void updateStar(int id, int newVal){
+        Executors.newSingleThreadExecutor().execute(() -> {
+            habitDao.updateStar(id, newVal);
+        });
     }
 
     // TEMP
     public void insertDummyHabits() {
         AppDatabase.databaseWriteExecutor.execute(() -> {
-            habitDao.insertHabit(new Habit("Drink Water", "Stay hydrated", 1));
-            habitDao.insertHabit(new Habit("Workout", "Exercise daily", 0));
-            habitDao.insertHabit(new Habit("Read Book", "Read 20 pages", 1));
-            habitDao.insertHabit(new Habit("Meditate", "10 minutes daily", 0));
-            habitDao.insertHabit(new Habit("Study Algorithms", "Practice CLRS problems", 1));
+
+            if(habitDao.getCount()==0) {
+                habitDao.insertHabit(new Habit(0, "Drink Water", "Stay hydrated", 1, 10));
+                habitDao.insertHabit(new Habit(0, "Workout", "Exercise daily", 0, 50));
+                habitDao.insertHabit(new Habit(0, "Read Book", "Read 20 pages", 1, 20));
+                habitDao.insertHabit(new Habit(0, "Meditate", "10 minutes daily", 0, 100));
+                habitDao.insertHabit(new Habit(0, "Study Algorithms", "Practice CLRS problems", 1, 60));
+            }
         });
     }
 }

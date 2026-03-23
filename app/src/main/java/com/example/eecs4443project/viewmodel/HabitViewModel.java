@@ -39,9 +39,9 @@ public class HabitViewModel extends AndroidViewModel {
     }
 
     public void toggleStar(Habit habit) {
-        int newVal = habit.getStarred() == 1 ? 0 : 1;
+        int newVal = (habit.getStarred() == 1) ? 0 : 1;
         habit.setStarred(newVal);
-        repo.update(habit);
+        repo.updateStar(habit.getId(), newVal);
     }
 
     // TEMP: dummy data

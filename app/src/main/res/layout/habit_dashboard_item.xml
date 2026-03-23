@@ -36,12 +36,14 @@
         </LinearLayout>
 
         <!-- RIGHT SIDE: STAR -->
-        <ImageButton
+        <ImageView
             android:id="@+id/starIcon"
             android:layout_width="48dp"
             android:layout_height="48dp"
             android:background="@android:color/transparent"
             android:src="@android:drawable/btn_star_big_off"
+            android:clickable="true"
+            android:focusable="true"
             android:contentDescription="Star habit"/>
     </LinearLayout>
 

@@ -2,6 +2,7 @@ package com.example.eecs4443project.view.adapters;
 
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -67,25 +68,32 @@ public class HabitDashboardAdapter extends RecyclerView.Adapter<HabitDashboardAd
         Habit habit = habits.get(position);
 
         holder.title.setText(habit.getTitle());
-        holder.progress.setProgress(70);
 
-        holder.star.setImageResource(
-                habit.getStarred() == 1 ?
-                        android.R.drawable.btn_star_big_on :
-                        android.R.drawable.btn_star_big_off
-        );
+        holder.progress.setProgress(habit.getProgress());
+
+        holder.star.setImageDrawable(null);
+
+        if (habit.getStarred()==1) {
+            holder.star.setImageResource(android.R.drawable.btn_star_big_on);
+        } else{
+            holder.star.setImageResource(android.R.drawable.btn_star_big_off);
+        }
+
+
 
         // star Toggle
         holder.star.setOnClickListener(v -> listener.onStarToggled(habit));
 
         // click to get the detail view
-        holder.itemView.setOnClickListener(v -> {listener.onHabitClicked(habit);});
+        holder.itemView.setOnClickListener(v -> listener.onHabitClicked(habit));
 
         // long click to delete the habit
         holder.itemView.setOnLongClickListener(v -> {
             listener.onHabitLongPressed(habit);
             return true;
         });
+
+        //Log.d("STAR_DEBUG", habit.getTitle() + " starred=" + habit.getStarred());
     }
 
     @Override

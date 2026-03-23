@@ -43,7 +43,7 @@ public class HabitsActivity extends AppCompatActivity implements HabitDashboardA
 
         // TEMP: Dummy habits
         //remove
-        habitViewModel.insertDummyHabits();
+
 
         // NAV BAR
         BottomNavigationView nav = findViewById(R.id.bottomNav);
@@ -83,9 +83,13 @@ public class HabitsActivity extends AppCompatActivity implements HabitDashboardA
     @Override
     public void onHabitClicked(Habit habit) {
         Intent intent = new Intent(this, HabitDetailActivity.class);
+
         intent.putExtra("habit_id", habit.getId());
         intent.putExtra("title", habit.getTitle());
         intent.putExtra("desc", habit.getDescription());
+        intent.putExtra("progress", habit.getProgress());
+        intent.putExtra("starred", habit.getStarred());
+
         startActivity(intent);
     }
 

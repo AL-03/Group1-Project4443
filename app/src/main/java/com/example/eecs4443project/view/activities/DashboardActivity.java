@@ -19,7 +19,9 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
 public class DashboardActivity extends AppCompatActivity {
     private HabitViewModel habitViewModel;
@@ -45,9 +47,17 @@ public class DashboardActivity extends AppCompatActivity {
         TextView emptyHabits = findViewById(R.id.emptyHabitsText);
 
         habitAdapter = new HabitDashboardAdapter(this, new HabitDashboardAdapter.HabitClickListener() {
-            @Override public void onHabitClicked(Habit h) {}
+            @Override public void onHabitClicked(Habit h) {
+                Intent intent=new Intent(DashboardActivity.this, HabitDetailActivity.class);
+                intent.putExtra("habit_id", h.getId());
+                intent.putExtra("title", h.getTitle());
+                intent.putExtra("desc", h.getDescription());
+                startActivity(intent);
+            }
             @Override public void onHabitLongPressed(Habit h) {}
-            @Override public void onStarToggled(Habit h) {}
+            @Override public void onStarToggled(Habit h) {
+                habitViewModel.toggleStar(h);
+            }
         });
         habitsRecycler.setAdapter(habitAdapter);
 
@@ -56,7 +66,16 @@ public class DashboardActivity extends AppCompatActivity {
 
         // Observe LiveData from Room + ANALYTICS
         habitViewModel.getAllHabits().observe(this, habits -> {
-            habitAdapter.setHabits(habits);
+            //filter by starred to appear on dashboard
+            List<Habit> starredHabits=new ArrayList<>();
+
+            for (Habit h : habits){
+                if (h.getStarred()==1){
+                    starredHabits.add(h);
+                }
+            }
+
+            habitAdapter.setHabits(starredHabits);
 
             if (habits.isEmpty()) {
                 emptyHabits.setVisibility(View.VISIBLE);
@@ -64,7 +83,7 @@ public class DashboardActivity extends AppCompatActivity {
                 emptyHabits.setVisibility(View.GONE);
             }
 
-            stats.setText("You have " + habits.size() + " favourite habits");
+            stats.setText("You have " + starredHabits.size() + " favourite habits");
         });
 
         // REMINDERS
@@ -90,7 +109,7 @@ public class DashboardActivity extends AppCompatActivity {
 
         // TEMP: Dummy habits and reminders
         //remove
-        habitViewModel.insertDummyHabits();
+        //habitViewModel.insertDummyHabits();
         reminderViewModel.insertDummyReminders();
 
         // TODO: Make into a fragment (to avoid repeats)

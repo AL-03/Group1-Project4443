@@ -3,22 +3,19 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="#CFE8FF"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    >
+    android:layout_height="match_parent">
 
-    <!--set the page as a scrollview so users can scroll the entire page
-    to access the different cards -->
+    <!-- Scrollable content -->
     <ScrollView
         android:id="@+id/scrollContent"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:fillViewport="true"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toTopOf="@id/bottomNav"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
 
-
-        <!-- constrain everything in a linear layout -->
         <LinearLayout
             android:orientation="vertical"
             android:paddingTop="32dp"
@@ -28,8 +25,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <!-- greeting message for the user to appear at the top of the dashboard screen
-             the message is dependant on the time of day and the username-->
+            <!-- Greeting -->
             <TextView
                 android:id="@+id/greetingText"
                 android:textSize="22sp"
@@ -39,7 +35,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
 
-            <!-- this sets up a habits card to display the chosen habits -->
+            <!-- Habits Card -->
             <LinearLayout
                 android:orientation="vertical"
                 android:background="@drawable/rounded_card"
@@ -48,7 +44,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-                <!-- textview for the habit stats -->
                 <TextView
                     android:id="@+id/statsText"
                     android:textSize="16sp"
@@ -56,7 +51,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
 
-                <!-- sets the label as "My Habits" -->
                 <TextView
                     android:text="My Habits"
                     android:textStyle="bold"
@@ -74,14 +68,14 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
 
-                <!-- sets up a recyclerview for the habits -->
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/habitsRecycler"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"/>
+                    android:layout_height="wrap_content"
+                    android:nestedScrollingEnabled="false"/>
             </LinearLayout>
 
-            <!-- reminders card -->
+            <!-- Reminders Card -->
             <LinearLayout
                 android:orientation="vertical"
                 android:background="@drawable/rounded_card"
@@ -109,25 +103,24 @@
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/reminderRecycler"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"/>
+                    android:layout_height="wrap_content"
+                    android:nestedScrollingEnabled="false"/>
             </LinearLayout>
 
         </LinearLayout>
     </ScrollView>
 
-    <!-- bottom navigation bar -->
+    <!-- Bottom Navigation -->
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottomNav"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-
         app:menu="@menu/bottom_nav_menu"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:itemIconTint="@drawable/nav_item_color"
         app:itemTextColor="@drawable/nav_item_color"
-        android:background="@color/nav_background"
-        />
+        android:background="@color/nav_background"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
