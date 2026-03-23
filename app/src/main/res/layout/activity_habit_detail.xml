@@ -67,6 +67,9 @@
                 android:id="@+id/updateBtn"
                 android:text="Save Changes"
                 android:layout_marginTop="24dp"
+                android:backgroundTint="#5CA8FF"
+                android:background="@drawable/rounded_button"
+                android:textColor="#002147"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
 
@@ -78,6 +81,7 @@
         android:text="Delete Habit"
         android:backgroundTint="#FF5252"
         android:textColor="@android:color/white"
+        android:background="@drawable/rounded_button"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"

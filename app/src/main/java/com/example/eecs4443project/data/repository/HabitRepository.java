@@ -54,6 +54,9 @@ public class HabitRepository {
                 habitDao.insertHabit(new Habit(0, "Read Book", "Read 20 pages", 1, 20));
                 habitDao.insertHabit(new Habit(0, "Meditate", "10 minutes daily", 0, 100));
                 habitDao.insertHabit(new Habit(0, "Study Algorithms", "Practice CLRS problems", 1, 60));
+                habitDao.insertHabit(new Habit(0, "Finish App", "Finishing working on the wellness app", 1, 30));
+                habitDao.insertHabit(new Habit(0,"Make Dinner", "Cook dinner and clean up after", 0, 0));
+                habitDao.insertHabit(new Habit(0, "Draw", "Draw something every day", 0, 0));
             }
         });
     }

@@ -84,6 +84,7 @@ public class DashboardActivity extends AppCompatActivity {
             }
 
             stats.setText("You have " + starredHabits.size() + " favourite habits");
+            //habitsRecycler.post(() -> habitsRecycler.requestLayout());
         });
 
         // REMINDERS
@@ -105,11 +106,15 @@ public class DashboardActivity extends AppCompatActivity {
             } else {
                 emptyReminders.setVisibility(View.GONE);
             }
+            //reminderRecycler.post(() -> reminderRecycler.requestLayout());
         });
+
+
+
 
         // TEMP: Dummy habits and reminders
         //remove
-        //habitViewModel.insertDummyHabits();
+        habitViewModel.insertDummyHabits();
         reminderViewModel.insertDummyReminders();
 
         // TODO: Make into a fragment (to avoid repeats)

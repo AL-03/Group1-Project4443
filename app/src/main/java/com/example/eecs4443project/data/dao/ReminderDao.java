@@ -28,4 +28,7 @@ public interface ReminderDao {
 
     @Query("SELECT * FROM reminders WHERE id = :id ORDER BY date, time")
     Reminder getReminder(int id);
+
+    @Query("SELECT COUNT (*) FROM reminders")
+    int getCount();
 }

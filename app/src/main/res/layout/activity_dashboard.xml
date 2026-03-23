@@ -68,11 +68,12 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
 
-                <androidx.recyclerview.widget.RecyclerView
+                <com.example.eecs4443project.view.NonScrollableRecyclerView
                     android:id="@+id/habitsRecycler"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:nestedScrollingEnabled="false"/>
+                    android:nestedScrollingEnabled="false"
+                    android:overScrollMode="never"/>
             </LinearLayout>
 
             <!-- Reminders Card -->
@@ -100,11 +101,12 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
 
-                <androidx.recyclerview.widget.RecyclerView
+                <com.example.eecs4443project.view.NonScrollableRecyclerView
                     android:id="@+id/reminderRecycler"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:nestedScrollingEnabled="false"/>
+                    android:nestedScrollingEnabled="false"
+                    android:overScrollMode="never"/>
             </LinearLayout>
 
         </LinearLayout>
