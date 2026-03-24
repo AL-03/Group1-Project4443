@@ -1,6 +1,8 @@
 package com.example.eecs4443project.view.activities;
 
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.widget.*;
 import androidx.activity.OnBackPressedCallback;
 import androidx.appcompat.app.AlertDialog;
@@ -17,7 +19,7 @@ public class HabitDetailActivity extends AppCompatActivity {
     private Habit habit;
 
     private EditText habitTitle, habitDesc, progressInput;
-    private ProgressBar progressBar;
+    private SeekBar progressSeekBar;
     private ImageView starIcon;
 
     private boolean isChanged = false;
@@ -33,7 +35,7 @@ public class HabitDetailActivity extends AppCompatActivity {
         habitTitle = findViewById(R.id.habitTitle);
         habitDesc = findViewById(R.id.habitDesc);
         progressInput = findViewById(R.id.progressInput);
-        progressBar = findViewById(R.id.progressBar);
+        progressSeekBar = findViewById(R.id.progressSeekBar);
         starIcon = findViewById(R.id.starIcon);
 
         Button updateBtn = findViewById(R.id.updateBtn);
@@ -52,7 +54,7 @@ public class HabitDetailActivity extends AppCompatActivity {
         habitTitle.setText(title);
         habitDesc.setText(desc);
         progressInput.setText(String.valueOf(progress));
-        progressBar.setProgress(progress);
+        progressSeekBar.setProgress(progress);
 
         starState = starred;
         updateStarUI();
@@ -62,6 +64,43 @@ public class HabitDetailActivity extends AppCompatActivity {
             starState = (starState == 1) ? 0 : 1;
             updateStarUI();
             isChanged = true;
+        });
+
+        //progress seekbar
+        progressSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int value, boolean fromUser) {
+                progressInput.setText(String.valueOf(value));
+                isChanged = true;
+            }
+
+            @Override public void onStartTrackingTouch(SeekBar seekBar) {}
+            @Override public void onStopTrackingTouch(SeekBar seekBar) {}
+        });
+
+        //sync the progress text input to the seekbar
+        progressInput.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (!s.toString().isEmpty()) {
+                    int value = Integer.parseInt(s.toString());
+
+                    if (value > 100) value = 100;
+                    if (value < 0) value = 0;
+
+                    progressSeekBar.setProgress(value);
+                    isChanged = true;
+                }
+            }
         });
 
         // Update button
@@ -119,7 +158,12 @@ public class HabitDetailActivity extends AppCompatActivity {
     private void saveChanges() {
         String title = habitTitle.getText().toString();
         String desc = habitDesc.getText().toString();
-        int progress = Integer.parseInt(progressInput.getText().toString());
+        int progress;
+        try {
+            progress = Integer.parseInt(progressInput.getText().toString());
+        } catch (Exception e) {
+            progress = 0;
+        }
 
         habit.setTitle(title);
         habit.setDescription(desc);

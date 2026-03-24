@@ -20,13 +20,87 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <EditText
-                android:id="@+id/habitTitle"
-                android:layout_marginTop="20dp"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Habit Title"
-                android:textSize="25sp"
+                android:orientation="horizontal">
+
+                <EditText
+                    android:id="@+id/habitTitle"
+                    android:layout_marginTop="20dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Habit Title"
+                    android:textSize="25sp"
+                    android:textStyle="bold"
+                    android:textColor="#000C1A"
+                    android:layout_weight="8"/>
+                <ImageView
+                    android:id="@+id/starIcon"
+                    android:layout_width="65dp"
+                    android:layout_height="65dp"
+                    android:layout_marginTop="16dp"
+                    android:clickable="true"
+                    android:layout_weight="2"
+                    android:src="@android:drawable/btn_star_big_off" />
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#DDDDDD"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+
+                android:layout_marginTop="16dp"
+                android:text="Progress"
+                android:textColor="#002147"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical|center_horizontal"
+                android:orientation="horizontal">
+
+                <SeekBar
+                    android:id="@+id/progressSeekBar"
+                    style="?android:attr/progressBarStyleHorizontal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="left"
+                    android:layout_weight="4"
+
+                    android:max="100" />
+
+                <EditText
+                    android:id="@+id/progressInput"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="right"
+                    android:hint="0 - 100%"
+                    android:inputType="number" />
+
+
+            </LinearLayout>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:background="#DDDDDD"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+
+                android:layout_marginTop="16dp"
+                android:text="Habit Description"
+                android:textColor="#002147"
+                android:textSize="16sp"
                 android:textStyle="bold" />
 
             <EditText
@@ -35,39 +109,6 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="12dp"
                 android:hint="Description" />
-
-
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:text="Progress"
-                android:textSize="16sp"
-                android:textStyle="bold" />
-
-            <SeekBar
-                android:id="@+id/progressBar"
-                style="?android:attr/progressBarStyleHorizontal"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:max="100" />
-
-            <EditText
-                android:id="@+id/progressInput"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="0 - 100"
-                android:inputType="number" />
-
-            <ImageView
-                android:id="@+id/starIcon"
-                android:layout_width="48dp"
-                android:layout_height="48dp"
-                android:layout_marginTop="16dp"
-                android:clickable="true"
-                android:src="@android:drawable/btn_star_big_off" />
 
             <Button
                 android:id="@+id/updateBtn"
