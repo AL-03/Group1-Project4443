@@ -172,10 +172,10 @@ public class DashboardActivity extends AppCompatActivity {
             pieChart.clear();
             pieChart.setData(pieData);
 
-            pieChart.setDrawEntryLabels(false); // removes text on slices
-            pieChart.getDescription().setEnabled(false); // removes default description text
-            pieChart.setCenterText(""); // removes any center text
-            pieChart.setDrawCenterText(false); // ensures center text is off
+            pieChart.setDrawEntryLabels(false);
+            pieChart.getDescription().setEnabled(false);
+            pieChart.setCenterText("");
+            pieChart.setDrawCenterText(false);
 
 
             pieChart.invalidate();
