@@ -3,11 +3,10 @@
     android:orientation="horizontal"
     android:padding="12dp"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:gravity="center_vertical">
+    android:layout_height="wrap_content">
 
     <CheckBox
-        android:id="@+id/reminderCheck"
+        android:id="@+id/reminderCheckBox"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
 

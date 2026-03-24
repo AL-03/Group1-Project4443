@@ -1,5 +1,6 @@
 package com.example.eecs4443project.view.activities;
 
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -197,14 +198,19 @@ public class DashboardActivity extends AppCompatActivity {
 
         ReminderAdapter reminderAdapter = new ReminderAdapter(new ReminderAdapter.OnReminderActionListener() {
             @Override
-            public void onToggleComplete(Reminder reminder) {
+            public void onReminderChecked(Reminder reminder) {
                 reminder.setCompleted(!reminder.isCompleted());
                 reminderViewModel.update(reminder);
             }
 
             @Override
-            public void onDelete(Reminder reminder) {
-                reminderViewModel.delete(reminder);
+            public void onReminderLongPressed(Reminder reminder) {
+                new AlertDialog.Builder(DashboardActivity.this)
+                        .setTitle("Delete Reminder")
+                        .setMessage("Are you sure?")
+                        .setPositiveButton("Yes", (d, i) -> reminderViewModel.delete(reminder))
+                        .setNegativeButton("No", null)
+                        .show();
 
             }
         });
