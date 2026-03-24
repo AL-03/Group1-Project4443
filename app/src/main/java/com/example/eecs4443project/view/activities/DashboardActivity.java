@@ -73,6 +73,8 @@ public class DashboardActivity extends AppCompatActivity {
                 intent.putExtra("habit_id", h.getId());
                 intent.putExtra("title", h.getTitle());
                 intent.putExtra("desc", h.getDescription());
+                intent.putExtra("progress", h.getProgress());
+                intent.putExtra("starred", h.getStarred());
                 startActivity(intent);
             }
 
@@ -183,6 +185,8 @@ public class DashboardActivity extends AppCompatActivity {
 
 
             pieChart.invalidate();
+
+
         });
 
         //reminders
@@ -254,8 +258,11 @@ public class DashboardActivity extends AppCompatActivity {
 
             return false;
         });
+
+
     }
 
+    //do not currently use
     private int calculateStreak(List<Habit> habits) {
         int streak = 0;
 
