@@ -27,5 +27,5 @@ public interface ReminderDao {
     LiveData<List<Reminder>> getAllReminders();
 
     @Query("SELECT * FROM reminders WHERE id = :id ORDER BY date, time")
-    Reminder getReminder(int id);
+    LiveData<Reminder> getReminder(int id);
 }

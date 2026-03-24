@@ -24,6 +24,10 @@ public class HabitRepository {
         return allHabits;
     }
 
+    public LiveData<Habit> getHabit(int id) {
+        return habitDao.getHabit(id);
+    }
+
     public void insert(Habit habit) {
         AppDatabase.databaseWriteExecutor.execute(() -> habitDao.insertHabit(habit));
     }

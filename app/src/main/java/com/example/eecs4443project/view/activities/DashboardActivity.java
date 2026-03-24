@@ -111,9 +111,8 @@ public class DashboardActivity extends AppCompatActivity {
             }
 
             if (item.getItemId() == R.id.nav_journal) {
-                // placeholder
-                //add intent when journal page is made
-                Toast.makeText(this, "Journal page coming soon", Toast.LENGTH_SHORT).show();
+                startActivity(new Intent(this, JournalActivity.class));
+                overridePendingTransition(0, 0);
                 return true;
             }
 

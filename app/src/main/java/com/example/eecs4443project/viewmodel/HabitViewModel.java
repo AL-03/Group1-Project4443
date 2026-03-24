@@ -14,16 +14,18 @@ import java.util.List;
 public class HabitViewModel extends AndroidViewModel {
 
     private final HabitRepository repo;
-    private final LiveData<List<Habit>> allHabits;
 
     public HabitViewModel(@NonNull Application application) {
         super(application);
         repo = new HabitRepository(application);
-        allHabits = repo.getAllHabits();
     }
 
     public LiveData<List<Habit>> getAllHabits() {
-        return allHabits;
+        return repo.getAllHabits();
+    }
+
+    public LiveData<Habit> getHabit(int id) {
+        return repo.getHabit(id);
     }
 
     public void insert(Habit habit) {

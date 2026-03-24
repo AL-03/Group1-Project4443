@@ -26,7 +26,7 @@ public class ReminderViewModel extends AndroidViewModel {
         return allReminders;
     }
 
-    public Reminder getReminder(int id) {
+    public LiveData<Reminder> getReminder(int id) {
         return repo.getReminder(id);
     }
 

@@ -26,7 +26,7 @@ public class ReminderRepository {
         return allReminders;
     }
 
-    public Reminder getReminder(int id) {
+    public LiveData<Reminder> getReminder(int id) {
         return reminderDao.getReminder(id);
     }
 
