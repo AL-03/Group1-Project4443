@@ -34,52 +34,54 @@ public class LoginActivity extends AppCompatActivity {
 
         userViewModel = new ViewModelProvider(this).get(UserViewModel.class);
 
-        // TEMP (testing login)
+        // testing login
         userViewModel.register(new User("testuser", "password123"));
 
         // when user clicks login, call the onclicklistener and set username and password
         // from the information the user input
         loginBtn.setOnClickListener(v -> {
-            try {
-                String user = username.getText().toString().trim();
-                String pass = password.getText().toString().trim();
-
-                // input validation
-                // ensures user actually enters values before checking database
-                if (user.isEmpty()) {
-                    username.setError("Please enter a username");
-                    return;
-                }
-
-                if (pass.isEmpty()) {
-                    password.setError("Please enter a password");
-                    return;
-                }
-
-                // database login check
-                // check login info from database to see if username and password is correct
-                userViewModel.login(user, pass).observe(this, count -> {
-                    if (count != null && count > 0) {
-                        // if the login information exists in the database, create a new intent
-                        // to direct the user to the dashboard
+        try {
+            String user = username.getText().toString().trim();
+            String pass = password.getText().toString().trim();
+    
+            if (user.isEmpty()) {
+                username.setError("Please enter a username");
+                return;
+            }
+    
+            if (pass.isEmpty()) {
+                password.setError("Please enter a password");
+                return;
+            }
+    
+            new Thread(() -> {
+                User loggedInUser = userViewModel.getUserSync(user, pass);
+    
+                runOnUiThread(() -> {
+                    if (loggedInUser != null) {
+    
+                        int userId = loggedInUser.getId();
+    
+                        // store the user id
+                        SessionManager.setUserId(userId);
+    
                         Intent intent = new Intent(LoginActivity.this, DashboardActivity.class);
-                        // we want to store the username to display a personalized
-                        // welcome message for the user
                         intent.putExtra("USERNAME", user);
                         startActivity(intent);
-                        // optional: finish login so user can't go back
                         finish();
+    
                         Toast.makeText(this, "Login Successful", Toast.LENGTH_SHORT).show();
+    
                     } else {
-                        // invalid credentials feedback
                         Toast.makeText(this, "Invalid username or password", Toast.LENGTH_SHORT).show();
                     }
                 });
-            } catch (Exception e) {
-                // catch unexpected runtime/database errors
-                Log.e("LOGIN_ERROR", "Crash on login", e);
-                Toast.makeText(this, "Error: " + e.getMessage(), Toast.LENGTH_LONG).show();
-            }
-        });
+            });
+    
+        } catch (Exception e) {
+            Log.e("LOGIN_ERROR", "Crash on login", e);
+            Toast.makeText(this, "Error: " + e.getMessage(), Toast.LENGTH_LONG).show();
+        }
+});
     }
 }
