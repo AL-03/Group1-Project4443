@@ -19,50 +19,47 @@ import java.util.List;
 public class ReminderAdapter extends RecyclerView.Adapter<ReminderAdapter.ViewHolder> {
 
     private List<Reminder> reminders = new ArrayList<>();
+    private OnReminderActionListener listener;
 
-    // Listener interface
-    public interface ReminderListener {
-        void onReminderChecked(Reminder reminder);
+    public interface OnReminderActionListener {
+        void onToggleComplete(Reminder reminder);
+        void onDelete(Reminder reminder);
     }
 
-    private ReminderListener listener;
-
-    public void setListener(ReminderListener listener) {
+    public ReminderAdapter(OnReminderActionListener listener) {
         this.listener = listener;
     }
 
-    @NonNull
     @Override
-    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.reminder_item, parent, false);
         return new ViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+    public void onBindViewHolder(ViewHolder holder, int position) {
         Reminder reminder = reminders.get(position);
 
         holder.title.setText(reminder.getTitle());
         holder.date.setText(reminder.getDate());
         holder.time.setText(reminder.getTime());
 
-        //checkbox state
-        holder.checkBox.setOnCheckedChangeListener(null);
         holder.checkBox.setChecked(reminder.isCompleted());
 
-        //strikethrough for completed
-        if (reminder.isCompleted()) {
-            holder.title.setPaintFlags(holder.title.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
-        } else {
-            holder.title.setPaintFlags(holder.title.getPaintFlags() & (~Paint.STRIKE_THRU_TEXT_FLAG));
-        }
+        // Grey out completed
+        float alpha = reminder.isCompleted() ? 0.5f : 1f;
+        holder.title.setAlpha(alpha);
+        holder.date.setAlpha(alpha);
+        holder.time.setAlpha(alpha);
 
-        //onclick checkbox logic
-        holder.checkBox.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            if (listener != null) {
-                listener.onReminderChecked(reminder);
-            }
+        holder.checkBox.setOnClickListener(v -> {
+            listener.onToggleComplete(reminder);
+        });
+
+        holder.itemView.setOnLongClickListener(v -> {
+            listener.onDelete(reminder);
+            return true;
         });
     }
 
@@ -76,19 +73,16 @@ public class ReminderAdapter extends RecyclerView.Adapter<ReminderAdapter.ViewHo
         notifyDataSetChanged();
     }
 
-    //viewholder
     public static class ViewHolder extends RecyclerView.ViewHolder {
-
         TextView title, date, time;
         CheckBox checkBox;
 
         public ViewHolder(View itemView) {
             super(itemView);
-
             title = itemView.findViewById(R.id.reminderTitle);
             date = itemView.findViewById(R.id.reminderDate);
             time = itemView.findViewById(R.id.reminderTime);
-            checkBox = itemView.findViewById(R.id.reminderCheckBox);
+            checkBox = itemView.findViewById(R.id.reminderCheck);
         }
     }
 }

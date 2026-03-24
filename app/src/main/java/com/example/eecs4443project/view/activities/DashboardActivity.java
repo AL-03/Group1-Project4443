@@ -4,10 +4,13 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.eecs4443project.AddReminderDialog;
 import com.example.eecs4443project.data.entity.Habit;
+import com.example.eecs4443project.data.entity.Reminder;
 import com.example.eecs4443project.view.adapters.ReminderAdapter;
 import com.example.eecs4443project.viewmodel.ReminderViewModel;
 import com.example.eecs4443project.view.adapters.HabitDashboardAdapter;
@@ -186,7 +189,25 @@ public class DashboardActivity extends AppCompatActivity {
         reminderRecycler.setLayoutManager(new LinearLayoutManager(this));
         TextView emptyReminders = findViewById(R.id.emptyRemindersText);
 
-        ReminderAdapter reminderAdapter = new ReminderAdapter();
+        Button addBtn = findViewById(R.id.addReminderBtn);
+
+        addBtn.setOnClickListener(v -> {
+            AddReminderDialog.show(this, reminderViewModel);
+        });
+
+        ReminderAdapter reminderAdapter = new ReminderAdapter(new ReminderAdapter.OnReminderActionListener() {
+            @Override
+            public void onToggleComplete(Reminder reminder) {
+                reminder.setCompleted(!reminder.isCompleted());
+                reminderViewModel.update(reminder);
+            }
+
+            @Override
+            public void onDelete(Reminder reminder) {
+                reminderViewModel.delete(reminder);
+
+            }
+        });
         reminderRecycler.setAdapter(reminderAdapter);
 
         reminderViewModel = new ViewModelProvider(this).get(ReminderViewModel.class);

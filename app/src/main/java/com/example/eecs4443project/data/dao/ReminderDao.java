@@ -26,15 +26,15 @@ public interface ReminderDao {
     void deleteReminder(Reminder reminder);
 
     //get all from database
-    @Query("SELECT * FROM reminders ORDER BY timestamp ASC")
+    @Query("SELECT * FROM reminders ORDER BY date ASC, time ASC")
     LiveData<List<Reminder>> getAllReminders();
 
     //get only active reminders
-    @Query("SELECT * FROM reminders WHERE completed = 0 ORDER BY timestamp ASC")
+    @Query("SELECT * FROM reminders WHERE completed = 0 ORDER BY date ASC, time ASC")
     LiveData<List<Reminder>> getActiveReminders();
 
     //gets completed reminders
-    @Query("SELECT * FROM reminders WHERE completed = 1 ORDER BY timestamp DESC")
+    @Query("SELECT * FROM reminders WHERE completed = 1 ORDER BY date DESC, time DESC")
     LiveData<List<Reminder>> getCompletedReminders();
 
     //get a single reminder
