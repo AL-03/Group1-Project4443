@@ -23,6 +23,7 @@ public class HabitDetailActivity extends AppCompatActivity {
     private ImageView starIcon;
 
     private boolean isChanged = false;
+    private boolean isInitializing=true;
     private int starState = 0;
 
     @Override
@@ -30,8 +31,10 @@ public class HabitDetailActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_habit_detail);
 
+        //creates a viewmodel
         viewModel = new ViewModelProvider(this).get(HabitViewModel.class);
 
+        //set all ui elements
         habitTitle = findViewById(R.id.habitTitle);
         habitDesc = findViewById(R.id.habitDesc);
         progressInput = findViewById(R.id.progressInput);
@@ -57,16 +60,60 @@ public class HabitDetailActivity extends AppCompatActivity {
         progressSeekBar.setProgress(progress);
 
         starState = starred;
+
+        isInitializing=false;
         updateStarUI();
 
-        // Star toggle
+        // Star toggle change
         starIcon.setOnClickListener(v -> {
             starState = (starState == 1) ? 0 : 1;
             updateStarUI();
             isChanged = true;
         });
 
-        //progress seekbar
+        //title change
+        habitTitle.addTextChangedListener(new TextWatcher(){
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if(!isInitializing){
+                    isChanged=true;
+                }
+            }
+
+        });
+
+        //description change
+        habitDesc.addTextChangedListener(new TextWatcher(){
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if(!isInitializing){
+                    isChanged=true;
+                }
+            }
+
+        });
+
+        //progress seekbar change
         progressSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int value, boolean fromUser) {
@@ -79,6 +126,7 @@ public class HabitDetailActivity extends AppCompatActivity {
         });
 
         //sync the progress text input to the seekbar
+        //updates the value based on the user's change
         progressInput.addTextChangedListener(new TextWatcher() {
             @Override
             public void afterTextChanged(Editable s) {
@@ -103,10 +151,11 @@ public class HabitDetailActivity extends AppCompatActivity {
             }
         });
 
-        // Update button
+        // Update button sets new changes user made
         updateBtn.setOnClickListener(v -> saveChanges());
 
         // Delete button
+        //gives an alert popup asking if they intended to delete the habit
         deleteBtn.setOnClickListener(v -> {
             new AlertDialog.Builder(this)
                     .setTitle("Delete Habit")
@@ -121,6 +170,10 @@ public class HabitDetailActivity extends AppCompatActivity {
 
         // Back handler
         OnBackPressedCallback callback = new OnBackPressedCallback(true) {
+            //id there are any unsaved changes, there will be an alert popup asking
+            //if the user wants to save or discard those changes
+            //if user presses save, changes will be saved
+            //else changes are ignored
             @Override
             public void handleOnBackPressed() {
                 if (isChanged) {
@@ -147,6 +200,7 @@ public class HabitDetailActivity extends AppCompatActivity {
         getOnBackPressedDispatcher().addCallback(this, callback);
     }
 
+    //function to update the star ui to change based on previous state
     private void updateStarUI() {
         starIcon.setImageResource(
                 starState == 1 ?
@@ -155,6 +209,7 @@ public class HabitDetailActivity extends AppCompatActivity {
         );
     }
 
+//saves the current input of all fields
     private void saveChanges() {
         String title = habitTitle.getText().toString();
         String desc = habitDesc.getText().toString();
@@ -172,7 +227,10 @@ public class HabitDetailActivity extends AppCompatActivity {
 
         viewModel.update(habit);
 
-        Toast.makeText(this, "Saved", Toast.LENGTH_SHORT).show();
+        //gives a toast message so users know their changes have been saved
+        // NOTE: the screen does not change in case users want to edit again
+        //they must go back manually after saving if they want to exit the detail screen
+        Toast.makeText(this, "Habit Changes Saved", Toast.LENGTH_SHORT).show();
         isChanged = false;
     }
 }
