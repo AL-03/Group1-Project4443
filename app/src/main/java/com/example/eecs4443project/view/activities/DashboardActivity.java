@@ -70,6 +70,7 @@ public class DashboardActivity extends AppCompatActivity {
         habitAdapter = new HabitDashboardAdapter(this, new HabitDashboardAdapter.HabitClickListener() {
             @Override public void onHabitClicked(Habit h) {
                 Intent intent = new Intent(DashboardActivity.this, HabitDetailActivity.class);
+                //habit information
                 intent.putExtra("habit_id", h.getId());
                 intent.putExtra("title", h.getTitle());
                 intent.putExtra("desc", h.getDescription());
@@ -85,10 +86,12 @@ public class DashboardActivity extends AppCompatActivity {
             }
         });
 
+
         habitsRecycler.setAdapter(habitAdapter);
 
         habitViewModel = new ViewModelProvider(this).get(HabitViewModel.class);
 
+        //gets the starred habits to display
         habitViewModel.getAllHabits().observe(this, habits -> {
 
             List<Habit> starredHabits = new ArrayList<>();
@@ -127,21 +130,29 @@ public class DashboardActivity extends AppCompatActivity {
             }
 
             LineDataSet progressSet = new LineDataSet(entries, "Progress");
-            progressSet.setColor(Color.BLUE);
+            progressSet.setColor(Color.parseColor("#5CA8FF"));
             progressSet.setLineWidth(3f);
             progressSet.setCircleRadius(4f);
             progressSet.setDrawFilled(true);
 
             LineDataSet avgSet = new LineDataSet(avgEntries, "Average");
-            avgSet.setColor(Color.RED);
+            avgSet.setColor(Color.parseColor("#002147"));
             avgSet.setDrawCircles(false);
             avgSet.setLineWidth(2f);
+            avgSet.setDrawValues(false);
 
             LineData lineData = new LineData(progressSet, avgSet);
 
             lineChart.getXAxis().setDrawGridLines(false);
+
+            //lineChart.getXAxis().
             lineChart.getAxisLeft().setDrawGridLines(false);
             lineChart.getAxisRight().setDrawGridLines(false);
+
+
+            lineChart.getDescription().setEnabled(false);
+
+
 
             lineChart.clear();
             lineChart.setData(lineData);
@@ -163,7 +174,7 @@ public class DashboardActivity extends AppCompatActivity {
             pieEntries.add(new PieEntry(completed, "Completed"));
             pieEntries.add(new PieEntry(inProgress, "In Progress"));
 
-            PieDataSet pieDataSet = new PieDataSet(pieEntries, "Completion");
+            PieDataSet pieDataSet = new PieDataSet(pieEntries, null);
 
 
             pieDataSet.setColors(

@@ -70,6 +70,7 @@
                 <SeekBar
                     android:id="@+id/progressSeekBar"
                     style="?android:attr/progressBarStyleHorizontal"
+                    android:progressTint="#003775"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="left"

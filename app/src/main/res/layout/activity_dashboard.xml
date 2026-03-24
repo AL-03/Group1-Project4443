@@ -28,6 +28,7 @@
             <!-- Greeting -->
             <TextView
                 android:id="@+id/greetingText"
+                android:textColor="#002147"
                 android:textSize="22sp"
                 android:textStyle="bold"
                 android:layout_marginTop="16dp"
@@ -48,7 +49,8 @@
                     android:id="@+id/lineChartTitle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Your Habit Progress Over Time"
+                    android:text="Average Habit Progress"
+                    android:textColor="#002147"
                     android:textStyle="bold"
                     android:textSize="18sp"
                     android:layout_marginTop="16dp"
@@ -74,6 +76,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Habit Completion Breakdown"
+                    android:textColor="#002147"
                     android:textStyle="bold"
                     android:textSize="18sp"
                     android:layout_marginTop="16dp"
@@ -106,6 +109,7 @@
 
                 <TextView
                     android:text="My Habits"
+                    android:textColor="#002147"
                     android:textStyle="bold"
                     android:textSize="18sp"
                     android:layout_marginBottom="8dp"
@@ -114,7 +118,7 @@
 
                 <TextView
                     android:id="@+id/emptyHabitsText"
-                    android:text="Favourite habits to display them here"
+                    android:text="Favourite some habits to display them here"
                     android:textColor="#666"
                     android:visibility="gone"
                     android:layout_marginBottom="8dp"
@@ -138,7 +142,8 @@
                 android:layout_height="wrap_content">
 
                 <TextView
-                    android:text="Reminders"
+                    android:text="My Reminders"
+                    android:textColor="#002147"
                     android:textStyle="bold"
                     android:textSize="18sp"
                     android:layout_marginBottom="8dp"
