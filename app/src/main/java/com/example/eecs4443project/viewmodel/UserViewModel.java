@@ -25,4 +25,7 @@ public class UserViewModel extends AndroidViewModel {
     public void register(User user) {
         repo.register(user);
     }
+    public User getUserSync(String username, String password) {
+        return userRepository.getUser(username, password);
+    }
 }
