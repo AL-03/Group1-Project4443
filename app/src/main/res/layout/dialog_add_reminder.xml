@@ -11,7 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
 
-    <!-- DATE PICKER FIELD -->
+    <!-- date picker line -->
     <EditText
         android:id="@+id/inputDate"
         android:hint="Select Date"
@@ -21,7 +21,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
 
-    <!-- TIME PICKER FIELD -->
+    <!-- time picker line -->
     <EditText
         android:id="@+id/inputTime"
         android:hint="Select Time"

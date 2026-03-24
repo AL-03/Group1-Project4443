@@ -19,7 +19,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <!-- TITLE -->
+            <!-- title -->
             <EditText
                 android:id="@+id/habitTitle"
                 android:hint="Habit Title"
@@ -30,7 +30,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
 
-            <!-- DESCRIPTION -->
+            <!-- description -->
             <EditText
                 android:id="@+id/habitDesc"
                 android:hint="Description"
@@ -40,7 +40,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
 
-            <!-- PROGRESS -->
+            <!-- progress -->
             <TextView
                 android:text="Progress"
                 android:layout_marginTop="20dp"
@@ -65,7 +65,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
 
-            <!-- STAR -->
+            <!-- star -->
             <ImageView
                 android:id="@+id/starIcon"
                 android:layout_width="48dp"
@@ -74,7 +74,7 @@
                 android:src="@android:drawable/btn_star_big_off"
                 android:clickable="true"/>
 
-            <!-- UPDATE BUTTON -->
+            <!-- update button -->
             <Button
                 android:id="@+id/updateBtn"
                 android:text="Save Changes"
@@ -87,7 +87,7 @@
         </LinearLayout>
     </ScrollView>
 
-    <!-- DELETE BUTTON -->
+    <!-- delete button -->
     <Button
         android:id="@+id/deleteBtn"
         android:text="Delete Habit"

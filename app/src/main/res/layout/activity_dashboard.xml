@@ -54,7 +54,7 @@
                     android:layout_marginTop="16dp"
                     android:layout_marginBottom="8dp"/>
 
-                <!-- LINE CHART -->
+                <!-- line chart -->
                 <com.github.mikephil.charting.charts.LineChart
                     android:id="@+id/progressChart"
                     android:layout_width="match_parent"
