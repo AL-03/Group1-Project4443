@@ -44,6 +44,11 @@ public class JournalViewModel extends AndroidViewModel {
         repo.delete(journal);
     }
 
+    // Delete all entries for a given user
+    public void deleteAllForUser(int userId) {
+        repo.deleteAllForUser(userId);
+    }
+
     // Get all entries
     public LiveData<List<Journal>> getAllJournals() {
         return repo.getAllJournals();

@@ -38,6 +38,11 @@ public class JournalRepository {
         AppDatabase.databaseWriteExecutor.execute(() -> journalDao.deleteJournal(journal));
     }
 
+    // Delete all entries for a given user
+    public void deleteAllForUser(int userId) {
+        AppDatabase.databaseWriteExecutor.execute(() -> journalDao.deleteAllForUser(userId));
+    }
+
     // Get all entries
     public LiveData<List<Journal>> getAllJournals() {
         return journalDao.getAllJournals();

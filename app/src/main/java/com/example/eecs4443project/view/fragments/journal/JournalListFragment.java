@@ -20,7 +20,9 @@ import com.example.eecs4443project.data.entity.Journal;
 import com.example.eecs4443project.view.adapters.JournalListAdapter;
 import com.example.eecs4443project.viewmodel.JournalViewModel;
 
+// Displays list of user's journals
 public class JournalListFragment extends Fragment {
+    // Allow indirect access to data
     private JournalViewModel viewModel;
     private JournalListAdapter adapter;
 
@@ -35,6 +37,26 @@ public class JournalListFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        // Access journal entry data
+        viewModel = new ViewModelProvider(requireActivity()).get(JournalViewModel.class);
+
+        // Get userId from SharedPreferences
+        int userId = SessionManager.getUserId(requireContext());
+        // If user can't be found, show a pop-up message
+        if (userId == -1) {
+            Toast.makeText(requireContext(), "Cannot find user", Toast.LENGTH_SHORT).show();
+        }
+        // Otherwise, get the user's journal entries
+        else {
+            viewModel.getJournalsByAllLabels(userId).observe(getViewLifecycleOwner(), groupedMap -> {
+                adapter.submitData(groupedMap);
+            });
+        }
+
+        // TEMP: clear all, then add fake journal entries
+        viewModel.deleteAllForUser(userId);
+        viewModel.insertFakeData(userId);
 
         // Set up RecyclerView (list of journal entries)
         RecyclerView recyclerView = view.findViewById(R.id.journalList);
@@ -85,28 +107,10 @@ public class JournalListFragment extends Fragment {
         });
         recyclerView.setAdapter(adapter);
 
-        // Access journal entry data
-        viewModel = new ViewModelProvider(requireActivity()).get(JournalViewModel.class);
-
-        // Get userId from SharedPreferences
-        int userId = SessionManager.getUserId(requireContext());
-        // If user can't be found, show a pop-up message
-        if (userId == -1) {
-            Toast.makeText(requireContext(), "Cannot find user", Toast.LENGTH_SHORT).show();
-        }
-        // Otherwise, get the user's journal entries
-        else {
-            viewModel.getJournalsByAllLabels(userId).observe(getViewLifecycleOwner(), groupedMap -> {
-                adapter.submitData(groupedMap);
-            });
-        }
-
-        // TEMP: add fake journal entries
-        viewModel.insertFakeData(userId);
-
         // Navigate to fragment to add journal entry
-//        view.findViewById(R.id.addJournal).setOnClickListener(v -> {
-//            navigateToEdit();
-//        });
+        view.findViewById(R.id.addJournal).setOnClickListener(v -> {
+            Toast.makeText(requireContext(), "Add journal feature in progress", Toast.LENGTH_SHORT).show();
+            //navigateToEdit();
+        });
     }
 }

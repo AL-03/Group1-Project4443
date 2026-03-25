@@ -28,6 +28,10 @@ public interface JournalDao {
     @Delete
     void deleteJournal(Journal journal);
 
+    // Delete all entries for a given user
+    @Query("DELETE FROM journals WHERE userId = :userId")
+    void deleteAllForUser(int userId);
+
     // Get all entries
     @Query("SELECT * FROM journals")
     LiveData<List<Journal>> getAllJournals();
