@@ -41,8 +41,8 @@
             android:gravity="center"
             android:layout_marginBottom="16dp"
             android:textColor="#002147"
-            android:text="Wellness Tracker"
-            android:textSize="30sp"
+            android:text="BeWell"
+            android:textSize="35sp"
             android:textStyle="bold" />
 
         <EditText
