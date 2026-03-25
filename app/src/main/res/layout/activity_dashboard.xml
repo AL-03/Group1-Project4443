@@ -39,7 +39,7 @@
         <LinearLayout
             android:orientation="vertical"
             android:background="@drawable/rounded_card"
-            android:padding="12dp"
+            android:padding="20dp"
             android:layout_marginBottom="16dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
@@ -79,7 +79,7 @@
                     android:textColor="#002147"
                     android:textStyle="bold"
                     android:textSize="18sp"
-                    android:layout_marginTop="16dp"
+                    android:layout_marginTop="12dp"
                     android:layout_marginBottom="8dp"/>
 
                 <!-- PIE CHART -->
@@ -94,7 +94,7 @@
             <LinearLayout
                 android:orientation="vertical"
                 android:background="@drawable/rounded_card"
-                android:padding="12dp"
+                android:padding="20dp"
                 android:layout_marginBottom="16dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
@@ -103,6 +103,7 @@
                 <TextView
                     android:id="@+id/statsText"
                     android:textSize="16sp"
+                    android:textColor="#003775"
                     android:layout_marginBottom="12dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
@@ -137,18 +138,38 @@
             <LinearLayout
                 android:orientation="vertical"
                 android:background="@drawable/rounded_card"
-                android:padding="12dp"
+                android:padding="20dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical|center_horizontal"
+                    android:orientation="horizontal">
                 <TextView
                     android:text="My Reminders"
                     android:textColor="#002147"
                     android:textStyle="bold"
+                    android:gravity="left"
+                    android:layout_weight="4"
                     android:textSize="18sp"
+                    android:layout_marginTop="8dp"
                     android:layout_marginBottom="8dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
+
+                <ImageButton
+                    android:id="@+id/addReminderBtn"
+
+                    android:src="@drawable/outline_reminder"
+                    android:layout_weight="1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+
+                    android:background="?attr/selectableItemBackgroundBorderless"/>
+
+                </LinearLayout>
 
                 <TextView
                     android:id="@+id/emptyRemindersText"
@@ -158,12 +179,7 @@
                     android:layout_marginBottom="8dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
-                <Button
-                    android:id="@+id/addReminderBtn"
-                    android:text="+ Add Reminder"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="8dp"/>
+
 
                 <com.example.eecs4443project.view.NonScrollableRecyclerView
                     android:id="@+id/reminderRecycler"

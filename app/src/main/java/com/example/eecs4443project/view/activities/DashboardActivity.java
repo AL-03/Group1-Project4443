@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -79,7 +80,14 @@ public class DashboardActivity extends AppCompatActivity {
                 startActivity(intent);
             }
 
-            @Override public void onHabitLongPressed(Habit h) {}
+            @Override public void onHabitLongPressed(Habit h) {
+                new androidx.appcompat.app.AlertDialog.Builder(DashboardActivity.this)
+                        .setTitle("Delete Habit")
+                        .setMessage("Are you sure?")
+                        .setPositiveButton("Yes", (d, i) -> habitViewModel.delete(h))
+                        .setNegativeButton("No", null)
+                        .show();
+            }
 
             @Override public void onStarToggled(Habit h) {
                 habitViewModel.toggleStar(h);
@@ -131,6 +139,8 @@ public class DashboardActivity extends AppCompatActivity {
 
             LineDataSet progressSet = new LineDataSet(entries, "Progress");
             progressSet.setColor(Color.parseColor("#5CA8FF"));
+            //progressSet.setFillColor(Color.parseColor("#0077FF"));
+            progressSet.setFillColor(Color.parseColor("#FFFFFF"));
             progressSet.setLineWidth(3f);
             progressSet.setCircleRadius(4f);
             progressSet.setDrawFilled(true);
@@ -149,6 +159,9 @@ public class DashboardActivity extends AppCompatActivity {
             lineChart.getAxisLeft().setDrawGridLines(false);
             lineChart.getAxisRight().setDrawGridLines(false);
 
+            //draw x axis line
+            // add labels to axis
+            //show ids for habits so they can correspond to vals in chart
 
             lineChart.getDescription().setEnabled(false);
 
@@ -205,7 +218,7 @@ public class DashboardActivity extends AppCompatActivity {
         reminderRecycler.setLayoutManager(new LinearLayoutManager(this));
         TextView emptyReminders = findViewById(R.id.emptyRemindersText);
 
-        Button addBtn = findViewById(R.id.addReminderBtn);
+        ImageButton addBtn = findViewById(R.id.addReminderBtn);
 
         addBtn.setOnClickListener(v -> {
             AddReminderDialog.show(this, reminderViewModel);
@@ -299,4 +312,5 @@ public class DashboardActivity extends AppCompatActivity {
             return "🌙 Good Evening, " + username;
         }
     }
+
 }
