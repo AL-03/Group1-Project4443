@@ -28,6 +28,7 @@ public class JournalDetailFragment extends Fragment {
     // Allow indirect access to data
     private JournalViewModel viewModel;
 
+    // Creates new instance of this fragment
     public static JournalDetailFragment newInstance(int journalId) {
         JournalDetailFragment fragment = new JournalDetailFragment();
         // Creates key-value map to store data passed within the JournalActivity
@@ -88,8 +89,13 @@ public class JournalDetailFragment extends Fragment {
 
         // If Edit button clicked, navigate to fragment to edit the journal entry
         view.findViewById(R.id.editButton).setOnClickListener(v -> {
-            Toast.makeText(requireContext(), "Edit page in progress", Toast.LENGTH_SHORT).show();
-            //navigateToEdit();
+            // Navigate to edit screen
+            JournalEditFragment fragment = JournalEditFragment.newInstance(journalId);
+            requireActivity().getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.journal_fragment_container, fragment)
+                    .addToBackStack(null)
+                    .commit();
         });
 
         // If Delete button clicked, delete the current journal entry and go back to list view

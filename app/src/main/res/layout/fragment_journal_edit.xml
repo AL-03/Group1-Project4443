@@ -1,14 +1,170 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/journal_edit_frag"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".view.fragments.journal.JournalEditFragment">
 
-    <!-- TODO: Update blank fragment layout -->
+    <!-- Title -->
     <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:id="@+id/editScreenTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:paddingTop="15dp"
+        android:paddingHorizontal="15dp" />
 
-</FrameLayout>
+    <!-- Divider -->
+    <ImageView
+        android:id="@+id/divider"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:src="@drawable/divider"
+        android:contentDescription="@string/visual_divider"
+        app:layout_constraintTop_toBottomOf="@id/editScreenTitle"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:paddingTop="20dp"
+        android:paddingBottom="5dp" />
+
+
+    <!-- Edit/add entry title - header and input box
+         TextView content and android:hint will be set depending on whether we're editing or updating -->
+    <TextView
+        android:id="@+id/editTitleHeader"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Entry title"
+        android:layout_marginHorizontal="10dp"
+        app:layout_constraintTop_toBottomOf="@id/divider"
+        app:layout_constraintStart_toStartOf="parent" />
+    <EditText
+        android:id="@+id/editTitle"
+        android:inputType="text"
+        android:text="EditTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:backgroundTint="#B8D9FF"
+        android:background="@drawable/rounded_input"
+        android:textColor="#000000"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="10dp"
+        android:layout_marginHorizontal="10dp"
+        app:layout_constraintTop_toBottomOf="@id/editTitleHeader"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <!-- Edit/add journal entry label - header and input box
+         TextView content and android:hint will be set depending on whether we're editing or updating -->
+    <TextView
+        android:id="@+id/editLabelHeader"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Entry label"
+        android:layout_marginHorizontal="10dp"
+        app:layout_constraintTop_toBottomOf="@id/editTitle"
+        app:layout_constraintStart_toStartOf="parent" />
+    <EditText
+        android:id="@+id/editLabel"
+        android:inputType="text"
+        android:text="EditLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:backgroundTint="#B8D9FF"
+        android:background="@drawable/rounded_input"
+        android:textColor="#000000"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="10dp"
+        android:layout_marginHorizontal="10dp"
+        app:layout_constraintTop_toBottomOf="@id/editLabelHeader"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <!-- Toggle between input modes: typing, handwriting, and audio.
+         Selection is required and only 1 mode can be selected at a time.
+         By default, typing mode is selected. -->
+    <com.google.android.material.button.MaterialButtonToggleGroup
+        android:id="@+id/inputMode"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="5dp"
+        android:layout_marginHorizontal="10dp"
+        app:singleSelection="true"
+        app:selectionRequired="true"
+        app:checkedButton="@id/modeTyping"
+        app:layout_constraintTop_toBottomOf="@id/editLabel"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+        <!-- Typing toggle -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/modeTyping"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:minWidth="48dp"
+            android:minHeight="48dp"
+            android:insetLeft="0dp"
+            android:insetTop="0dp"
+            android:insetRight="0dp"
+            android:insetBottom="0dp"
+            app:icon="@drawable/mode_typing"
+            app:iconGravity="textStart"
+            app:iconPadding="0dp" />
+
+        <!-- Handwriting toggle -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/modeDraw"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:minWidth="48dp"
+            android:minHeight="48dp"
+            android:insetLeft="0dp"
+            android:insetTop="0dp"
+            android:insetRight="0dp"
+            android:insetBottom="0dp"
+            app:icon="@drawable/mode_draw"
+            app:iconGravity="textStart"
+            app:iconPadding="0dp" />
+
+        <!-- Audio toggle -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/modeAudio"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:insetLeft="0dp"
+            android:insetTop="0dp"
+            android:insetRight="0dp"
+            android:insetBottom="0dp"
+            android:minWidth="48dp"
+            android:minHeight="48dp"
+            app:icon="@drawable/mode_audio"
+            app:iconGravity="textStart"
+            app:iconPadding="0dp" />
+    </com.google.android.material.button.MaterialButtonToggleGroup>
+
+    <!-- Dynamic fragment container (changes between displaying the various input modes: typing, handwriting, and audio) -->
+    <FrameLayout
+        android:id="@+id/inputModeFragmentContainer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/inputMode"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <!-- Overlay with a floating action button for adding a journal entry -->
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/saveJournal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:contentDescription="@string/save_journal_entry"
+        android:src="@drawable/save_button"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_margin="24dp" />
+</androidx.constraintlayout.widget.ConstraintLayout>
