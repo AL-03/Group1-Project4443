@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">EECS4443Project</string>
+    <string name="login_button">Login</string>
 </resources>
