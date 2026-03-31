@@ -133,22 +133,22 @@ public class InputAudioFragment extends Fragment {
     }
 
 
-    public Uri getAudioUri() {
-        return audioUri;
+    public String getAudioUri() {
+        return audioUri.toString();
     }
 
     public String getTranscription() {
         return transcription;
     }
 
-    public void loadAudio(Uri uri, String transcription)
+    public void loadAudio(String uri, String transcription)
     {
         mediaPlayer = new MediaPlayer();
         transcriptionBox.setText(transcription);
 
         try {
             // Set context and URI
-            mediaPlayer.setDataSource(requireContext(), audioUri);
+            mediaPlayer.setDataSource(requireContext(), Uri.parse(uri));
 
             // Prepare the player (synchronous for local files)
             mediaPlayer.prepare();

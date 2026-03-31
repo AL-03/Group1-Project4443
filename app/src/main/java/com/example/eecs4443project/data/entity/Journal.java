@@ -44,7 +44,7 @@ public class Journal {
 
     // Uri for audio
 
-    private Uri uri;
+    private String uri;
 
     // Transcription for audio
 
@@ -129,12 +129,12 @@ public class Journal {
         return inputMode;
     }
 
-    public void setAudioUri(Uri uri)
+    public void setAudioUri(String uri)
     {
         this.uri = uri;
     }
 
-    public Uri getAudioUri()
+    public String getAudioUri()
     {
         return uri;
     }
