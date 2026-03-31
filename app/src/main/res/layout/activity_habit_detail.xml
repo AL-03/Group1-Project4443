@@ -37,12 +37,12 @@
                     android:layout_weight="8"/>
                 <ImageView
                     android:id="@+id/starIcon"
-                    android:layout_width="65dp"
-                    android:layout_height="65dp"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
                     android:layout_marginTop="16dp"
                     android:clickable="true"
                     android:layout_weight="2"
-                    android:src="@android:drawable/btn_star_big_off" />
+                    android:src="@drawable/baseline_favorite_border_24" />
 
             </LinearLayout>
 

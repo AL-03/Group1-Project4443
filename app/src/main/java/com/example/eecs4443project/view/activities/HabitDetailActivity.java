@@ -31,10 +31,10 @@ public class HabitDetailActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_habit_detail);
 
-        //creates a viewmodel
+        //Creates a viewmodel
         viewModel = new ViewModelProvider(this).get(HabitViewModel.class);
 
-        //set all ui elements
+        //Set all ui elements
         habitTitle = findViewById(R.id.habitTitle);
         habitDesc = findViewById(R.id.habitDesc);
         progressInput = findViewById(R.id.progressInput);
@@ -44,16 +44,17 @@ public class HabitDetailActivity extends AppCompatActivity {
         Button updateBtn = findViewById(R.id.updateBtn);
         Button deleteBtn = findViewById(R.id.deleteBtn);
 
-        // Get data
+        // Get data sent from the intent
         int id = getIntent().getIntExtra("habit_id", -1);
         String title = getIntent().getStringExtra("title");
         String desc = getIntent().getStringExtra("desc");
         int progress = getIntent().getIntExtra("progress", 0);
         int starred = getIntent().getIntExtra("starred", 0);
 
+        //create a new habit item based on the intent data gathered
         habit = new Habit(id, title, desc, starred, progress);
 
-        // Set UI
+        //Set UI
         habitTitle.setText(title);
         habitDesc.setText(desc);
         progressInput.setText(String.valueOf(progress));
@@ -64,14 +65,15 @@ public class HabitDetailActivity extends AppCompatActivity {
         isInitializing=false;
         updateStarUI();
 
-        // Star toggle change
+        //Heart toggle change
         starIcon.setOnClickListener(v -> {
             starState = (starState == 1) ? 0 : 1;
             updateStarUI();
             isChanged = true;
         });
 
-        //title change
+        //Title change
+        //Create a textwatcher to detect change in the page text
         habitTitle.addTextChangedListener(new TextWatcher(){
             @Override
             public void afterTextChanged(Editable s) {
@@ -204,8 +206,8 @@ public class HabitDetailActivity extends AppCompatActivity {
     private void updateStarUI() {
         starIcon.setImageResource(
                 starState == 1 ?
-                        android.R.drawable.btn_star_big_on :
-                        android.R.drawable.btn_star_big_off
+                        R.drawable.baseline_favorite_24 :
+                        R.drawable.baseline_favorite_border_24
         );
     }
 

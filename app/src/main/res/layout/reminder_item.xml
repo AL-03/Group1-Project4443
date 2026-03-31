@@ -1,32 +1,42 @@
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="horizontal"
     android:padding="12dp"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
+    <!-- Create a checkbox for the reminder to determine if the
+    user has completed the reminder in the case they don't want to delete
+    the reminder once complete. This gives the user an option of showing
+    completion without deleting anything-->
     <CheckBox
         android:id="@+id/reminderCheckBox"
+        app:buttonTint="#2E8FFF"
+
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
 
+    <!-- Creates a vertical linear layout for the reminder-->
     <LinearLayout
         android:orientation="vertical"
         android:layout_marginStart="8dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
 
+        <!-- A textview for the reminder title -->
         <TextView
             android:id="@+id/reminderTitle"
             android:textStyle="bold"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
 
+        <!-- A textview for the reminder date -->
         <TextView
             android:id="@+id/reminderDate"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
 
+        <!-- A textview for the reminder time -->
         <TextView
             android:id="@+id/reminderTime"
             android:layout_width="wrap_content"

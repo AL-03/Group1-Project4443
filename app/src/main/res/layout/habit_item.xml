@@ -75,7 +75,7 @@
                 android:layout_width="48dp"
                 android:layout_height="48dp"
                 android:layout_marginTop="20dp"
-                android:src="@android:drawable/btn_star_big_off"
+                android:src="@drawable/baseline_favorite_border_24"
                 android:clickable="true"/>
 
             <!-- update button -->

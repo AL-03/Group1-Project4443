@@ -74,9 +74,9 @@ public class HabitDashboardAdapter extends RecyclerView.Adapter<HabitDashboardAd
         holder.star.setImageDrawable(null);
 
         if (habit.getStarred()==1) {
-            holder.star.setImageResource(android.R.drawable.btn_star_big_on);
+            holder.star.setImageResource(R.drawable.baseline_favorite_24);
         } else{
-            holder.star.setImageResource(android.R.drawable.btn_star_big_off);
+            holder.star.setImageResource(R.drawable.baseline_favorite_border_24);
         }
 
 

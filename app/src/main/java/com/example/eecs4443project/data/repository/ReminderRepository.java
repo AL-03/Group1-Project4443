@@ -77,7 +77,7 @@ public class ReminderRepository {
         );
     }
 
-    //dummy data
+    //Temporary dummy data
     public void insertDummyReminders() {
         AppDatabase.databaseWriteExecutor.execute(() -> {
             if (reminderDao.getCount() == 0) {

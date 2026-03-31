@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <!-- Scrollable content -->
+    <!-- Sets the entire page to be scrollable -->
     <ScrollView
         android:id="@+id/scrollContent"
         android:layout_width="0dp"
@@ -16,6 +16,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
 
+        <!-- Set up a vertical linear layout to display the page-->
         <LinearLayout
             android:orientation="vertical"
             android:paddingTop="32dp"
@@ -36,6 +37,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
 
+        <!--Create a linear layout for the stats section -->
         <LinearLayout
             android:orientation="vertical"
             android:background="@drawable/rounded_card"
@@ -45,16 +47,16 @@
             android:layout_height="wrap_content">
 
 
-                <TextView
-                    android:id="@+id/lineChartTitle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Average Habit Progress"
-                    android:textColor="#002147"
-                    android:textStyle="bold"
-                    android:textSize="18sp"
-                    android:layout_marginTop="16dp"
-                    android:layout_marginBottom="8dp"/>
+            <TextView
+                android:id="@+id/lineChartTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="8dp"
+                android:text="Average Habit Progress"
+                android:textColor="#002147"
+                android:textSize="18sp"
+                android:textStyle="bold" />
 
                 <!-- line chart -->
                 <com.github.mikephil.charting.charts.LineChart
@@ -82,7 +84,7 @@
                     android:layout_marginTop="12dp"
                     android:layout_marginBottom="8dp"/>
 
-                <!-- PIE CHART -->
+                <!-- Pie chart -->
                 <com.github.mikephil.charting.charts.PieChart
                     android:id="@+id/pieChart"
                     android:layout_width="match_parent"
@@ -90,7 +92,7 @@
                     android:layout_marginTop="16dp"/>
         </LinearLayout>
 
-            <!-- Habits Card -->
+            <!-- Sets up a vertical linear layout for the habits section -->
             <LinearLayout
                 android:orientation="vertical"
                 android:background="@drawable/rounded_card"
@@ -117,6 +119,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
 
+                <!-- This creates a textview which appears if the user has
+                not yet favourited any habits to display-->
                 <TextView
                     android:id="@+id/emptyHabitsText"
                     android:text="Favourite some habits to display them here"
@@ -134,7 +138,7 @@
                     android:overScrollMode="never"/>
             </LinearLayout>
 
-            <!-- Reminders Card -->
+            <!-- Sets up a vertical linear layout for the reminders section -->
             <LinearLayout
                 android:orientation="vertical"
                 android:background="@drawable/rounded_card"
@@ -159,9 +163,10 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
 
+
+                <!-- Uses an image as a button to add a new reminder -->
                 <ImageButton
                     android:id="@+id/addReminderBtn"
-
                     android:src="@drawable/outline_reminder"
                     android:layout_weight="1"
                     android:layout_width="wrap_content"
@@ -171,6 +176,7 @@
 
                 </LinearLayout>
 
+                <!-- This textview will appear if the user does not have any reminders-->
                 <TextView
                     android:id="@+id/emptyRemindersText"
                     android:text="No upcoming reminders"

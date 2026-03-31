@@ -6,7 +6,7 @@
         <item
             android:id="@+id/nav_dashboard"
             android:title="Dashboard"
-            android:icon="@android:drawable/ic_menu_view"/>
+            android:icon="@drawable/outline_dashboard_icon"/>
 
         <item
             android:id="@+id/nav_habits"
@@ -16,7 +16,7 @@
         <item
             android:id="@+id/nav_journal"
             android:title="Journal"
-            android:icon="@android:drawable/ic_menu_edit"/>
+            android:icon="@drawable/baseline_create_24"/>
 
         <item
             android:id="@+id/nav_account"

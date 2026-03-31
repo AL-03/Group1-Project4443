@@ -44,7 +44,7 @@ public class HabitRepository {
         });
     }
 
-    // TEMP
+    // Temporary dummy data
     public void insertDummyHabits() {
         AppDatabase.databaseWriteExecutor.execute(() -> {
 
