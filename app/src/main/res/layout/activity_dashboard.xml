@@ -59,11 +59,21 @@
                 android:textStyle="bold" />
 
                 <!-- line chart -->
-                <com.github.mikephil.charting.charts.LineChart
+                <com.github.mikephil.charting.charts.BarChart
                     android:id="@+id/progressChart"
                     android:layout_width="match_parent"
                     android:layout_height="250dp"
-                    android:layout_marginTop="16dp"/>
+                    android:layout_marginTop="16dp" />
+
+                <TextView
+                    android:id="@+id/xAxisLabel"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Completion Percentage"
+                    android:textAlignment="center"
+                    android:textSize="12sp"
+                    android:textColor="@color/black"
+                    android:paddingTop="4dp"/>
 
                 <View
                     android:layout_width="match_parent"

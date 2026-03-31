@@ -17,7 +17,7 @@ public interface ReminderDao {
     //insert, update, and delete functions
 
     @Insert
-    void insertReminder(Reminder reminder);
+    long insertReminder(Reminder reminder);
 
     @Update
     void updateReminder(Reminder reminder);

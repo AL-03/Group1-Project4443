@@ -19,6 +19,15 @@ import com.example.eecs4443project.viewmodel.ReminderViewModel;
 import com.example.eecs4443project.view.adapters.HabitDashboardAdapter;
 import com.example.eecs4443project.viewmodel.HabitViewModel;
 import com.example.eecs4443project.R;
+import com.github.mikephil.charting.charts.BarChart;
+import com.github.mikephil.charting.components.XAxis;
+import com.github.mikephil.charting.components.YAxis;
+import com.github.mikephil.charting.data.BarData;
+import com.github.mikephil.charting.data.BarDataSet;
+import com.github.mikephil.charting.data.BarEntry;
+import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
+import com.github.mikephil.charting.highlight.Highlight;
+import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -65,7 +74,7 @@ public class DashboardActivity extends AppCompatActivity {
         greeting.setText(getGreeting(username));
 
         //Charts
-        LineChart lineChart = findViewById(R.id.progressChart);
+        BarChart barChart = findViewById(R.id.progressChart);
         PieChart pieChart = findViewById(R.id.pieChart);
 
 
@@ -138,56 +147,65 @@ public class DashboardActivity extends AppCompatActivity {
 
 
 
-            // Line chart for all habits
-            List<Entry> entries = new ArrayList<>();
-            List<Entry> avgEntries = new ArrayList<>();
+            // Bar chart for all habits
+            int[] bins = new int[10];
 
-            float total = 0f;
-
-            //For all habits, get the progress value
-            for (int i = 0; i < habits.size(); i++) {
-                float progress = habits.get(i).getProgress();
-                entries.add(new Entry(i, progress));
-                total += progress;
+            for (Habit habit : habits) {
+                int progress = habit.getProgress();
+                int index = progress / 10;
+                //to handle when a task is 100% completed
+                if (index == 10) index = 9;
+                bins[index]++;
             }
 
-            float avg = habits.size() > 0 ? total / habits.size() : 0f;
+            //x axis labels
+            String[] labels = {"0-10", "11-20", "21-30", "31-40", "41-50", "51-60", "61-70", "71-80", "81-90", "91-100"};
 
-            for (int i = 0; i < habits.size(); i++) {
-                avgEntries.add(new Entry(i, avg));
+            List<BarEntry> entries = new ArrayList<>();
+
+            //converts to chart entries
+            for (int i = 0; i < 10; i++) {
+                entries.add(new BarEntry(i, bins[i]));
             }
+            //add to the dataset of the bar chart
+            BarDataSet dataSet = new BarDataSet(entries, null);
+            BarData data = new BarData(dataSet);
 
-            //Create a dataset for the linechart progress
-            LineDataSet progressSet = new LineDataSet(entries, "Progress");
-            progressSet.setColor(Color.parseColor("#5CA8FF"));
-            //progressSet.setFillColor(Color.parseColor("#0077FF"));
-            progressSet.setFillColor(Color.parseColor("#FFFFFF"));
-            progressSet.setLineWidth(3f);
-            progressSet.setCircleRadius(4f);
-            progressSet.setDrawFilled(true);
+            dataSet.setColor(Color.parseColor("#5CA8FF"));
 
-            //Create a dataset for the average value
-            LineDataSet avgSet = new LineDataSet(avgEntries, "Average");
-            avgSet.setColor(Color.parseColor("#002147"));
-            avgSet.setDrawCircles(false);
-            avgSet.setLineWidth(2f);
-            avgSet.setDrawValues(false);
+            barChart.clear();
+            barChart.setData(data);
+            barChart.setExtraBottomOffset(24f);
 
-            //Draw the progressset values as one line, and the averageset values as another
-            LineData lineData = new LineData(progressSet, avgSet);
-
-            //Chart formatting
-            lineChart.getXAxis().setDrawGridLines(false);
-            //lineChart.getXAxis().
-            lineChart.getAxisLeft().setDrawGridLines(false);
-            lineChart.getAxisRight().setDrawGridLines(false);
-            lineChart.getDescription().setEnabled(false);
+            barChart.getLegend().setEnabled(false);
 
 
+            //set axis labels
+            XAxis xAxis = barChart.getXAxis();
+            xAxis.setValueFormatter(new IndexAxisValueFormatter(labels));
+            xAxis.setGranularity(1f);
+            xAxis.setGranularityEnabled(true);
+            xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
+            xAxis.setDrawGridLines(false);
+            xAxis.setLabelCount(10);
+            xAxis.setAxisMinimum(-0.5f);
+            xAxis.setAxisMaximum(9.5f);
+            xAxis.setLabelRotationAngle(-45f);
 
-            lineChart.clear();
-            lineChart.setData(lineData);
-            lineChart.invalidate();
+            YAxis yAxis = barChart.getAxisLeft();
+            yAxis.setGranularity(1f);
+            yAxis.setGranularityEnabled(true);
+            yAxis.setAxisMinimum(0f);
+
+            barChart.getAxisRight().setEnabled(false);
+
+            barChart.setFitBars(true);
+            barChart.getDescription().setEnabled(false);
+            barChart.setDrawGridBackground(false);
+
+            barChart.invalidate();
+
+
 
             //Pie chart for all habits completion
             int completed = 0;
@@ -225,6 +243,33 @@ public class DashboardActivity extends AppCompatActivity {
 
             pieChart.clear();
             pieChart.setData(pieData);
+
+            //creates a listener to determine what part of the chart
+            // the user is pressing at that moment
+            pieChart.setOnChartValueSelectedListener(new OnChartValueSelectedListener() {
+                @Override
+                public void onValueSelected(Entry e, Highlight h) {
+                    if (e instanceof PieEntry) {
+                        PieEntry entry = (PieEntry) e;
+
+                        // show number in center of the chart
+                        pieChart.setCenterText(String.valueOf((int) entry.getValue()));
+                        pieChart.setDrawCenterText(true);
+                    }
+                }
+
+                //when the user has nothing selected, remove the values
+                //for a cleaner ui
+                @Override
+                public void onNothingSelected() {
+                    pieChart.setCenterText("");
+                    pieChart.setDrawCenterText(false);
+                }
+            });
+
+
+
+
 
             pieChart.setDrawEntryLabels(false);
             pieChart.getDescription().setEnabled(false);

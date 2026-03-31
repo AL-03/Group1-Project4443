@@ -3,91 +3,140 @@ package com.example.eecs4443project.data.repository;
 import android.app.Application;
 
 import androidx.lifecycle.LiveData;
+import androidx.work.Data;
+import androidx.work.OneTimeWorkRequest;
+import androidx.work.WorkManager;
 
-import com.example.eecs4443project.data.AppDatabase;
+import com.example.eecs4443project.ReminderWorker;
 import com.example.eecs4443project.data.dao.ReminderDao;
 import com.example.eecs4443project.data.entity.Reminder;
+import com.example.eecs4443project.data.AppDatabase;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 public class ReminderRepository {
 
     private final ReminderDao reminderDao;
+    private final ExecutorService executorService;
+    private final Application application;
 
-    private final LiveData<List<Reminder>> allReminders;
-    private final LiveData<List<Reminder>> activeReminders;
-    private final LiveData<List<Reminder>> completedReminders;
+    public ReminderRepository(Application application) {
+        this.application = application;
 
-    public ReminderRepository(Application app) {
-        AppDatabase db = AppDatabase.getInstance(app);
+        AppDatabase db = AppDatabase.getInstance(application);
         reminderDao = db.reminderDao();
 
-        allReminders = reminderDao.getAllReminders();
-        activeReminders = reminderDao.getActiveReminders();
-        completedReminders = reminderDao.getCompletedReminders();
+        executorService = Executors.newSingleThreadExecutor();
     }
 
-    //getters for live data
+    //getters
+
     public LiveData<List<Reminder>> getAllReminders() {
-        return allReminders;
+        return reminderDao.getAllReminders();
     }
 
     public LiveData<List<Reminder>> getActiveReminders() {
-        return activeReminders;
+        return reminderDao.getActiveReminders();
     }
 
     public LiveData<List<Reminder>> getCompletedReminders() {
-        return completedReminders;
+        return reminderDao.getCompletedReminders();
     }
 
-    //gets single reminder
     public Reminder getReminder(int id) {
         return reminderDao.getReminderById(id);
     }
 
-    //insert,update, delete
-    public void insert(Reminder reminder) {
-        AppDatabase.databaseWriteExecutor.execute(() ->
-                reminderDao.insertReminder(reminder)
-        );
-    }
-
-    public void update(Reminder reminder) {
-        AppDatabase.databaseWriteExecutor.execute(() ->
-                reminderDao.updateReminder(reminder)
-        );
-    }
-
-    public void delete(Reminder reminder) {
-        AppDatabase.databaseWriteExecutor.execute(() ->
-                reminderDao.deleteReminder(reminder)
-        );
-    }
-
-    //completion handling
-    public void markCompleted(Reminder reminder) {
-        AppDatabase.databaseWriteExecutor.execute(() ->
-                reminderDao.markAsCompleted(reminder.getId())
-        );
-    }
-
-    public void markActive(Reminder reminder) {
-        AppDatabase.databaseWriteExecutor.execute(() ->
-                reminderDao.markAsActive(reminder.getId())
-        );
-    }
-
-    //Temporary dummy data
+    //dummy data
     public void insertDummyReminders() {
-        AppDatabase.databaseWriteExecutor.execute(() -> {
-            if (reminderDao.getCount() == 0) {
-                reminderDao.insertReminder(new Reminder("Submit Assignment", "2026-03-22", "10:00", false, false));
-                reminderDao.insertReminder(new Reminder("Doctor Appointment", "2026-03-23", "14:30", false, false));
-                reminderDao.insertReminder(new Reminder("Team Meeting", "2026-03-24", "09:00", false, false));
-                reminderDao.insertReminder(new Reminder("Clean Room", "2026-03-26", "11:00", false, false));
-                reminderDao.insertReminder(new Reminder("Visit Family", "2026-04-01", "12:00", false, false));
-                reminderDao.insertReminder(new Reminder("Patch Jacket", "2026-04-02", "09:00", false, false));
-            }
+        executorService.execute(() -> {
+            reminderDao.insertReminder(new Reminder("Test 1", "2026-04-10", "12:00", false, false));
+            reminderDao.insertReminder(new Reminder("Test 2", "2026-04-11", "14:00", false, false));
         });
+    }
+
+    //insert
+    public void insert(Reminder reminder) {
+        executorService.execute(() -> {
+
+            long id = reminderDao.insertReminder(reminder);
+            reminder.setId((int) id);
+            //once the reminders are saved, schedule the reminder notification
+            scheduleReminderNotifications(reminder);
+        });
+    }
+
+    //update
+    public void update(Reminder reminder) {
+        executorService.execute(() -> {
+
+            reminderDao.updateReminder(reminder);
+
+            WorkManager.getInstance(application)
+                    .cancelAllWorkByTag("reminder_" + reminder.getId());
+
+            scheduleReminderNotifications(reminder);
+        });
+    }
+
+    //delete
+    //this deletes the reminder and the scheduled notifications
+    public void delete(Reminder reminder) {
+        executorService.execute(() -> {
+
+            reminderDao.deleteReminder(reminder);
+
+            WorkManager.getInstance(application).cancelAllWorkByTag("reminder_" + reminder.getId());
+        });
+    }
+
+
+    //function to schedule the reminder notifications
+    //reminder notifications are set for a day before, an hour before, and at the exact time
+    //so that users don't get too many reminders, but receive a fair amount
+    private void scheduleReminderNotifications(Reminder reminder) {
+
+        long triggerTime = parseDateTime(reminder.getDate(), reminder.getTime());
+        if (triggerTime == -1) return;
+
+        long now = System.currentTimeMillis();
+
+        long oneDayBefore = triggerTime - TimeUnit.DAYS.toMillis(1);
+        long oneHourBefore = triggerTime - TimeUnit.HOURS.toMillis(1);
+
+        scheduleIfValid(oneDayBefore, now, reminder, "Due tomorrow");
+        scheduleIfValid(oneHourBefore, now, reminder, "Due in 1 hour");
+        scheduleIfValid(triggerTime, now, reminder, "Due now");
+    }
+
+    //function to determine if valid in order to schedule the notification properly
+    private void scheduleIfValid(long scheduledTime, long now, Reminder reminder, String suffix) {
+        if (scheduledTime <= now) return;
+
+        long delay = scheduledTime - now;
+
+        Data data = new Data.Builder().putString("title", "Reminder").putString("message", reminder.getTitle() + " - " + suffix).build();
+
+        OneTimeWorkRequest request = new OneTimeWorkRequest.Builder(ReminderWorker.class).setInitialDelay(delay, TimeUnit.MILLISECONDS).addTag("reminder_" + reminder.getId()).setInputData(data).build();
+        WorkManager.getInstance(application).enqueue(request);
+    }
+
+    private long parseDateTime(String date, String time) {
+        try {
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault());
+            Date parsed = sdf.parse(date + " " + time);
+            return parsed != null ? parsed.getTime() : -1;
+
+        } catch (ParseException e) {
+            e.printStackTrace();
+            return -1;
+        }
     }
 }
