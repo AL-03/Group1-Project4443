@@ -5,6 +5,7 @@
     android:id="@+id/input_audio_frag"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#CFE8FF"
     tools:context=".view.fragments.journal.InputAudioFragment">
 
     <!-- Button to launch system's audio recorder -->
@@ -25,18 +26,26 @@
     <ScrollView
         android:id="@+id/transcriptionBoxScroll"
         android:layout_width="match_parent"
-        android:layout_height="200dp"
+        android:layout_height="wrap_content"
         android:fillViewport="true"
-        android:scrollbars="vertical">
+        android:scrollbars="vertical"
+        app:layout_constraintTop_toBottomOf="@id/recordButton"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
         <EditText
             android:id="@+id/transcriptionBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/transcribed_text_here"
+            android:minHeight="120dp"
+            android:maxHeight="300dp"
             android:padding="12dp"
+            android:hint="@string/transcribed_text_here"
             android:background="@drawable/rounded_input"
             android:inputType="textMultiLine"
-            android:minHeight="120dp"
+            android:overScrollMode="always"
+            android:backgroundTint="#FFF"
+            android:textColor="@android:color/darker_gray"
+            android:textSize="14sp"
             android:gravity="top|start"
             app:layout_constraintTop_toBottomOf="@id/recordButton"
             app:layout_constraintStart_toStartOf="parent"

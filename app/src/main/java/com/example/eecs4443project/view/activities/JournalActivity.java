@@ -1,7 +1,8 @@
 package com.example.eecs4443project.view.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -11,6 +12,7 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.example.eecs4443project.R;
 import com.example.eecs4443project.view.fragments.journal.JournalListFragment;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class JournalActivity extends AppCompatActivity {
 
@@ -32,5 +34,37 @@ public class JournalActivity extends AppCompatActivity {
                     .replace(R.id.journal_fragment_container, new JournalListFragment())
                     .commit();
         }
+
+        // Navigation bar
+        BottomNavigationView nav = findViewById(R.id.bottomNav);
+        nav.setSelectedItemId(R.id.nav_journal);
+
+        nav.setOnItemSelectedListener(item -> {
+
+            if (item.getItemId() == R.id.nav_dashboard) {
+                startActivity(new Intent(this, DashboardActivity.class));
+                overridePendingTransition(0, 0);
+                return true;
+            }
+
+            if (item.getItemId() == R.id.nav_habits) {
+                startActivity(new Intent(this, HabitsActivity.class));
+                overridePendingTransition(0, 0);
+                return true;
+            }
+
+            if (item.getItemId() == R.id.nav_journal) {
+                return true; // already on the journal page
+            }
+
+            if (item.getItemId() == R.id.nav_account) {
+                // placeholder
+                //add intent when account page is made
+                Toast.makeText(this, "Account page coming soon", Toast.LENGTH_SHORT).show();
+                return true;
+            }
+
+            return false;
+        });
     }
 }

@@ -8,20 +8,24 @@
     tools:context=".view.fragments.journal.InputTextFragment"
     android:id="@+id/input_text_frag"
     android:layout_width="match_parent"
-    android:layout_height="200dp"
+    android:layout_height="wrap_content"
     android:fillViewport="true"
-    android:scrollbars="vertical">
+    android:scrollbars="vertical"
+    android:background="#CFE8FF" >
 
     <EditText
         android:id="@+id/journalTextInput"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:minHeight="120dp"
+        android:maxHeight="300dp"
         android:padding="12dp"
         android:background="@drawable/rounded_input"
         android:hint="@string/default_journal_input_text"
         android:inputType="textMultiLine"
         android:overScrollMode="always"
+        android:backgroundTint="#FFF"
         android:textColor="@android:color/darker_gray"
-        android:textSize="16sp"
+        android:textSize="14sp"
         android:gravity="top"/>
 </ScrollView>

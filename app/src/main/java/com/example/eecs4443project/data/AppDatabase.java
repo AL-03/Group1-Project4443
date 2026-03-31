@@ -19,7 +19,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 // Creates actual SQLite database
-@Database(entities = {Habit.class, Reminder.class, User.class, Journal.class}, version = 1)
+@Database(entities = {Habit.class, Reminder.class, User.class, Journal.class}, version = 2)
 public abstract class AppDatabase extends RoomDatabase {
     // Volatile (and "synchronized" later) ensure only 1 thread can create the database at a time
     private static volatile AppDatabase INSTANCE;
@@ -34,6 +34,7 @@ public abstract class AppDatabase extends RoomDatabase {
             synchronized (AppDatabase.class) {
                 if (INSTANCE == null) {
                     INSTANCE = Room.databaseBuilder(context.getApplicationContext(), AppDatabase.class, "app_db")
+                            .fallbackToDestructiveMigration()
                             .build();
                 }
             }

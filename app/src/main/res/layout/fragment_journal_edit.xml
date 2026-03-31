@@ -5,6 +5,7 @@
     android:id="@+id/journal_edit_frag"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#CFE8FF"
     tools:context=".view.fragments.journal.JournalEditFragment">
 
     <!-- Title -->
@@ -14,6 +15,7 @@
         android:layout_height="wrap_content"
         android:textSize="24sp"
         android:textStyle="bold"
+        android:textColor="@color/black"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         android:paddingTop="15dp"
@@ -41,6 +43,8 @@
         android:layout_height="wrap_content"
         android:text="Entry title"
         android:layout_marginHorizontal="10dp"
+        android:textColor="@color/black"
+        android:textSize="18sp"
         app:layout_constraintTop_toBottomOf="@id/divider"
         app:layout_constraintStart_toStartOf="parent" />
     <EditText
@@ -50,9 +54,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:padding="10dp"
-        android:backgroundTint="#B8D9FF"
+        android:backgroundTint="#FFF"
         android:background="@drawable/rounded_input"
         android:textColor="#000000"
+        android:textSize="14sp"
         android:layout_marginTop="5dp"
         android:layout_marginBottom="10dp"
         android:layout_marginHorizontal="10dp"
@@ -67,6 +72,8 @@
         android:layout_height="wrap_content"
         android:text="Entry label"
         android:layout_marginHorizontal="10dp"
+        android:textColor="@color/black"
+        android:textSize="18sp"
         app:layout_constraintTop_toBottomOf="@id/editTitle"
         app:layout_constraintStart_toStartOf="parent" />
     <EditText
@@ -76,9 +83,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:padding="10dp"
-        android:backgroundTint="#B8D9FF"
+        android:backgroundTint="#FFF"
         android:background="@drawable/rounded_input"
         android:textColor="#000000"
+        android:textSize="14sp"
         android:layout_marginTop="5dp"
         android:layout_marginBottom="10dp"
         android:layout_marginHorizontal="10dp"
@@ -152,8 +160,8 @@
         android:id="@+id/inputModeFragmentContainer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_margin="10dp"
         app:layout_constraintTop_toBottomOf="@id/inputMode"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
@@ -164,6 +172,7 @@
         android:layout_height="wrap_content"
         android:contentDescription="@string/save_journal_entry"
         android:src="@drawable/save_button"
+        android:backgroundTint="#FFF"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_margin="24dp" />

@@ -2,7 +2,7 @@
 
 package com.example.eecs4443project.view.fragments.journal;
 
-import android.annotation.SuppressLint;
+import android.graphics.Color;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -36,6 +36,7 @@ public class JournalEditFragment extends Fragment {
     private enum InputMode { TEXT, DRAW, AUDIO }
     private InputMode currMode = InputMode.TEXT;
     // UI elements from xml
+    TextView editScreenTitle;
     TextView editTitleHeader;
     EditText editTitle;
     TextView editLabelHeader;
@@ -86,6 +87,7 @@ public class JournalEditFragment extends Fragment {
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
 
         // Get UI elements from xml
+        editScreenTitle = view.findViewById(R.id.editScreenTitle);
         editTitleHeader = view.findViewById(R.id.editTitleHeader);
         editTitle = view.findViewById(R.id.editTitle);
         editLabelHeader = view.findViewById(R.id.editLabelHeader);
@@ -107,6 +109,7 @@ public class JournalEditFragment extends Fragment {
         drawModeButton.setOnClickListener(v -> switchToMode(InputMode.DRAW));
         audioModeButton.setOnClickListener(v -> switchToMode(InputMode.AUDIO));
 
+        // TODO: Finish save function
 //        // Set up save button
 //        view.findViewById(R.id.saveJournal).setOnClickListener(v -> {
 //            String title = editTitle.getText().toString();
@@ -150,6 +153,7 @@ public class JournalEditFragment extends Fragment {
                     Journal j = journal;
 
                     // Set up edit instructions
+                    editScreenTitle.setText(getString(R.string.edit_journal));
                     editTitleHeader.setText(getString(R.string.edit_title));
                     editLabelHeader.setText(getString(R.string.edit_label));
 
@@ -157,29 +161,38 @@ public class JournalEditFragment extends Fragment {
                     editTitle.setText(journal.getTitle());
                     editLabel.setText(journal.getLabel());
 
-//                // Load correct input mode
-//                currMode = InputMode.valueOf(journal.getInputMode());
-//                switchToMode(currMode);
-//
-//                // Pre-fill input fragment content
-//                if (currMode == InputMode.TEXT) {
-//                    textFragment.setInitialText(journal.getTextContent());
-//                } else if (currMode == InputMode.DRAW) {
-//                    drawFragment.loadBitmap(journal.getDrawingPath());
-//                } else if (currMode == InputMode.AUDIO) {
-//                    audioFragment.loadAudio(journal.getAudioUri(), journal.getTranscription());
-//                }
+                    // Set all text to black
+                    editTitle.setTextColor(Color.BLACK);
+                    editLabel.setTextColor(Color.BLACK);
+
+                // Load correct input mode
+                currMode = InputMode.valueOf(journal.getInputMode());
+                switchToMode(currMode);
+
+                // Pre-fill input fragment content
+                if (currMode == InputMode.TEXT) {
+                    textFragment.setInitialText(journal.getTextContent());
+                } else if (currMode == InputMode.DRAW) {
+                    drawFragment.loadBitmap(journal.getDrawPath());
+                } else if (currMode == InputMode.AUDIO) {
+                    audioFragment.loadAudio(journal.getAudioUri());
+                }
                 }
             });
         }
         else {
             // Set up add instructions
+            editScreenTitle.setText(getString(R.string.create_new_journal));
             editTitleHeader.setText(getString(R.string.set_title));
             editLabelHeader.setText(getString(R.string.set_label));
 
             // Pre-fill title and label with default content
             editTitle.setText(getString(R.string.default_journal_title));
             editLabel.setText(getString(R.string.default_journal_label));
+
+            // Set all text to grey
+            editTitle.setTextColor(Color.GRAY);
+            editLabel.setTextColor(Color.GRAY);
         }
     }
 

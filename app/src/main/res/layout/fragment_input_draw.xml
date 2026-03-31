@@ -3,7 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/input_audio_frag"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="300dp"
+    android:background="#CFE8FF"
     tools:context=".view.fragments.journal.InputDrawFragment">
 
     <!-- Custom drawing canvas that fills the entire fragment -->

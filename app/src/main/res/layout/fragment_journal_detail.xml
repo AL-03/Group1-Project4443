@@ -5,6 +5,7 @@
     android:id="@+id/journal_detail_frag"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#CFE8FF"
     tools:context=".view.fragments.journal.JournalDetailFragment">
 
     <!-- Title -->
@@ -48,6 +49,7 @@
             android:layout_width="48dp"
             android:layout_height="48dp"
             android:src="@drawable/edit_button"
+            android:backgroundTint="#FFF"
             android:contentDescription="@string/edit"
             android:padding="5dp"
             android:layout_margin="5dp" />
@@ -58,6 +60,7 @@
             android:layout_width="48dp"
             android:layout_height="48dp"
             android:src="@drawable/delete_button"
+            android:backgroundTint="#FFF"
             android:contentDescription="@string/delete"
             android:padding="5dp"
             android:layout_margin="5dp" />

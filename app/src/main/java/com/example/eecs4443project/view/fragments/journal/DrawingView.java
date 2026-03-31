@@ -94,6 +94,20 @@ public class DrawingView extends View {
         }
     }
 
+    // Load an existing bitmap (used in Edit mode)
+    public void loadBitmap(Bitmap loadedBitmap) {
+        if (loadedBitmap == null) return;
+
+        // Resize loaded bitmap to match the view size
+        bitmap = Bitmap.createBitmap(getWidth(), getHeight(), Bitmap.Config.ARGB_8888);
+        canvas = new Canvas(bitmap);
+
+        // Draw the loaded bitmap onto our internal canvas
+        canvas.drawBitmap(loadedBitmap, 0, 0, null);
+
+        invalidate();
+    }
+
     // Return the final drawing as a Bitmap to be saved
     public Bitmap getBitmap() {
         return bitmap;

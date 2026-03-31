@@ -75,12 +75,13 @@ public class JournalDetailFragment extends Fragment {
             // Save the journal object so it can be used later in the code
             j = journal;
 
+            // TODO: Edit body based on inputMode
             // Set the TextView content, but if journal entry isn't found, indicate that that's the case
             if (journal != null) {
                 title.setText(journal.getTitle());
                 date.setText(journal.getFormattedDate());
                 label.setText(journal.getLabel());
-                body.setText(journal.getEntry());
+                body.setText(journal.getTextContent());
             }
             else {
                 Toast.makeText(requireContext(), "Journal entry not found", Toast.LENGTH_SHORT).show();

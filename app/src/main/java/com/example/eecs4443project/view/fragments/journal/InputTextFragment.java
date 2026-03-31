@@ -12,6 +12,7 @@ import android.widget.EditText;
 
 import com.example.eecs4443project.R;
 
+// Used for typed journal entries
 public class InputTextFragment extends Fragment {
     // Get EditText where user types out journal entry
     private EditText textInputField;
