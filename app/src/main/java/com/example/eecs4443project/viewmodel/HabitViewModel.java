@@ -51,3 +51,4 @@ public class HabitViewModel extends AndroidViewModel {
         repo.insertDummyHabits();
     }
 }
+

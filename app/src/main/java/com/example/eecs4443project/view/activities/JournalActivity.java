@@ -32,5 +32,7 @@ public class JournalActivity extends AppCompatActivity {
                     .replace(R.id.journal_fragment_container, new JournalListFragment())
                     .commit();
         }
+
+
     }
 }

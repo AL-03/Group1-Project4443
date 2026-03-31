@@ -16,9 +16,14 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.example.eecs4443project.R;
+import com.example.eecs4443project.SessionManager;
 import com.example.eecs4443project.data.entity.Journal;
+import com.example.eecs4443project.data.entity.User;
+import com.example.eecs4443project.view.activities.JournalActivity;
 import com.example.eecs4443project.viewmodel.JournalViewModel;
 import com.google.android.material.button.MaterialButton;
+
+import java.time.Instant;
 
 // Allows for editing/adding journal entries
 public class JournalEditFragment extends Fragment {
@@ -33,8 +38,8 @@ public class JournalEditFragment extends Fragment {
     // Allow indirect access to data
     private JournalViewModel viewModel;
     // Determine input mode
-    private enum InputMode { TEXT, DRAW, AUDIO }
-    private InputMode currMode = InputMode.TEXT;
+    public enum InputMode { TEXT, DRAW, AUDIO }
+    private InputMode currentMode = InputMode.TEXT;
     // UI elements from xml
     TextView editTitleHeader;
     EditText editTitle;
@@ -94,6 +99,7 @@ public class JournalEditFragment extends Fragment {
         drawModeButton = view.findViewById(R.id.modeDraw);
         audioModeButton = view.findViewById(R.id.modeAudio);
 
+
         // Get fragments for different input modes
         textFragment = new InputTextFragment();
         drawFragment = new InputDrawFragment();
@@ -107,41 +113,40 @@ public class JournalEditFragment extends Fragment {
         drawModeButton.setOnClickListener(v -> switchToMode(InputMode.DRAW));
         audioModeButton.setOnClickListener(v -> switchToMode(InputMode.AUDIO));
 
-//        // Set up save button
-//        view.findViewById(R.id.saveJournal).setOnClickListener(v -> {
-//            String title = editTitle.getText().toString();
-//            String label = editLabel.getText().toString();
-//
-//            // Create or update entry object
-//            Journal journal = isEditMode ? j : new Journal();
-//
-//            journal.setTitle(title);
-//            journal.setLabel(label);
-//            journal.setInputMode(currentMode.name());
-//
-//            // Collect content based on input mode
-//            if (currentMode == InputMode.TEXT) {
-//                journal.setTextContent(textFragment.getText());
-//            }
-//            else if (currentMode == InputMode.DRAW) {
-//                String savedPath = drawFragment.saveDrawingToInternalStorage(requireContext());
-//                journal.setDrawingPath(savedPath);
-//            }
-//            else if (currentMode == InputMode.AUDIO) {
-//                journal.setAudioUri(audioFragment.getAudioUri());
-//                journal.setTranscription(audioFragment.getTranscription());
-//            }
-//
-//            // Insert or update in Room
-//            if (isEditMode) {
-//                viewModel.update(journal);
-//            } else {
-//                viewModel.insert(journal);
-//            }
-//
-//            // Close fragment or navigate back
-//            requireActivity().onBackPressed();
-//        });
+//        //Set up save button
+          view.findViewById(R.id.saveJournal).setOnClickListener(v -> {
+               String title = editTitle.getText().toString();
+               String label = editLabel.getText().toString();
+
+          // Create or update entry object
+           Journal journal = isEditMode ? j : new Journal(SessionManager.getUserId(requireContext()), title, System.currentTimeMillis(), "", label);
+
+           journal.setInputMode(currentMode);
+
+           // Collect content based on input mode
+           if (currentMode == InputMode.TEXT) {
+               journal.setEntry(textFragment.getText());
+           }
+            else if (currentMode == InputMode.DRAW) {
+                String savedPath = drawFragment.saveDrawingToInternalStorage(requireContext());
+                journal.setDrawingPath(savedPath);
+           }
+           else if (currentMode == InputMode.AUDIO) {
+                journal.setAudioUri(audioFragment.getAudioUri());
+                journal.setTranscription(audioFragment.getTranscription());
+         }
+
+
+           // Insert or update in Room
+           if (isEditMode) {
+                viewModel.update(journal);
+          } else {
+               viewModel.insert(journal);
+            }
+
+            // Close fragment or navigate back
+           requireActivity().onBackPressed();
+       });
 
         // Set up view based on whether we're in Edit mode or Add mode
         if (isEditMode) {
@@ -158,17 +163,16 @@ public class JournalEditFragment extends Fragment {
                     editLabel.setText(journal.getLabel());
 
 //                // Load correct input mode
-//                currMode = InputMode.valueOf(journal.getInputMode());
-//                switchToMode(currMode);
-//
-//                // Pre-fill input fragment content
-//                if (currMode == InputMode.TEXT) {
-//                    textFragment.setInitialText(journal.getTextContent());
-//                } else if (currMode == InputMode.DRAW) {
-//                    drawFragment.loadBitmap(journal.getDrawingPath());
-//                } else if (currMode == InputMode.AUDIO) {
-//                    audioFragment.loadAudio(journal.getAudioUri(), journal.getTranscription());
-//                }
+               currentMode = journal.getInputMode();
+               switchToMode(currentMode);
+              // Pre-fill input fragment content
+              if (currentMode == InputMode.TEXT) {
+                   textFragment.setInitialText(journal.getEntry());
+              } else if (currentMode == InputMode.DRAW) {
+                    drawFragment.loadBitmap(journal.getDrawingPath());
+               } else if (currentMode == InputMode.AUDIO) {
+                    audioFragment.loadAudio(journal.getAudioUri(), journal.getTranscription());
+                }
                 }
             });
         }
@@ -180,13 +184,14 @@ public class JournalEditFragment extends Fragment {
             // Pre-fill title and label with default content
             editTitle.setText(getString(R.string.default_journal_title));
             editLabel.setText(getString(R.string.default_journal_label));
+
         }
     }
 
     //############## PRIVATE FUNCTIONS ##############
     // Switches the journal entry input fragment based on the selected mode
     private void switchToMode(InputMode mode) {
-        currMode = mode;
+        currentMode = mode;
 
         Fragment fragmentToShow;
 
