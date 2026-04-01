@@ -56,10 +56,7 @@ public class ReminderRepository {
 
     //dummy data
     public void insertDummyReminders() {
-        executorService.execute(() -> {
-            reminderDao.insertReminder(new Reminder("Test 1", "2026-04-10", "12:00", false, false));
-            reminderDao.insertReminder(new Reminder("Test 2", "2026-04-11", "14:00", false, false));
-        });
+
     }
 
     //insert
