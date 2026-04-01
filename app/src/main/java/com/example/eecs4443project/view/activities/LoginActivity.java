@@ -31,6 +31,7 @@ public class LoginActivity extends AppCompatActivity {
         password = findViewById(R.id.password);
         loginBtn = findViewById(R.id.loginBtn);
 
+
         userViewModel = new ViewModelProvider(this).get(UserViewModel.class);
 
         // TEMP test user - remove when done testing

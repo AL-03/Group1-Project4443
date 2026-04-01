@@ -92,14 +92,21 @@
         app:layout_constraintEnd_toEndOf="parent" />
 
     <!-- Entry's main contents -->
-    <TextView
-        android:id="@+id/entryBody"
+    <ScrollView
+        android:id="@+id/entryBodyScrollView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/border"
-        android:layout_margin="10dp"
-        android:textSize="18sp"
-        app:layout_constraintTop_toBottomOf="@id/entryDate"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        android:fillViewport="true"
+        android:scrollbars="vertical" >
+        <TextView
+            android:id="@+id/entryBody"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/border"
+            android:layout_margin="10dp"
+            android:textSize="18sp"
+            app:layout_constraintTop_toBottomOf="@id/entryDate"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+    </ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>

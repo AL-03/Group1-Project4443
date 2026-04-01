@@ -81,7 +81,7 @@ public class JournalDetailFragment extends Fragment {
                 title.setText(journal.getTitle());
                 date.setText(journal.getFormattedDate());
                 label.setText(journal.getLabel());
-                body.setText(journal.getTextContent());
+                body.setText(journal.getEntry());
             }
             else {
                 Toast.makeText(requireContext(), "Journal entry not found", Toast.LENGTH_SHORT).show();

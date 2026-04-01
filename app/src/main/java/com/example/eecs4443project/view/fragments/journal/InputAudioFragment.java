@@ -9,100 +9,114 @@ import android.os.Bundle;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import android.provider.MediaStore;
+import android.speech.RecognizerIntent;
+import android.speech.SpeechRecognizer;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.eecs4443project.R;
 
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Locale;
+
 // Used for voice-recorded journal entries
 public class InputAudioFragment extends Fragment {
-    // URI of recorded audio
-    private Uri audioUri = null;
 
     private ImageButton recordButton;
-//    private ImageButton playButton;
-//    private EditText transcriptionBox;
 
-    // Allows us to launch the device's default audio recorded
-    private ActivityResultLauncher<Intent> audioRecorderLauncher;
+    private EditText transcriptionBox;
+    private Uri audioUri;
 
-    // Inflate the layout
+    private String transcription;
+
+    private SpeechRecognizer speechRecognizer;
+    private static final int REQUEST_RECORD_AUDIO_CODE = 101;
+
+    private MediaPlayer mediaPlayer;
+    private ActivityResultLauncher<Intent> audioRecordLauncher;
+
+    // Inflate the layout for this fragment
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_input_audio, container, false);
     }
 
-    @Override
+    // Define the launcher as a member variable
+
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
+        // Inside your Fragment's onViewCreated
+        super.onViewCreated(view, savedInstanceState);
 
-        // Get UI elements from xml
-        recordButton = view.findViewById(R.id.recordButton);
-//        playButton = view.findViewById(R.id.playButton);
-//        transcriptionBox = view.findViewById(R.id.transcriptionBox);
-//        playButton.setVisibility(View.GONE);
-
-        // Launch the device's audio recorder
-        audioRecorderLauncher = registerForActivityResult(
+        // Register the callback
+        audioRecordLauncher = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
                 result -> {
-                    if (result.getResultCode() == Activity.RESULT_OK) {
-                        Intent data = result.getData();
-                        if (data != null) {
-                            audioUri = data.getData();
-//                            playButton.setVisibility(View.VISIBLE);
+                    if (result.getResultCode() == Activity.RESULT_OK && result.getData() != null) {
+                        ArrayList<String> matches = result.getData()
+                                .getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
+                        if (matches != null && !matches.isEmpty()) {
+                            transcription = matches.get(0);  // Transcription
                         }
+
+                        //Uri
+                        audioUri = result.getData().getData();
                     }
                 }
         );
+
+        recordButton = view.findViewById(R.id.recordButton);
+        transcriptionBox = view.findViewById(R.id.transcriptionBox);
+
         recordButton.setOnClickListener(v -> {
-            Intent intent = new Intent(MediaStore.Audio.Media.RECORD_SOUND_ACTION);
-            audioRecorderLauncher.launch(intent);
+            Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
+            intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
+            intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, Locale.getDefault());
+            audioRecordLauncher.launch(intent);
         });
-
-//        playButton.setOnClickListener(v -> {
-//            if (audioUri != null) {
-//                MediaPlayer player = MediaPlayer.create(requireContext(), audioUri);
-//                player.start();
-//            }
-//        });
-
-//        // If editing an existing entry, load audio + transcription
-//        if (audioUri != null) {
-//            playButton.setVisibility(View.VISIBLE);
-//            transcriptionBox.setText(transcription);
-//        }
     }
 
-    // Called by JournalEditFragment to load existing audio
-    public void loadAudio(String uriString) {
-        if (uriString != null) {
-            audioUri = Uri.parse(uriString);
+
+    public String getAudioUri() {
+        return audioUri.toString();
+    }
+
+    public String getTranscription() {
+        return transcription;
+    }
+
+    public void loadAudio(String uri, String transcription)
+    {
+        mediaPlayer = new MediaPlayer();
+        transcriptionBox.setText(transcription);
+
+        try {
+            // Set context and URI
+            mediaPlayer.setDataSource(requireContext(), Uri.parse(uri));
+
+            // Prepare the player (synchronous for local files)
+            mediaPlayer.prepare();
+
+            // Start playback
+            mediaPlayer.start();
+
+            // Optional: Release resources when finished
+            mediaPlayer.setOnCompletionListener(mp -> {
+                mp.release();
+            });
+
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
-
-//    // Called by JournalEditFragment to load existing audio transcription
-//    public void loadTranscription(String text) {
-//        transcription = text;
-//
-//        if (transcriptionBox != null) {
-//            transcriptionBox.setText(text);
-//        }
-//    }
-
-    // Called by JournalEditFragment to save audio
-    public String getAudioUri() {
-        return audioUri != null ? audioUri.toString() : null;
-    }
-
-//    // Called by JournalEditFragment to save audio transcription
-//    public String getTranscription() {
-//        return transcriptionBox.getText().toString();
-//    }
 }

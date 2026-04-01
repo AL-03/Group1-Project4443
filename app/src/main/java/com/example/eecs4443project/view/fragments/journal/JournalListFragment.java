@@ -54,10 +54,6 @@ public class JournalListFragment extends Fragment {
             });
         }
 
-        // TEMP: clear all, then add fake journal entries
-        viewModel.deleteAllForUser(userId);
-        viewModel.insertFakeData(userId);
-
         // Set up RecyclerView (list of journal entries)
         RecyclerView recyclerView = view.findViewById(R.id.journalList);
         recyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
@@ -109,8 +105,12 @@ public class JournalListFragment extends Fragment {
 
         // Navigate to fragment to add journal entry
         view.findViewById(R.id.addJournal).setOnClickListener(v -> {
-            Toast.makeText(requireContext(), "Add journal feature in progress", Toast.LENGTH_SHORT).show();
-            //navigateToEdit();
+            JournalEditFragment fragment = JournalEditFragment.newInstance(-1);
+            requireActivity().getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.journal_fragment_container, fragment)
+                    .addToBackStack(null)
+                    .commit();
         });
     }
 }
