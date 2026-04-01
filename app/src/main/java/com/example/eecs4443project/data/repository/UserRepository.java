@@ -22,4 +22,14 @@ public class UserRepository {
     public User getUser(String username, String password) {
         return userDao.getUser(username, password);
     }
+
+    public void delete(String username)
+    {
+        return userDao.delete(username);
+    }
+
+    public User getUser(int id)
+    {
+        return userDao.getUser(id);
+    }
 }

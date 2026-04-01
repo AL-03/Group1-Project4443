@@ -1,5 +1,6 @@
 package com.example.eecs4443project.view.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -16,8 +17,10 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.example.eecs4443project.R;
+import com.example.eecs4443project.SessionManager;
 import com.example.eecs4443project.data.entity.User;
 import com.example.eecs4443project.viewmodel.UserViewModel;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class ProfileActivity extends AppCompatActivity {
 
@@ -28,8 +31,10 @@ public class ProfileActivity extends AppCompatActivity {
     private Button saveChanges, lightTheme, darkTheme;
     private Switch journalPasswordToggle;
     private static boolean isJournalPassword;
-
+    private User user;
     private boolean nightMode;
+
+    private BottomNavigationView nav;
 
 
     @Override
@@ -50,12 +55,11 @@ public class ProfileActivity extends AppCompatActivity {
         darkTheme = findViewById(R.id.darkButton);
         journalPassword = findViewById(R.id.journalPassword);
         journalPasswordToggle = findViewById(R.id.toggle);
+        nav = findViewById(R.id.bottomNav);
+        user = viewModel.getUser(SessionManager.getUserId(this));
 
-        usernameDisplay.setText(User.getCurrentUser().getUsername());
-        passwordDisplay.setText(User.getCurrentUser().getPassword());
-
-        
-
+        usernameDisplay.setText(user.getUsername());
+        passwordDisplay.setText(user.getPassword());
 
         darkTheme.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -82,11 +86,11 @@ public class ProfileActivity extends AppCompatActivity {
 
             isJournalPassword = journalPasswordToggle.isChecked();
 
-            if (!newPassword.getText().toString().isEmpty() && !newUsername.getText().toString().isEmpty() && (!User.getCurrentUser().getUsername().equals(usernameDisplay.getText().toString()) || !User.getCurrentUser().getPassword().equals(passwordDisplay.getText().toString()))) {
-                viewModel.delete(User.getCurrentUser().getUsername());
-                User.getCurrentUser().setUsername(usernameDisplay.getText().toString());
-                User.getCurrentUser().setPassword(usernameDisplay.getText().toString());
-                viewModel.register(new User(User.getCurrentUser().getUsername(), User.getCurrentUser().getPassword()));
+            if (!newPassword.getText().toString().isEmpty() && !newUsername.getText().toString().isEmpty() && (!user.getUsername().equals(usernameDisplay.getText().toString()) || ! user.getPassword().equals(passwordDisplay.getText().toString()))) {
+                viewModel.delete(user.getUsername());
+                 user.setUsername(usernameDisplay.getText().toString());
+                 user.setPassword(usernameDisplay.getText().toString());
+                viewModel.register(new User( user.getUsername(),  user.getPassword()));
             }
 
             if(nightMode)
@@ -132,7 +136,7 @@ public class ProfileActivity extends AppCompatActivity {
             return false;
         });
 }
-        public static boolean isjournalPassword()
+        public static boolean isJournalPassword()
         {
           return isJournalPassword;
         }

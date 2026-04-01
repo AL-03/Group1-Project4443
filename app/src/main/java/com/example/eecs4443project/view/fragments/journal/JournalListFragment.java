@@ -22,6 +22,7 @@ import com.example.eecs4443project.R;
 import com.example.eecs4443project.SessionManager;
 import com.example.eecs4443project.data.entity.Journal;
 import com.example.eecs4443project.view.activities.JournalPasswordPopupActivity;
+import com.example.eecs4443project.view.activities.ProfileActivity;
 import com.example.eecs4443project.view.adapters.JournalListAdapter;
 import com.example.eecs4443project.viewmodel.JournalViewModel;
 
