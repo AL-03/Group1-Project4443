@@ -97,16 +97,16 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:fillViewport="true"
-        android:scrollbars="vertical" >
+        android:scrollbars="vertical"
+        app:layout_constraintTop_toBottomOf="@id/entryDate"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" >
         <TextView
             android:id="@+id/entryBody"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/border"
             android:layout_margin="10dp"
-            android:textSize="18sp"
-            app:layout_constraintTop_toBottomOf="@id/entryDate"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
+            android:textSize="18sp" />
     </ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>
