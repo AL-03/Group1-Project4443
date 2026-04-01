@@ -1,9 +1,13 @@
 package com.example.eecs4443project.view.fragments.journal;
 
+import android.app.Dialog;
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.PopupWindow;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -17,6 +21,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.eecs4443project.R;
 import com.example.eecs4443project.SessionManager;
 import com.example.eecs4443project.data.entity.Journal;
+import com.example.eecs4443project.view.activities.JournalPasswordPopupActivity;
 import com.example.eecs4443project.view.adapters.JournalListAdapter;
 import com.example.eecs4443project.viewmodel.JournalViewModel;
 
@@ -25,6 +30,8 @@ public class JournalListFragment extends Fragment {
     // Allow indirect access to data
     private JournalViewModel viewModel;
     private JournalListAdapter adapter;
+    //journal password
+    private static boolean isPasswordCorrect = false;
 
     // Inflates the fragment's view
     @Override
@@ -69,13 +76,24 @@ public class JournalListFragment extends Fragment {
             @Override
             public void onJournalClick(Journal journal) {
                 // Passes journal ID to detailed fragment
-                JournalDetailFragment fragment = JournalDetailFragment.newInstance(journal.getId());
-                // Replaces current fragment with JournalDetailFragment and will return to current fragment if Back button is clicked
-                requireActivity().getSupportFragmentManager()
-                        .beginTransaction()
-                        .replace(R.id.journal_fragment_container, fragment)
-                        .addToBackStack(null)
-                        .commit();
+                if(ProfileActivity.isJournalPassword())
+                {
+                    Intent intent = new Intent(requireContext(), JournalPasswordPopupActivity.class);
+                    startActivity(intent);
+                }
+
+                if(isPasswordCorrect || !ProfileActivity.isJournalPassword())
+                {
+
+                    isPasswordCorrect = false;
+                    JournalDetailFragment fragment = JournalDetailFragment.newInstance(journal.getId());
+                    // Replaces current fragment with JournalDetailFragment and will return to current fragment if Back button is clicked
+                    requireActivity().getSupportFragmentManager()
+                            .beginTransaction()
+                            .replace(R.id.journal_fragment_container, fragment)
+                            .addToBackStack(null)
+                            .commit();
+                }
             }
 
             // On long click, offer option to edit or delete the entry
@@ -112,5 +130,10 @@ public class JournalListFragment extends Fragment {
             Toast.makeText(requireContext(), "Add journal feature in progress", Toast.LENGTH_SHORT).show();
             //navigateToEdit();
         });
+    }
+
+    public static void  isJournalPasswordCorrect(boolean bol)
+    {
+        isPasswordCorrect = bol;
     }
 }

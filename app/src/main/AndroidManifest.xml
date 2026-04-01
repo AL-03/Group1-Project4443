@@ -12,6 +12,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.EECS4443Project">
         <activity
+            android:name=".view.activities.JournalPasswordPopupActivity"
+            android:exported="false" />
+        <activity
             android:name=".view.activities.ProfileActivity"
             android:exported="false" />
         <activity

@@ -81,8 +81,7 @@ public class JournalDetailFragment extends Fragment {
                 date.setText(journal.getFormattedDate());
                 label.setText(journal.getLabel());
                 body.setText(journal.getEntry());
-            }
-            else {
+            } else {
                 Toast.makeText(requireContext(), "Journal entry not found", Toast.LENGTH_SHORT).show();
             }
         });
@@ -102,8 +101,7 @@ public class JournalDetailFragment extends Fragment {
         view.findViewById(R.id.delButton).setOnClickListener(v -> {
             if (j != null) {
                 viewModel.delete(j);
-            }
-            else {
+            } else {
                 Toast.makeText(requireContext(), "Journal entry not found", Toast.LENGTH_SHORT).show();
             }
             Toast.makeText(requireContext(), "Entry deleted", Toast.LENGTH_SHORT).show();
@@ -112,4 +110,5 @@ public class JournalDetailFragment extends Fragment {
             requireActivity().getOnBackPressedDispatcher().onBackPressed();
         });
     }
+
 }
