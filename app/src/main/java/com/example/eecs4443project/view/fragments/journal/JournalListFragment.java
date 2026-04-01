@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -97,6 +98,23 @@ public class JournalListFragment extends Fragment {
                         Toast.makeText(requireContext(), "Entry deleted", Toast.LENGTH_SHORT).show();
                     }
                 });
+
+                builder.show();
+            }
+
+            // If delete button clicked, delete the entry
+            @Override
+            public void onDeleteClick(Journal journal) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
+                builder.setTitle("Delete Entry")
+                        .setMessage("Are you sure you want to delete this entry?")
+                        .setPositiveButton("Delete", (dialog, which) -> {
+                            viewModel.delete(journal);
+                            Toast.makeText(requireContext(), "Entry deleted", Toast.LENGTH_SHORT).show();
+                        })
+                        .setNegativeButton("Cancel", (dialog, which) -> {
+                            Toast.makeText(requireContext(), "Delete action cancelled", Toast.LENGTH_SHORT).show();
+                        });
 
                 builder.show();
             }

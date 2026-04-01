@@ -3,6 +3,7 @@ package com.example.eecs4443project.view.adapters;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -32,6 +33,8 @@ public class JournalListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         void onJournalClick(Journal journal);
         // Long click function
         void onJournalLongClick(Journal journal);
+        // Delete button function
+        void onDeleteClick(Journal journal);
     }
 
     // Used to detect when entry is clicked and run the callback function to open JournalDetailFragment
@@ -64,11 +67,11 @@ public class JournalListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         if (viewType == TYPE_HEADER) {
             View view = LayoutInflater.from(parent.getContext())
-                    .inflate(R.layout.item_label, parent, false);
+                    .inflate(R.layout.journal_label_item, parent, false);
             return new LabelHeaderViewHolder(view);
         } else {
             View view = LayoutInflater.from(parent.getContext())
-                    .inflate(R.layout.item_entry, parent, false);
+                    .inflate(R.layout.journal_entry_item, parent, false);
             return new JournalEntryViewHolder(view, listener);
         }
     }
@@ -113,6 +116,7 @@ class LabelHeaderViewHolder extends RecyclerView.ViewHolder {
 class JournalEntryViewHolder extends RecyclerView.ViewHolder {
     private final TextView title;
     private final TextView date;
+    private final ImageButton delButton;
     // Store the current Journal object
     private Journal currEntry;
 
@@ -120,6 +124,7 @@ class JournalEntryViewHolder extends RecyclerView.ViewHolder {
         super(itemView);
         title = itemView.findViewById(R.id.entryTitle);
         date = itemView.findViewById(R.id.entryDate);
+        delButton = itemView.findViewById(R.id.delButton);
 
         // Use the callback function to open the entry's detailed view when clicked
         itemView.setOnClickListener(v -> {
@@ -135,6 +140,13 @@ class JournalEntryViewHolder extends RecyclerView.ViewHolder {
                 return true; // note that the long click has been completed
             }
             return false;
+        });
+
+        // Use the callback function to allow deletion of the journal using the delete button
+        delButton.setOnClickListener(v -> {
+            if (listener != null && currEntry != null) {
+                listener.onDeleteClick(currEntry);
+            }
         });
 
     }

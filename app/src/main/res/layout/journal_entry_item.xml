@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <!-- Makes journal title and date appear to the left of the delete button -->
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="wrap_content">
+        <!-- Journal entry title. It trails off with ellipses if it's too long. -->
+        <TextView
+            android:id="@+id/entryTitle"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="5dp"
+            android:ellipsize="end"
+            android:maxLines="1" />
+
+        <!-- Journal entry date -->
+        <TextView
+            android:id="@+id/entryDate"
+            android:textSize="12sp"
+            android:textStyle="italic"
+            android:textColor="#777"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+
+    <!-- Delete button -->
+    <ImageButton
+        android:id="@+id/delButton"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:src="@drawable/delete_button"
+        android:contentDescription="@string/delete"
+        android:backgroundTint="@android:color/transparent" />
+
+</LinearLayout>

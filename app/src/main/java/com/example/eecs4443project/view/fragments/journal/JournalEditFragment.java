@@ -181,13 +181,13 @@ public class JournalEditFragment extends Fragment {
             editTitleHeader.setText(getString(R.string.set_title));
             editLabelHeader.setText(getString(R.string.set_label));
 
-            // Pre-fill title and label with default content
-            editTitle.setText(getString(R.string.default_journal_title));
-            editLabel.setText(getString(R.string.default_journal_label));
+            // Pre-fill title and label with default content as hints
+            editTitle.setHint(getString(R.string.default_journal_title));
+            editLabel.setHint(getString(R.string.default_journal_label));
 
             // Set all text to grey
-            editTitle.setTextColor(Color.GRAY);
-            editLabel.setTextColor(Color.GRAY);
+            editTitle.setHintTextColor(Color.GRAY);
+            editLabel.setHintTextColor(Color.GRAY);
         }
     }
 
