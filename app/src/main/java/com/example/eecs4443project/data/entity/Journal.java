@@ -129,17 +129,15 @@ public class Journal {
         return inputMode;
     }
 
-    public void setAudioUri(String uri)
-    {
-        this.uri = uri;
-    }
-
-    public String getAudioUri()
-    {
+    public String getUri() {
         return uri;
     }
 
-    public void setTranscription(String transription)
+    public void setUri(String uri) {
+        this.uri = uri;
+    }
+
+    public void setTranscription(String transcription)
     {
         this.transcription = transcription;
     }

@@ -132,7 +132,7 @@ public class JournalEditFragment extends Fragment {
                 journal.setDrawingPath(savedPath);
            }
            else if (currentMode == InputMode.AUDIO) {
-                journal.setAudioUri(audioFragment.getAudioUri());
+                journal.setUri(audioFragment.getAudioUri());
                 journal.setTranscription(audioFragment.getTranscription());
          }
 
@@ -171,7 +171,7 @@ public class JournalEditFragment extends Fragment {
               } else if (currentMode == InputMode.DRAW) {
                     drawFragment.loadBitmap(journal.getDrawingPath());
                } else if (currentMode == InputMode.AUDIO) {
-                    audioFragment.loadAudio(journal.getAudioUri(), journal.getTranscription());
+                    audioFragment.loadAudio(journal.getUri(), journal.getTranscription());
                 }
                 }
             });
