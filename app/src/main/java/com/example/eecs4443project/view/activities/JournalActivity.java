@@ -11,6 +11,7 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.example.eecs4443project.R;
+import com.example.eecs4443project.view.fragments.journal.JournalEditFragment;
 import com.example.eecs4443project.view.fragments.journal.JournalListFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -54,7 +55,13 @@ public class JournalActivity extends AppCompatActivity {
             }
 
             if (item.getItemId() == R.id.nav_journal) {
-                return true; // already on the journal page
+                JournalListFragment fragment = JournalListFragment.newInstance();
+                this.getSupportFragmentManager()
+                        .beginTransaction()
+                        .replace(R.id.journal_fragment_container, fragment)
+                        .addToBackStack(null)
+                        .commit();
+                return true;
             }
 
             if (item.getItemId() == R.id.nav_account) {

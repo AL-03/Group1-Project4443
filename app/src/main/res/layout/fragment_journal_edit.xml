@@ -50,7 +50,6 @@
     <EditText
         android:id="@+id/editTitle"
         android:inputType="textMultiLine"
-        android:text="EditText"
         android:layout_width="0dp"
         android:maxWidth="0dp"
         android:layout_height="wrap_content"
@@ -82,7 +81,6 @@
     <EditText
         android:id="@+id/editLabel"
         android:inputType="textMultiLine"
-        android:text="EditLabel"
         android:layout_width="0dp"
         android:maxWidth="0dp"
         android:layout_height="wrap_content"

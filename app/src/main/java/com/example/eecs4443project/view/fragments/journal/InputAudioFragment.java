@@ -2,6 +2,7 @@ package com.example.eecs4443project.view.fragments.journal;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
@@ -10,6 +11,7 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 
 import android.provider.MediaStore;
@@ -31,19 +33,35 @@ import java.util.Locale;
 
 // Used for voice-recorded journal entries
 public class InputAudioFragment extends Fragment {
+    // Used to store transcription in a Bundle from the previous fragment
+    private static final String ARG_TRANSCRIPTION = "arg_transcription";
 
     private ImageButton recordButton;
 
     private EditText transcriptionBox;
-    private Uri audioUri;
 
     private String transcription;
-
-    private SpeechRecognizer speechRecognizer;
-    private static final int REQUEST_RECORD_AUDIO_CODE = 101;
-
-    private MediaPlayer mediaPlayer;
+    private ActivityResultLauncher<String> requestPermissionLauncher;
     private ActivityResultLauncher<Intent> audioRecordLauncher;
+
+    // Creates new instance of this fragment
+    public static InputAudioFragment newInstance(String transcription) {
+        InputAudioFragment fragment = new InputAudioFragment();
+        Bundle args = new Bundle();
+        args.putString(ARG_TRANSCRIPTION, transcription);
+        fragment.setArguments(args);
+        return fragment;
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        // Get transcription from previous fragment
+        if (getArguments() != null) {
+            transcription = getArguments().getString(ARG_TRANSCRIPTION);
+        }
+    }
 
     // Inflate the layout for this fragment
     @Override
@@ -52,71 +70,91 @@ public class InputAudioFragment extends Fragment {
         return inflater.inflate(R.layout.fragment_input_audio, container, false);
     }
 
-    // Define the launcher as a member variable
-
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         // Inside your Fragment's onViewCreated
         super.onViewCreated(view, savedInstanceState);
 
-        // Register the callback
+        // Bind UI elements from the XML
+        recordButton = view.findViewById(R.id.recordButton);
+        transcriptionBox = view.findViewById(R.id.transcriptionBox);
+
+        // If JournalEditFragment provided initial text (Edit mode), set it now
+        if (transcription != null) {
+            transcriptionBox.setText(transcription);
+        }
+
+        // Microphone permissions launcher
+        requestPermissionLauncher =
+                registerForActivityResult(new ActivityResultContracts.RequestPermission(), isGranted -> {
+                    if (isGranted) {
+                        Toast.makeText(requireContext(), "Microphone access granted", Toast.LENGTH_SHORT).show();
+                    } else {
+                        new AlertDialog.Builder(requireContext())
+                                .setTitle("Microphone Permission Needed")
+                                .setMessage("To record audio, please enable microphone access in Settings.")
+                                .setPositiveButton("Open Settings", (dialog, which) -> {
+                                    Intent intent = new Intent(android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+                                    Uri uri = Uri.fromParts("package", requireContext().getPackageName(), null);
+                                    intent.setData(uri);
+                                    startActivity(intent);
+                                })
+                                .setNegativeButton("Cancel", null)
+                                .show();
+                    }
+                });
+
+        // Speech recognition launcher
         audioRecordLauncher = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
                 result -> {
                     if (result.getResultCode() == Activity.RESULT_OK && result.getData() != null) {
                         ArrayList<String> matches = result.getData()
                                 .getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
-                        if (matches != null && !matches.isEmpty()) {
-                            transcription = matches.get(0);  // Transcription
+                        if (matches != null && !matches.isEmpty() && transcriptionBox != null) {
+                            // Transcription
+                            transcription = matches.get(0);
+                            transcriptionBox.setText(transcription);
                         }
-
-                        //Uri
-                        audioUri = result.getData().getData();
                     }
                 }
         );
 
-        recordButton = view.findViewById(R.id.recordButton);
-        transcriptionBox = view.findViewById(R.id.transcriptionBox);
-
         recordButton.setOnClickListener(v -> {
-            Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
-            intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
-            intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, Locale.getDefault());
-            audioRecordLauncher.launch(intent);
+            // Run speech recognition if access was granted
+            if (requireContext().checkSelfPermission(android.Manifest.permission.RECORD_AUDIO)
+                    == PackageManager.PERMISSION_GRANTED) {
+                // Build intent for speech recognizer
+                Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
+                intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
+                intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, Locale.getDefault());
+
+                // Launch speech-to-text pop-up
+                audioRecordLauncher.launch(intent);
+            } else {
+                requestPermissionLauncher.launch(android.Manifest.permission.RECORD_AUDIO);
+            }
         });
+
     }
 
 
-    public String getAudioUri() {
-        return audioUri.toString();
-    }
+    //############## PUBLIC FUNCTIONS ##############
 
-    public String getTranscription() {
-        return transcription;
-    }
+    // Called by JournalEditFragment when in Edit mode to pre-fill the EditText with the saved text
+    public void setInitialTranscription(String text) {
+        this.transcription = text;
 
-    public void loadAudio(String uri, String transcription)
-    {
-        mediaPlayer = new MediaPlayer();
-        transcriptionBox.setText(transcription);
-
-        try {
-            // Set context and URI
-            mediaPlayer.setDataSource(requireContext(), Uri.parse(uri));
-
-            // Prepare the player (synchronous for local files)
-            mediaPlayer.prepare();
-
-            // Start playback
-            mediaPlayer.start();
-
-            // Optional: Release resources when finished
-            mediaPlayer.setOnCompletionListener(mp -> {
-                mp.release();
-            });
-
-        } catch (IOException e) {
-            e.printStackTrace();
+        // If the view is already created, update immediately
+        if (transcriptionBox != null) {
+            transcriptionBox.setText(text);
         }
+    }
+
+    // Allows JournalEditFragment to access what was transcribed (and maybe edited by the user) in the EditText
+    public String getTranscription() {
+        if (transcriptionBox != null) {
+            return transcriptionBox.getText().toString();
+        }
+        return "";
     }
 }

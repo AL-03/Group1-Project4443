@@ -23,6 +23,8 @@ import java.io.IOException;
 
 // Used for hand-drawn journal entries
 public class InputDrawFragment extends Fragment {
+    // Used to store draw path in a Bundle from the previous fragment
+    private static final String ARG_SAVED_PATH = "arg_saved_path";
     // Custom view where user draws
     private DrawingView drawingView;
     // Path to existing drawing (for Edit mode)
@@ -31,6 +33,25 @@ public class InputDrawFragment extends Fragment {
 
     // Buttons for drawing tools
     private ImageButton undoButton, redoButton, penButton, eraserButton;
+
+    // Creates new instance of this fragment
+    public static InputDrawFragment newInstance(String savedPath) {
+        InputDrawFragment fragment = new InputDrawFragment();
+        Bundle args = new Bundle();
+        args.putString(ARG_SAVED_PATH, savedPath);
+        fragment.setArguments(args);
+        return fragment;
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        // Get draw path from previous fragment
+        if (getArguments() != null) {
+            savedPath = getArguments().getString(ARG_SAVED_PATH);
+        }
+    }
 
     // Inflate layout
     @Override
@@ -51,16 +72,20 @@ public class InputDrawFragment extends Fragment {
 
         // If editing an entry with an existing drawing, load it
         if (savedPath != null) {
-            Bitmap bitmap = BitmapFactory.decodeFile(savedPath);
-            if (bitmap != null) {
-                drawingView.loadBitmap(bitmap);
-            }
+            drawingView.post(() -> {
+                Bitmap bitmap = BitmapFactory.decodeFile(savedPath);
+                if (bitmap != null) {
+                    drawingView.loadBitmap(bitmap);
+                }
+            });
         }
 
         // TODO: Add undo/redo stacks
         // TODO: Add pen/eraser mode switching
         // TODO: Add saving/loading drawing bitmap
     }
+
+    //############## PUBLIC FUNCTIONS ##############
 
     // Load existing drawn image
     public void loadBitmap(String savedPath) {

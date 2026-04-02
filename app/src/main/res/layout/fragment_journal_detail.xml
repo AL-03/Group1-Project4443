@@ -91,7 +91,7 @@
         app:layout_constraintTop_toBottomOf="@id/modButtons"
         app:layout_constraintEnd_toEndOf="parent" />
 
-    <!-- Entry's main contents -->
+    <!-- Entry's main contents (text or audio transcript) -->
     <ScrollView
         android:id="@+id/entryBodyScrollView"
         android:layout_width="match_parent"
@@ -108,5 +108,25 @@
             android:background="@drawable/border"
             android:layout_margin="10dp"
             android:textSize="18sp" />
+    </ScrollView>
+
+
+    <!-- Entry's main contents (hand-drawn; hidden unless we know the journal took a visual input) -->
+    <ScrollView
+        android:id="@+id/drawnEntryBodyScrollView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fillViewport="true"
+        android:scrollbars="vertical"
+        app:layout_constraintTop_toBottomOf="@id/entryDate"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" >
+        <ImageView
+            android:id="@+id/drawnEntryBody"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/border"
+            android:layout_margin="10dp"
+            android:visibility="gone" />
     </ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,15 +1,19 @@
 package com.example.eecs4443project.view.fragments.journal;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -68,20 +72,50 @@ public class JournalDetailFragment extends Fragment {
         TextView title = view.findViewById(R.id.journalTitle);
         TextView date = view.findViewById(R.id.entryDate);
         TextView label = view.findViewById(R.id.entryLabel);
-        TextView body = view.findViewById(R.id.entryBody);
+        TextView textBody = view.findViewById(R.id.entryBody);
+        ImageView imgBody = view.findViewById(R.id.drawnEntryBody);
 
         // Get the journal object
         viewModel.getJournal(journalId).observe(getViewLifecycleOwner(), journal -> {
             // Save the journal object so it can be used later in the code
             j = journal;
 
-            // TODO: Edit body based on inputMode
             // Set the TextView content, but if journal entry isn't found, indicate that that's the case
             if (journal != null) {
                 title.setText(journal.getTitle());
                 date.setText(journal.getFormattedDate());
                 label.setText(journal.getLabel());
-                body.setText(journal.getEntry());
+                // Display content based on input mode
+                if (j.getInputMode().equals("TEXT")) {
+                    imgBody.setVisibility(ViewGroup.GONE);
+                    textBody.setVisibility(ViewGroup.VISIBLE);
+                    textBody.setText(journal.getEntry());
+                }
+                else if (j.getInputMode().equals("DRAW")) {
+                    textBody.setVisibility(ViewGroup.GONE);
+                    imgBody.setVisibility(ViewGroup.VISIBLE);
+
+                    String imgPath = journal.getDrawingPath();
+                    if (imgPath != null) {
+                        Bitmap bitmap = BitmapFactory.decodeFile(imgPath);
+                        if (bitmap != null) {
+                            imgBody.setImageBitmap(bitmap);
+                        }
+                        else {
+                            imgBody.setImageResource(R.drawable.image_not_found);
+                            Toast.makeText(requireContext(), "Image not found", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                    else {
+                        imgBody.setImageResource(R.drawable.image_not_found);
+                        Toast.makeText(requireContext(), "No image path found", Toast.LENGTH_SHORT).show();
+                    }
+                }
+                else if (j.getInputMode().equals("AUDIO")) {
+                    imgBody.setVisibility(ViewGroup.GONE);
+                    textBody.setVisibility(ViewGroup.VISIBLE);
+                    textBody.setText(journal.getTranscription());
+                }
             }
             else {
                 Toast.makeText(requireContext(), "Journal entry not found", Toast.LENGTH_SHORT).show();
@@ -99,10 +133,21 @@ public class JournalDetailFragment extends Fragment {
                     .commit();
         });
 
-        // If Delete button clicked, delete the current journal entry and go back to list view
+        // If Delete button clicked, have a pop-up message confirming the action, then delete the current journal entry and go back to list view
         view.findViewById(R.id.delButton).setOnClickListener(v -> {
             if (j != null) {
-                viewModel.delete(j);
+                AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
+                builder.setTitle("Delete Entry")
+                        .setMessage("Are you sure you want to delete this entry?")
+                        .setPositiveButton("Delete", (dialog, which) -> {
+                            viewModel.delete(j);
+                            Toast.makeText(requireContext(), "Entry deleted", Toast.LENGTH_SHORT).show();
+                        })
+                        .setNegativeButton("Cancel", (dialog, which) -> {
+                            Toast.makeText(requireContext(), "Delete action cancelled", Toast.LENGTH_SHORT).show();
+                        });
+
+                builder.show();
             }
             else {
                 Toast.makeText(requireContext(), "Journal entry not found", Toast.LENGTH_SHORT).show();

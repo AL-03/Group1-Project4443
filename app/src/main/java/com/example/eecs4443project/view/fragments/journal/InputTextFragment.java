@@ -14,11 +14,32 @@ import com.example.eecs4443project.R;
 
 // Used for typed journal entries
 public class InputTextFragment extends Fragment {
+    // Used to store text in a Bundle from the previous fragment
+    private static final String ARG_SAVED_TEXT = "arg_saved_text";
     // Get EditText where user types out journal entry
     private EditText textInputField;
 
     // Stores initial text passed in from JournalEditFragment (if in Edit mode)
     private String initialText = null;
+
+    // Creates new instance of this fragment
+    public static InputTextFragment newInstance(String initialText) {
+        InputTextFragment fragment = new InputTextFragment();
+        Bundle args = new Bundle();
+        args.putString(ARG_SAVED_TEXT, initialText);
+        fragment.setArguments(args);
+        return fragment;
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        // Get text from previous fragment
+        if (getArguments() != null) {
+            initialText = getArguments().getString(ARG_SAVED_TEXT);
+        }
+    }
 
     // Inflate the XML layout for this fragment
     @Override

@@ -8,7 +8,6 @@ import androidx.room.PrimaryKey;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
-import com.example.eecs4443project.view.fragments.journal.JournalEditFragment.InputMode;
 
 // Create a table of journal entries, tied to a specific user by their ID
 // If the user is deleted, so are their journal entries
@@ -33,23 +32,24 @@ public class Journal {
     private String title;
     // Save date of entry as epoch ms
     private long date;
-    // Actual contents of the entry
+    // Content of the entry when inputMode is TEXT
     private String entry;
 
     // Type of input mode
-    private String inputMode = "TEXT";
+    private String inputMode;
 
-    // Uri for audio
 
-    private String uri;
+    // It's possible for a journal entry to not have a URI
+    @Nullable private String uri;
 
-    // Transcription for audio
-
-    private String transcription;
+    // Content of the entry when inputMode is AUDIO
+    // It's possible for a journal entry to not have a transcription
+    @Nullable private String transcription;
 
     // It's possible for a journal entry to not have a label
     @Nullable private String label;
 
+    // Content of the entry when inputMode is DRAW
     // It's possible for a journal entry to not have a drawing path
     @Nullable private String drawingPath;
 
@@ -111,11 +111,6 @@ public class Journal {
         this.entry = entry;
     }
 
-    public void setDrawingPath(@Nullable String drawingPath)
-    {
-      this.drawingPath = drawingPath;
-    }
-
     public void setInputMode(String inputMode)
     {
         this.inputMode = inputMode;
@@ -126,26 +121,33 @@ public class Journal {
         return inputMode;
     }
 
+    @Nullable
     public String getUri() {
         return uri;
     }
 
-    public void setUri(String uri) {
+    public void setUri(@Nullable String uri) {
         this.uri = uri;
     }
 
-    public void setTranscription(String transcription)
-    {
-        this.transcription = transcription;
-    }
-
+    @Nullable
     public String getTranscription()
     {
         return transcription;
     }
 
+    public void setTranscription(@Nullable String transcription)
+    {
+        this.transcription = transcription;
+    }
+
     @Nullable
     public String getDrawingPath(){return drawingPath;}
+
+    public void setDrawingPath(@Nullable String drawingPath)
+    {
+        this.drawingPath = drawingPath;
+    }
 
     @Nullable
     public String getLabel() {

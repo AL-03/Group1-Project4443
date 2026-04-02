@@ -27,6 +27,11 @@ public class JournalListFragment extends Fragment {
     private JournalViewModel viewModel;
     private JournalListAdapter adapter;
 
+    // Creates new instance of this fragment
+    public static JournalListFragment newInstance() {
+        return new JournalListFragment();
+    }
+
     // Inflates the fragment's view
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -94,8 +99,18 @@ public class JournalListFragment extends Fragment {
                                 .commit();
                     } else {
                         // Delete entry
-                        viewModel.delete(journal);
-                        Toast.makeText(requireContext(), "Entry deleted", Toast.LENGTH_SHORT).show();
+                        AlertDialog.Builder confirmation = new AlertDialog.Builder(requireContext());
+                        confirmation.setTitle("Delete Entry")
+                                .setMessage("Are you sure you want to delete this entry?")
+                                .setPositiveButton("Delete", (dialogConfirm, whichConfirm) -> {
+                                    viewModel.delete(journal);
+                                    Toast.makeText(requireContext(), "Entry deleted", Toast.LENGTH_SHORT).show();
+                                })
+                                .setNegativeButton("Cancel", (dialogConfirm, whichConfirm) -> {
+                                    Toast.makeText(requireContext(), "Delete action cancelled", Toast.LENGTH_SHORT).show();
+                                });
+
+                        confirmation.show();
                     }
                 });
 
