@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -80,9 +81,21 @@ public class InputDrawFragment extends Fragment {
             });
         }
 
-        // TODO: Add undo/redo stacks
-        // TODO: Add pen/eraser mode switching
-        // TODO: Add saving/loading drawing bitmap
+        // Set up undo/redo process
+        undoButton.setOnClickListener(v -> drawingView.undo());
+        redoButton.setOnClickListener(v -> drawingView.redo());
+
+        // Switch between drawing and erasing
+        penButton.setOnClickListener(v -> {
+            eraserButton.setBackgroundColor(Color.TRANSPARENT);
+            penButton.setBackgroundColor(requireContext().getColor(R.color.nav_inactive));
+            drawingView.setPenMode();
+        });
+        eraserButton.setOnClickListener(v -> {
+            penButton.setBackgroundColor(Color.TRANSPARENT);
+            eraserButton.setBackgroundColor(requireContext().getColor(R.color.nav_inactive));
+            drawingView.setEraserMode();
+        });
     }
 
     //############## PUBLIC FUNCTIONS ##############

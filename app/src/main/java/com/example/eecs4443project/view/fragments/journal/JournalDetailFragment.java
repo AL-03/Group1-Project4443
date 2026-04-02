@@ -142,6 +142,8 @@ public class JournalDetailFragment extends Fragment {
                         .setPositiveButton("Delete", (dialog, which) -> {
                             viewModel.delete(j);
                             Toast.makeText(requireContext(), "Entry deleted", Toast.LENGTH_SHORT).show();
+                            // Navigate back to List screen
+                            requireActivity().getOnBackPressedDispatcher().onBackPressed();
                         })
                         .setNegativeButton("Cancel", (dialog, which) -> {
                             Toast.makeText(requireContext(), "Delete action cancelled", Toast.LENGTH_SHORT).show();
@@ -152,10 +154,6 @@ public class JournalDetailFragment extends Fragment {
             else {
                 Toast.makeText(requireContext(), "Journal entry not found", Toast.LENGTH_SHORT).show();
             }
-            Toast.makeText(requireContext(), "Entry deleted", Toast.LENGTH_SHORT).show();
-
-            // Navigate back to List screen
-            requireActivity().getOnBackPressedDispatcher().onBackPressed();
         });
     }
 }

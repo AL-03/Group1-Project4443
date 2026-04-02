@@ -11,6 +11,8 @@ import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
 
+import java.util.Stack;
+
 public class DrawingView extends View {
     // Stores current drawing path
     private Path path = new Path();
@@ -22,6 +24,9 @@ public class DrawingView extends View {
     private Canvas canvas;
     // Stores last touch coordinates (to make lines smoother)
     private float lastX, lastY;
+    // Determines previous paths drawn
+    private final Stack<Bitmap> undoStack = new Stack<>();
+    private final Stack<Bitmap> redoStack = new Stack<>();
 
     // Constructor
     public DrawingView(Context context, AttributeSet attrs) {
@@ -74,8 +79,14 @@ public class DrawingView extends View {
                 lastX = x;
                 lastY = y;
                 break;
-            // When user's finger leaves the screen, save the current stroke to bitmap
+            // When user's finger leaves the screen
             case MotionEvent.ACTION_UP:
+                // Save the current path for undo
+                undoStack.push(bitmap.copy(Bitmap.Config.ARGB_8888, true));
+                // Clear the redo stack
+                redoStack.clear();
+
+                // Save the current path to bitmap
                 canvas.drawPath(path, paint);
                 path.reset();
                 break;
@@ -84,6 +95,39 @@ public class DrawingView extends View {
         // Redraw the view
         invalidate();
         return true;
+    }
+
+    // Undo last path
+    public void undo() {
+        if (!undoStack.isEmpty()) {
+            redoStack.push(bitmap.copy(Bitmap.Config.ARGB_8888, true));
+            bitmap = undoStack.pop();
+            canvas = new Canvas(bitmap);
+            invalidate();
+        }
+    }
+
+    // Redo last undo
+    public void redo() {
+        if (!redoStack.isEmpty()) {
+            undoStack.push(bitmap.copy(Bitmap.Config.ARGB_8888, true));
+            bitmap = redoStack.pop();
+            canvas = new Canvas(bitmap);
+            invalidate();
+        }
+    }
+
+    // Allow drawing
+    public void setPenMode() {
+        paint.setColor(Color.BLACK);
+        paint.setStrokeWidth(8f);
+    }
+
+    // Erase instead
+    public void setEraserMode() {
+        paint.setColor(Color.WHITE);
+        // Bigger stroke for erasing
+        paint.setStrokeWidth(40f);
     }
 
     // Clear canvas by colouring white over the current content

@@ -1,5 +1,6 @@
 package com.example.eecs4443project.view.fragments.journal;
 
+import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.os.Bundle;
 
@@ -158,6 +159,11 @@ public class JournalEditFragment extends Fragment {
                 if (journal != null) {
                     j = journal;
 
+                    // Disable switching modes in edit mode
+                    textModeButton.setEnabled(false);
+                    drawModeButton.setEnabled(false);
+                    audioModeButton.setEnabled(false);
+
                     // Set up edit instructions
                     editScreenTitle.setText(getString(R.string.edit_journal));
                     editTitleHeader.setText(getString(R.string.edit_title));
@@ -176,10 +182,13 @@ public class JournalEditFragment extends Fragment {
 
                     // Pre-fill input fragment content
                     if (currentMode == InputMode.TEXT) {
+                        textModeButton.setEnabled(true);
                         textFragment = InputTextFragment.newInstance(j.getEntry());
                     } else if (currentMode == InputMode.DRAW) {
+                        drawModeButton.setEnabled(true);
                         drawFragment = InputDrawFragment.newInstance(j.getDrawingPath());
                     } else if (currentMode == InputMode.AUDIO) {
+                        audioModeButton.setEnabled(true);
                         audioFragment = InputAudioFragment.newInstance(j.getTranscription());
                     }
                     switchToMode(currentMode);
@@ -208,16 +217,29 @@ public class JournalEditFragment extends Fragment {
     private void switchToMode(InputMode mode) {
         currentMode = mode;
 
+        // Define colours of buttons when selected vs unselected
+        int selected = requireContext().getColor(R.color.nav_inactive);
+        int unselected = requireContext().getColor(R.color.nav_background);
+
+        // Reset all buttons to inactive colour
+        textModeButton.setBackgroundTintList(ColorStateList.valueOf(unselected));
+        drawModeButton.setBackgroundTintList(ColorStateList.valueOf(unselected));
+        audioModeButton.setBackgroundTintList(ColorStateList.valueOf(unselected));
+
+        // Fragment to switch to
         Fragment fragmentToShow;
 
         switch (mode) {
             case TEXT:
+                textModeButton.setBackgroundTintList(ColorStateList.valueOf(selected));
                 fragmentToShow = textFragment;
                 break;
             case DRAW:
+                drawModeButton.setBackgroundTintList(ColorStateList.valueOf(selected));
                 fragmentToShow = drawFragment;
                 break;
             case AUDIO:
+                audioModeButton.setBackgroundTintList(ColorStateList.valueOf(selected));
                 fragmentToShow = audioFragment;
                 break;
             default:

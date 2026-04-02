@@ -25,5 +25,7 @@
     <string name="default_journal_label">Mood</string>
     <string name="edit_journal">Edit Journal</string>
     <string name="create_new_journal">Create New Journal</string>
+    <string name="entry_title">Entry title</string>
+    <string name="entry_label">Entry label</string>
 
 </resources>

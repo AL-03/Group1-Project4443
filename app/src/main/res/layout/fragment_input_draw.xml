@@ -49,7 +49,7 @@
             android:layout_width="48dp"
             android:layout_height="48dp"
             android:src="@drawable/draw_button"
-            android:background="@android:color/transparent"
+            android:background="@color/nav_inactive"
             android:contentDescription="@string/draw" />
 
         <!-- Eraser tool -->
