@@ -206,6 +206,8 @@ public class ProfileActivity extends AppCompatActivity {
                 {
                     AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
                 }
+
+                Toast.makeText(ProfileActivity.this, "Successfully saved changes", Toast.LENGTH_SHORT).show();
             }
 
         });
