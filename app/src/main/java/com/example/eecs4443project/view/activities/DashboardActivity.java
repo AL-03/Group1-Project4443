@@ -117,9 +117,8 @@ public class DashboardActivity extends AppCompatActivity {
             }
 
             if (item.getItemId() == R.id.nav_account) {
-                // placeholder
-                //add intent when account page is made
-                Toast.makeText(this, "Account page coming soon", Toast.LENGTH_SHORT).show();
+                startActivity(new Intent(this, ProfileActivity.class));
+                overridePendingTransition(0, 0);
                 return true;
             }
 
