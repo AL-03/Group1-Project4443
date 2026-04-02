@@ -4,6 +4,7 @@ import android.app.Application;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
+import androidx.lifecycle.LiveData;
 import androidx.room.Query;
 
 import com.example.eecs4443project.data.entity.User;
@@ -22,16 +23,16 @@ public class UserViewModel extends AndroidViewModel {
         repository.register(user);
     }
 
-    public User getUser(String username, String password) {
+    public LiveData<User> getUser(String username, String password) {
         return repository.getUser(username, password);
     }
 
-    public User delete(String username)
+    public void delete(String username)
     {
-        return repository.delete(username);
+        repository.delete(username);
     }
 
-    public User getUser(int id)
+    public LiveData<User> getUser(int id)
     {
         return repository.getUser(id);
     }

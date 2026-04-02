@@ -2,32 +2,41 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/main"
+    android:id="@+id/profile"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".view.activities.ProfileActivity"
     android:background="#CFE8FF"
-    android:orientation="vertical">
-
+    android:orientation="vertical"
+    android:focusable="true"
+    android:focusableInTouchMode="true" >
 
     <LinearLayout
+        android:id="@+id/userSettings"
         android:orientation="vertical"
         android:paddingTop="32dp"
         android:paddingStart="16dp"
         android:paddingEnd="16dp"
         android:paddingBottom="16dp"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/privacyToggle"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" >
 
-    <TextView
-        android:text="Settings"
-        android:textSize="30sp"
-        android:textStyle="bold"
-        android:layout_marginBottom="16dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        <!-- Settings header -->
+        <TextView
+            android:text="Settings"
+            android:textSize="30sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="16dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
 
-
+        <!-- Credentials header -->
         <TextView
             android:text="Credentials"
             android:textSize="20sp"
@@ -37,32 +46,74 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
 
+        <TextView
+            android:text="Username"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+        <!-- Field to edit username -->
         <EditText
             android:id="@+id/username"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Username"
-            android:inputType="textPersonName"
             android:drawableEnd="@drawable/edit_pencil"
             android:drawablePadding="8dp"
-            android:enabled="false"
             android:focusable="false"
-            android:clickable="true"
-            android:cursorVisible="false"/>
+            android:cursorVisible="false"
+            android:inputType="none" />
 
+        <TextView
+            android:text="Password"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+        <!-- Field to edit password -->
         <EditText
             android:id="@+id/password"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Password"
-            android:inputType="textPassword"
             android:drawableEnd="@drawable/edit_pencil"
             android:drawablePadding="8dp"
-            android:enabled="false"
             android:focusable="false"
-            android:clickable="true"
-            android:cursorVisible="false"/>
+            android:cursorVisible="false"
+            android:inputType="textPassword" />
+            />
+    </LinearLayout>
 
+    <!-- Determines whether journal needs a password or not -->
+    <Switch
+        android:id="@+id/privacyToggle"
+        android:text="Journal Privacy"
+        android:textSize="15sp"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:checked="false"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        app:layout_constraintTop_toBottomOf="@id/userSettings"
+        app:layout_constraintBottom_toTopOf="@id/journalSettings"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <LinearLayout
+        android:id="@+id/journalSettings"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:visibility="gone"
+        app:layout_constraintTop_toBottomOf="@id/privacyToggle"
+        app:layout_constraintBottom_toTopOf="@id/themeHeader"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" >
+        <!-- Journal password header -->
         <TextView
             android:text="Journal Password"
             android:textSize="20sp"
@@ -73,30 +124,39 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
 
+        <!-- Field to set journal password -->
         <EditText
             android:id="@+id/journalPassword"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Password"
-            android:inputType="textPassword"
             android:drawableEnd="@drawable/edit_pencil"
             android:drawablePadding="8dp"
-            android:enabled="false"
             android:focusable="false"
-            android:clickable="true"
-            android:cursorVisible="false"/>
+            android:cursorVisible="false"
+            android:inputType="textPassword" />
+    </LinearLayout>
 
-        <TextView
-            android:text="Theme"
-            android:textSize="20sp"
-            android:textStyle="bold"
-            android:gravity="center"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="5dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+    <!-- Theme section header; included in this LinearLayout for convenience -->
+    <TextView
+        android:id="@+id/themeHeader"
+        android:text="Theme"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:gravity="center"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="5dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        app:layout_constraintTop_toBottomOf="@id/journalSettings"
+        app:layout_constraintBottom_toTopOf="@id/themeSettings"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
 
     <LinearLayout
+        android:id="@+id/themeSettings"
         android:orientation="horizontal"
         android:paddingTop="10dp"
         android:paddingStart="16dp"
@@ -105,8 +165,12 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center_horizontal"
-        >
-
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        app:layout_constraintTop_toBottomOf="@id/themeHeader"
+        app:layout_constraintBottom_toTopOf="@id/saveWarning"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" >
         <Button
             android:id="@+id/lightButton"
             android:layout_width="wrap_content"
@@ -122,55 +186,53 @@
             android:text="Dark"
             android:backgroundTint="#808080"
             android:textColor="#002147"/>
-
     </LinearLayout>
 
-        <Switch
-            android:id="@+id/toggle"
-            android:text="Journal Privacy"
-            android:textSize="15sp"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="10dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:checked="false"
-            />
+    <TextView
+        android:id="@+id/saveWarning"
+        android:text="Changes will not be saved until you click on 'save'"
+        android:textSize="15sp"
+        android:textStyle="bold"
+        android:gravity="center"
+        android:layout_marginTop="75dp"
+        android:layout_marginBottom="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        app:layout_constraintTop_toBottomOf="@id/themeSettings"
+        app:layout_constraintBottom_toTopOf="@id/saveButton"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 
-        <TextView
-            android:text="Changes will not be saved until you click on 'save'"
-            android:textSize="15sp"
-            android:textStyle="bold"
-            android:gravity="center"
-            android:layout_marginTop="75dp"
-            android:layout_marginBottom="20dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+    <Button
+        android:id="@+id/saveButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Save"
+        android:background="@drawable/rounded_button"
+        android:textColor="#FFF"
+        android:layout_margin="5dp"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        app:layout_constraintTop_toBottomOf="@id/saveWarning"
+        app:layout_constraintBottom_toTopOf="@id/bottomNav"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
 
-        <Button
-            android:id="@+id/saveButton"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Save"
-            android:backgroundTint="#5CA8FF"
-            android:background="@drawable/rounded_button"
-            android:textColor="#002147"
-            app:layout_constraintBottom_toTopOf="@id/bottomNav"/>
-
-    </LinearLayout>
-
-    <!-- bottom navigation bar -->
+    <!-- Bottom navigation bar -->
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottomNav"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-
+        android:background="@color/nav_background"
         app:menu="@menu/bottom_nav_menu"
+        app:itemIconTint="@drawable/nav_item_color"
+        app:itemTextColor="@drawable/nav_item_color"
+        app:layout_constraintTop_toBottomOf="@id/saveButton"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:itemIconTint="@drawable/nav_item_color"
-        app:itemTextColor="@drawable/nav_item_color"
-        android:background="@color/nav_background"
         />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
