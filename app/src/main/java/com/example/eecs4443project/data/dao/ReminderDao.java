@@ -39,7 +39,7 @@ public interface ReminderDao {
 
     //get a single reminder
     @Query("SELECT * FROM reminders WHERE id = :id LIMIT 1")
-    Reminder getReminderById(int id);
+    LiveData<Reminder> getReminderById(int id);
 
     //count
     @Query("SELECT COUNT(*) FROM reminders")

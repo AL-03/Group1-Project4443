@@ -18,7 +18,7 @@ public class HabitViewModel extends AndroidViewModel {
     private final HabitRepository repo;
     private final LiveData<List<Habit>> allHabits;
 
-    // Comparitvely to the HabitListViewModel, this viewModel only shows the selected habits, not the whole list with filtering
+    // Comparatively to the HabitListViewModel, this viewModel only shows the selected habits, not the whole list with filtering
     private final LiveData<List<Habit>> selectedHabits;
 
     public HabitViewModel(@NonNull Application application) {
@@ -31,7 +31,11 @@ public class HabitViewModel extends AndroidViewModel {
     }
 
     public LiveData<List<Habit>> getAllHabits() {
-        return allHabits;
+        return repo.getAllHabits();
+    }
+
+    public LiveData<Habit> getHabit(int id) {
+        return repo.getHabit(id);
     }
 
     public LiveData<List<Habit>> getSelectedHabits() {return selectedHabits;}

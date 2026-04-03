@@ -28,6 +28,10 @@ public class HabitRepository {
         return allHabits;
     }
 
+    public LiveData<Habit> getHabit(int id) {
+        return habitDao.getHabit(id);
+    }
+
     // Adding the ability to search for some of the habits for thew NewHabitsActivity
     public LiveData<List<Habit>> getSelectedHabits() {
         return habitDao.getSelectedHabits();

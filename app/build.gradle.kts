@@ -34,6 +34,7 @@ android {
 }
 
 dependencies {
+    implementation(libs.work.runtime)
     implementation(libs.cardview)
     // Use Room library to manage SQLite
     val room_version = "2.8.4"

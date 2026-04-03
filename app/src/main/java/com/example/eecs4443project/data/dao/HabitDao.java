@@ -35,7 +35,7 @@ public interface HabitDao {
 
     // Get a specific habit by id - not used
     @Query("SELECT * FROM habits WHERE id = :id")
-    Habit getHabit(int id);
+    LiveData<Habit> getHabit(int id);
 
     // Get the selectedList of Habits when they have been added by the user.
     // Sort by which are favourited, and then alphabetical order
