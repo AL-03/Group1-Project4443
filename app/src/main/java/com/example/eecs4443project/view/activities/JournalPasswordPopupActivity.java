@@ -32,28 +32,28 @@ public class JournalPasswordPopupActivity extends AppCompatActivity {
         enter = findViewById(R.id.enter);
         cancel  = findViewById(R.id.cancel);
 
-        // TEMP: Commented out until we have a fix
-//        enter.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                if(!passwordInput.getText().toString().isEmpty() && passwordInput.getText().toString().equals(ProfileActivity.getJournalPassword()))
-//                {
-//                    JournalListFragment.isJournalPasswordCorrect(true);
-//                }
-//                else
-//                {
-//                   notification.setText(R.string.error_invalid_journal_password);
-//                }
-//
-//            }
-//
-//        });
+        enter.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(!passwordInput.getText().toString().isEmpty() && passwordInput.getText().toString().equals(ProfileActivity.getJournalPassword()))
+                {
+                    JournalListFragment.setJournalPasswordCorrect(true);
+                    finish();
+                }
+                else
+                {
+                   notification.setText(R.string.error_invalid_journal_password);
+                }
+
+            }
+
+        });
 
         cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                notification.setText("");
                 finish();
-
             }
 
         });
