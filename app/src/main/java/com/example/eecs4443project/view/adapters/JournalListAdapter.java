@@ -33,6 +33,8 @@ public class JournalListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         void onJournalClick(Journal journal);
         // Long click function
         void onJournalLongClick(Journal journal);
+        // Edit button function
+        void onEditClick(Journal journal);
         // Delete button function
         void onDeleteClick(Journal journal);
     }
@@ -116,6 +118,7 @@ class LabelHeaderViewHolder extends RecyclerView.ViewHolder {
 class JournalEntryViewHolder extends RecyclerView.ViewHolder {
     private final TextView title;
     private final TextView date;
+    private final ImageButton editButton;
     private final ImageButton delButton;
     // Store the current Journal object
     private Journal currEntry;
@@ -124,6 +127,7 @@ class JournalEntryViewHolder extends RecyclerView.ViewHolder {
         super(itemView);
         title = itemView.findViewById(R.id.entryTitle);
         date = itemView.findViewById(R.id.entryDate);
+        editButton = itemView.findViewById(R.id.editButton);
         delButton = itemView.findViewById(R.id.delButton);
 
         // Use the callback function to open the entry's detailed view when clicked
@@ -140,6 +144,13 @@ class JournalEntryViewHolder extends RecyclerView.ViewHolder {
                 return true; // note that the long click has been completed
             }
             return false;
+        });
+
+        // Use the callback function to allow editing of the journal using the edit button
+        editButton.setOnClickListener(v -> {
+            if (listener != null && currEntry != null) {
+                listener.onEditClick(currEntry);
+            }
         });
 
         // Use the callback function to allow deletion of the journal using the delete button

@@ -117,7 +117,19 @@ public class JournalListFragment extends Fragment {
                 builder.show();
             }
 
-            // If delete button clicked, delete the entry
+            // If Edit button clicked, navigate to fragment to edit the journal entry
+            @Override
+            public void onEditClick(Journal journal) {
+                // Navigate to edit screen
+                JournalEditFragment fragment = JournalEditFragment.newInstance(journal.getId());
+                requireActivity().getSupportFragmentManager()
+                        .beginTransaction()
+                        .replace(R.id.journal_fragment_container, fragment)
+                        .addToBackStack(null)
+                        .commit();
+            }
+
+            // If Delete button clicked, delete the entry
             @Override
             public void onDeleteClick(Journal journal) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());

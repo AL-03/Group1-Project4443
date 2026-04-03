@@ -31,13 +31,30 @@
             android:layout_height="wrap_content" />
     </LinearLayout>
 
-    <!-- Delete button -->
-    <ImageButton
-        android:id="@+id/delButton"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
-        android:src="@drawable/delete_button"
-        android:contentDescription="@string/delete"
-        android:backgroundTint="@android:color/transparent" />
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+        <!-- Edit button -->
+        <ImageButton
+            android:id="@+id/editButton"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:src="@drawable/edit_button"
+            android:contentDescription="@string/edit"
+            android:backgroundTint="@android:color/transparent"
+            android:padding="5dp"
+            android:layout_margin="5dp" />
+        <!-- Delete button -->
+        <ImageButton
+            android:id="@+id/delButton"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:src="@drawable/delete_button"
+            android:contentDescription="@string/delete"
+            android:backgroundTint="@android:color/transparent"
+            android:padding="5dp"
+            android:layout_margin="5dp" />
+    </LinearLayout>
 
 </LinearLayout>
