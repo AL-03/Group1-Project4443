@@ -28,5 +28,7 @@
     <string name="create_new_journal">Create New Journal</string>
     <string name="entry_title">Entry title</string>
     <string name="entry_label">Entry label</string>
-
+    <string name="add_habit">Add Habit</string>
+    <string name="create_custom_habit">Create Custom Habit</string>
+    <string name="add_a_custom_habit">Add a custom habit</string>
 </resources>

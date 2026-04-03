@@ -109,7 +109,8 @@ public class DashboardActivity extends AppCompatActivity {
                         .setTitle("Delete Habit")
                         .setMessage("Are you sure?")
                         //If the user clicks yes, the habit will be deleted
-                        .setPositiveButton("Yes", (d, i) -> habitViewModel.delete(h))
+                        //.setPositiveButton("Yes", (d, i) -> habitViewModel.delete(h))
+                        .setPositiveButton("Yes", (d, i) -> habitViewModel.unselectHabit(h))
                         //Otherwise, no data is changed and the alert will close
                         .setNegativeButton("No", null)
                         .show();

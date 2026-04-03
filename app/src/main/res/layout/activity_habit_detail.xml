@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="16dp">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:padding="16dp"
+    android:background="#CFE8FF">
 
     <ScrollView
         android:id="@+id/scrollView"
@@ -18,30 +19,39 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            >
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:layout_marginBottom="16dp"
+                android:layout_marginTop="24dp"
+                android:gravity="center_vertical|center_horizontal">
 
                 <EditText
-                    android:id="@+id/habitTitle"
-                    android:layout_marginTop="20dp"
+                    android:id="@+id/detailHabitTitle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginStart="24dp"
+                    android:layout_weight="8"
                     android:hint="Habit Title"
-                    android:textSize="25sp"
-                    android:textStyle="bold"
                     android:textColor="#000C1A"
-                    android:layout_weight="8"/>
+                    android:textSize="24sp"
+                    android:textStyle="bold" />
+
                 <ImageView
                     android:id="@+id/starIcon"
                     android:layout_width="50dp"
                     android:layout_height="50dp"
+                    android:layout_gravity="center_vertical"
                     android:layout_marginTop="16dp"
+                    android:layout_marginEnd="24dp"
+                    android:layout_weight="0"
                     android:clickable="true"
-                    android:layout_weight="2"
                     android:src="@drawable/baseline_favorite_border_24" />
 
             </LinearLayout>
@@ -52,15 +62,19 @@
                 android:background="#DDDDDD"/>
 
             <TextView
+                android:id="@+id/detailProgressLabel"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-
-                android:layout_marginTop="16dp"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="24dp"
+                android:layout_marginBottom="5dp"
                 android:text="Progress"
                 android:textColor="#002147"
                 android:textSize="16sp"
                 android:textStyle="bold" />
 
+            <!--
             <LinearLayout
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
@@ -68,7 +82,7 @@
                 android:orientation="horizontal">
 
                 <SeekBar
-                    android:id="@+id/progressSeekBar"
+                    android:id="@+id/cstmProgressSeekBar"
                     style="?android:attr/progressBarStyleHorizontal"
                     android:progressTint="#003775"
                     android:layout_width="wrap_content"
@@ -79,7 +93,7 @@
                     android:max="100" />
 
                 <EditText
-                    android:id="@+id/progressInput"
+                    android:id="@+id/cstmProgressInput"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -89,28 +103,78 @@
 
 
             </LinearLayout>
+            -->
+
+            <LinearLayout
+                android:id="@+id/progressLayout"
+                android:layout_width="fill_parent"
+                android:layout_height="50dp"
+                android:layout_marginBottom="16dp"
+                android:gravity="center_vertical|center_horizontal"
+                android:orientation="horizontal">
+
+                <SeekBar
+                    android:id="@+id/detailProgressSeekBar"
+                    style="?android:attr/progressBarStyleHorizontal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="24dp"
+                    android:layout_marginEnd="0dp"
+                    android:layout_weight="4"
+                    android:max="100"
+                    android:progressTint="#003775"
+                    tools:layout_gravity="left|center" />
+
+                <EditText
+                    android:id="@+id/detailProgressInput"
+                    android:layout_width="26dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginEnd="24dp"
+                    android:layout_weight="1.5"
+                    android:background="@drawable/rounded_input"
+                    android:hint="0 - 100%"
+                    android:inputType="number"
+                    android:textAlignment="center"
+                    tools:layout_gravity="right|fill|center" />
+
+
+            </LinearLayout>
             <View
                 android:layout_width="match_parent"
                 android:layout_height="2dp"
                 android:background="#DDDDDD"/>
 
             <TextView
+                android:id="@+id/detailHabitDescLabel"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-
-                android:layout_marginTop="16dp"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="24dp"
+                android:layout_marginBottom="5dp"
                 android:text="Habit Description"
                 android:textColor="#002147"
                 android:textSize="16sp"
                 android:textStyle="bold" />
 
             <EditText
-                android:id="@+id/habitDesc"
+                android:id="@+id/detailHabitDesc"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
+                android:layout_height="160dp"
+                android:layout_marginStart="24dp"
+                android:layout_marginEnd="24dp"
+                android:layout_marginBottom="16dp"
+                android:paddingStart="14dp"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
+                android:paddingEnd="14dp"
+                android:autofillHints="textMultiLine"
+                android:background="@drawable/rounded_input"
+                android:gravity="start|top"
+                android:ems="10"
                 android:hint="Description" />
 
+            <!--
             <Button
                 android:id="@+id/updateBtn"
                 android:layout_width="match_parent"
@@ -136,7 +200,58 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/updateBtn"/>
+                app:layout_constraintTop_toBottomOf="@id/updateBtn" />
+                -->
+            <LinearLayout
+                android:id="@+id/detailButtonLayout"
+                style="?android:attr/buttonBarStyle"
+                android:layout_width="match_parent"
+                android:layout_height="103dp"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="48dp"
+                android:layout_marginEnd="24dp"
+                android:layout_marginBottom="50dp"
+                android:orientation="horizontal"
+                android:layout_gravity="center">
+
+                <Button
+                    android:id="@+id/deleteButton"
+                    style="?android:attr/buttonBarButtonStyle"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="15dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/rounded_button"
+                    android:backgroundTint="#FF5252"
+                    android:gravity="center_horizontal|center_vertical"
+                    android:paddingLeft="0dp"
+                    android:paddingTop="6dp"
+                    android:paddingRight="0dp"
+                    android:paddingBottom="6dp"
+                    android:text="Delete Habit"
+                    android:textColor="@android:color/white"
+                    tools:layout_gravity="left" />
+
+                <Button
+                    android:id="@+id/updateButton"
+                    style="?android:attr/buttonBarButtonStyle"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="15dp"
+                    android:layout_marginEnd="10dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/rounded_button"
+                    android:backgroundTint="#5CA8FF"
+                    android:gravity="center_horizontal|center_vertical"
+                    android:paddingLeft="0dp"
+                    android:paddingTop="6dp"
+                    android:paddingRight="0dp"
+                    android:paddingBottom="6dp"
+                    android:text="Save Changes"
+                    android:textColor="#002147"
+                    tools:layout_gravity="right" />
+            </LinearLayout>
 
         </LinearLayout>
     </ScrollView>

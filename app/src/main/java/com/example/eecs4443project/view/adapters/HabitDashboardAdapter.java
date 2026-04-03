@@ -1,8 +1,6 @@
 package com.example.eecs4443project.view.adapters;
 
 import android.content.Context;
-import android.content.Intent;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,12 +8,10 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.eecs4443project.R;
 import com.example.eecs4443project.data.entity.Habit;
-import com.example.eecs4443project.view.activities.HabitDetailActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,6 +28,8 @@ public class HabitDashboardAdapter extends RecyclerView.Adapter<HabitDashboardAd
         void onHabitClicked(Habit habit);
         void onHabitLongPressed(Habit habit);
         void onStarToggled(Habit habit);
+
+        // Adding the onAddNewHabitClicked(Button addNewHabit
     }
 
     public HabitDashboardAdapter(Context context, HabitClickListener listener) {
@@ -51,7 +49,7 @@ public class HabitDashboardAdapter extends RecyclerView.Adapter<HabitDashboardAd
 
         public ViewHolder(View v) {
             super(v);
-            title = v.findViewById(R.id.habitTitle);
+            title = v.findViewById(R.id.cstmHabitTitleLabel);
             progress = v.findViewById(R.id.habitProgress);
             star = v.findViewById(R.id.starIcon);
         }

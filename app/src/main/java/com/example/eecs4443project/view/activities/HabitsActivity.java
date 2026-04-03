@@ -1,7 +1,10 @@
 package com.example.eecs4443project.view.activities;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
+// added for testing
+import android.widget.Button;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
@@ -21,6 +24,8 @@ public class HabitsActivity extends AppCompatActivity implements HabitDashboardA
     private HabitViewModel habitViewModel;
     private HabitDashboardAdapter adapter;
 
+    public Button addNewHabit;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,12 +42,18 @@ public class HabitsActivity extends AppCompatActivity implements HabitDashboardA
         habitViewModel = new ViewModelProvider(this).get(HabitViewModel.class);
 
         // Observe LiveData from Room
-        habitViewModel.getAllHabits().observe(this, habits -> {
+        // Only views the selectedHabits now, not all of them
+        habitViewModel.getSelectedHabits().observe(this, habits -> {
             adapter.setHabits(habits);
         });
 
-        // TEMP: Dummy habits
-        //remove
+        addNewHabit = findViewById(R.id.addHabitBtn);
+        addNewHabit.setOnClickListener(v -> {
+            // A new habit will navigate users to the list of habits
+            Intent intent = new Intent(HabitsActivity.this, NewHabitsActivity.class);
+            startActivity(intent);
+
+        });
 
 
         // NAV BAR
@@ -88,15 +99,19 @@ public class HabitsActivity extends AppCompatActivity implements HabitDashboardA
         intent.putExtra("desc", habit.getDescription());
         intent.putExtra("progress", habit.getProgress());
         intent.putExtra("starred", habit.getStarred());
+        intent.putExtra("isSelected", habit.getIsSelected());
 
         startActivity(intent);
     }
+
+
 
     @Override
     public void onHabitLongPressed(Habit habit) {
         new AlertDialog.Builder(this)
                 .setTitle("Delete Habit")
                 .setMessage("Are you sure?")
+                // Might change this to be unselected ------------------------------------------------------------
                 .setPositiveButton("Yes", (d, i) -> habitViewModel.delete(habit))
                 .setNegativeButton("No", null)
                 .show();
@@ -106,4 +121,6 @@ public class HabitsActivity extends AppCompatActivity implements HabitDashboardA
     public void onStarToggled(Habit habit) {
         habitViewModel.toggleStar(habit);
     }
+
+
 }

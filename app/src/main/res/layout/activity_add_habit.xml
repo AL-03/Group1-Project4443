@@ -1,0 +1,246 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:padding="16dp"
+    android:background="#CFE8FF">
+
+    <!-- Everything is contained within a linearLayout -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0">
+
+        <!-- The description of the activity "Add Habit" -->
+        <TextView
+            android:id="@+id/addactivityDesc"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="48dp"
+            android:layout_marginEnd="20dp"
+            android:text="Add Habit"
+            android:textAlignment="textStart"
+            android:textColor="#000000"
+            android:textSize="30dp"
+            android:textStyle="bold" />
+
+        <!-- A label describing the title -->
+        <TextView
+            android:id="@+id/addHabitTitleLabel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="30dp"
+            android:layout_marginEnd="24dp"
+            android:layout_marginBottom="5dp"
+            android:fontFamily="sans-serif-black"
+            android:text="Habit Title"
+            android:textColor="#000000"
+            android:textSize="16sp" />
+
+        <!-- The editable title fo the habit which is checked to not be null before adding -->
+        <EditText
+            android:id="@+id/addHabitTitle"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="24dp"
+            android:layout_marginEnd="24dp"
+            android:layout_marginBottom="16dp"
+            android:layout_weight="0"
+            android:hint="Habit title"
+            android:textColor="#000C1A"
+
+            android:autofillHints="text"
+            android:background="@drawable/rounded_card"
+            android:ems="10"
+
+            android:inputType="text"
+            android:paddingStart="14dp"
+            android:paddingEnd="14dp"
+            android:text=""
+            android:textColorHint="#858585"/>
+
+
+        <!-- Dividing view -->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#DDDDDD" />
+
+        <!-- A label to describe the purpose of the seekbar and edittext with % hint -->
+        <TextView
+            android:id="@+id/detailProgressLabel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="24dp"
+            android:layout_marginBottom="5dp"
+            android:text="Progress"
+            android:textColor="#002147"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+        <!-- A container for the progress seek bar and corresponding text field -->
+        <LinearLayout
+            android:id="@+id/addProgressLayout"
+            android:layout_width="fill_parent"
+            android:layout_height="50dp"
+            android:layout_marginBottom="16dp"
+            android:gravity="center_vertical|center_horizontal"
+            android:orientation="horizontal">
+
+            <!-- The progress bar that corresponds to the edittext field next to it-->
+            <SeekBar
+                android:id="@+id/addProgressSeekBar"
+                style="?android:attr/progressBarStyleHorizontal"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginStart="24dp"
+                android:layout_marginEnd="0dp"
+                android:layout_weight="4"
+                android:max="100"
+                android:progressTint="#003775"
+                tools:layout_gravity="left|center" />
+
+            <!-- The progress integer, which is synced with the bar in the backend -->
+            <EditText
+                android:id="@+id/addProgressInput"
+                android:layout_width="26dp"
+                android:layout_height="match_parent"
+                android:layout_marginEnd="24dp"
+                android:layout_weight="1.5"
+                android:background="@drawable/rounded_input"
+                android:hint="0 - 100%"
+                android:inputType="number"
+                android:textAlignment="center"
+                tools:layout_gravity="right|fill|center" />
+
+
+        </LinearLayout>
+
+        <!-- A divider view -->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:background="#DDDDDD" />
+
+        <!-- The label describing the description editText beneath it-->
+        <TextView
+            android:id="@+id/addHabitDescLabel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="24dp"
+            android:layout_marginBottom="5dp"
+            android:text="Habit Description"
+            android:textColor="#002147"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+        <!-- The description of the habit is multiline editable field-->
+        <EditText
+            android:id="@+id/addHabitDesc"
+            android:layout_width="match_parent"
+            android:layout_height="160dp"
+            android:layout_marginStart="24dp"
+            android:layout_marginEnd="24dp"
+            android:layout_marginBottom="16dp"
+            android:autofillHints="textMultiLine"
+            android:background="@drawable/rounded_card"
+            android:ems="10"
+            android:gravity="start|top"
+            android:hint="Description"
+            android:paddingStart="14dp"
+            android:paddingTop="10dp"
+            android:paddingEnd="14dp"
+            android:paddingBottom="10dp" />
+
+    <!-- Linear Layout to contain the buttons in a horizontal manner -->
+        <LinearLayout
+            android:id="@+id/buttonLayout"
+            style="?android:attr/buttonBarStyle"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="24dp"
+            android:layout_marginEnd="24dp"
+            android:layout_marginBottom="50dp"
+            android:orientation="horizontal">
+
+            <!--
+            The cancel button is set to be 100dp wide
+            The start and end margins ensure the spacing between the frame and
+                the adjacent button
+            The background tint of the button matches the text field inputs
+            The colour is meant to be less attractive than the create task button
+                so that users are more inclined to create the task after entering their info
+            The button's text is set to be centred within the button
+            The padding within the button also ensures centering within the text
+            The button is aligned to the left of the layout
+            -->
+
+            <!--
+            The add button is set to be 100dp wide
+            The start and end margins ensure the spacing between the layout and
+                the adjacent button
+            The background tint of the button is meant to stand out among the other UI elements
+            The button's text is set to be centred within the button
+            The padding within the button also ensures centering within the text
+            The button is aligned to the right of the layout
+            -->
+
+            <Button
+                android:id="@+id/addCancelButton"
+                style="?android:attr/buttonBarButtonStyle"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="15dp"
+                android:layout_weight="1"
+                android:background="@drawable/rounded_button"
+                android:backgroundTint="#D75757"
+                android:gravity="center_horizontal|center_vertical"
+                android:paddingLeft="0dp"
+                android:paddingTop="6dp"
+                android:paddingRight="0dp"
+                android:paddingBottom="6dp"
+                android:text="Cancel"
+                android:textColor="#000000"
+                tools:layout_gravity="left" />
+
+            <Button
+                android:id="@+id/addAddButton"
+                style="?android:attr/buttonBarButtonStyle"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="15dp"
+                android:layout_marginEnd="10dp"
+                android:layout_weight="1"
+                android:background="@drawable/rounded_button"
+                android:gravity="center_horizontal|center_vertical"
+                android:paddingLeft="0dp"
+                android:paddingTop="6dp"
+                android:paddingRight="0dp"
+                android:paddingBottom="6dp"
+                android:text="Add Habit"
+                android:textColor="#000000"
+                tools:layout_gravity="right" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
