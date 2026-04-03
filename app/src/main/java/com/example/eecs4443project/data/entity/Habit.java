@@ -1,6 +1,8 @@
 package com.example.eecs4443project.data.entity;
 
+import androidx.annotation.NonNull;
 import androidx.room.Entity;
+import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
 // Defines the Habits SQLite table
@@ -15,13 +17,27 @@ public class Habit {
     private int starred;
     private int progress;
 
-    // Constructor
+    //Trying this method instead of the SelectedHabit list
+    private boolean isSelected;
+
+    // Constructor for Habit creation - should not have a manual id, since it is auto-generated
+    public Habit(String title, String description, int starred, int progress) {
+        this.title = title;
+        this.description = description;
+        this.starred = starred;
+        this.progress=progress;
+        this.isSelected = false;
+    }
+
+    @Ignore
+    // Constructor when the id is already known and items need only be read
     public Habit(int id, String title, String description, int starred, int progress) {
         this.id=id;
         this.title = title;
         this.description = description;
         this.starred = starred;
         this.progress=progress;
+        this.isSelected=false;
     }
 
     // Getters and setters
@@ -66,4 +82,12 @@ public class Habit {
         this.progress = progress;
     }
 
+    // Trying this method instead of the SelectedHabit DAO
+    public boolean getIsSelected() {return this.isSelected;}
+
+    public void setIsSelected(boolean isSelected) {this.isSelected = isSelected;}
+
+
+
 }
+

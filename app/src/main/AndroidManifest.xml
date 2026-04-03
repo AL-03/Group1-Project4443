@@ -27,6 +27,7 @@
         <activity android:name=".view.activities.DashboardActivity"/>
         <activity android:name=".view.activities.HabitsActivity"/>
         <activity android:name=".view.activities.HabitDetailActivity"/>
+        <activity android:name=".view.activities.NewHabitsActivity"/>
 
     </application>
 

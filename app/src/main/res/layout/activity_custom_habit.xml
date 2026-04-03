@@ -1,0 +1,224 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="#CFE8FF"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <View
+        android:id="@+id/view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tools:layout_editor_absoluteY="19dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/activityDesc"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Add A Custom Habit"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="48dp"
+            android:layout_marginEnd="20dp"
+            android:textAlignment="textStart"
+            android:textColor="#000000"
+            android:textSize="30dp"
+            android:textStyle="bold"/>
+
+        <TextView
+            android:id="@+id/habitTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="30dp"
+            android:layout_marginEnd="24dp"
+            android:layout_marginBottom="5dp"
+            android:fontFamily="sans-serif-black"
+            android:textColor="#000000"
+            android:text="Habit Title"
+            android:textSize="16sp" />
+
+        <EditText
+            android:id="@+id/taskTitle"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_marginStart="24dp"
+            android:layout_marginEnd="24dp"
+            android:layout_marginBottom="16dp"
+            android:autofillHints="text"
+            android:ems="10"
+            android:hint="Name your custom habit"
+            android:background="@drawable/rounded_card"
+            android:inputType="text"
+            android:paddingStart="14dp"
+            android:paddingEnd="14dp"
+            android:text=""
+            android:textColor="#000000"
+            android:textColorHint="#858585" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:layout_marginEnd="24dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="5dp"
+            android:text="Starting Progress"
+            android:textColor="#002147"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="50dp"
+            android:layout_marginBottom="16dp"
+            android:gravity="center_vertical|center_horizontal"
+            android:orientation="horizontal">
+
+            <SeekBar
+                android:id="@+id/progressSeekBar"
+                style="?android:attr/progressBarStyleHorizontal"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginStart="24dp"
+                android:layout_marginEnd="0dp"
+                android:layout_weight="4"
+                android:max="100"
+                android:progressTint="#003775"
+                tools:layout_gravity="left|center" />
+
+            <EditText
+                android:id="@+id/progressInput"
+                android:layout_width="26dp"
+                android:layout_height="match_parent"
+                android:layout_marginEnd="24dp"
+                android:layout_weight="1.5"
+                android:background="@drawable/rounded_input"
+                android:hint="0 - 100%"
+                android:inputType="number"
+                android:textAlignment="center"
+                tools:layout_gravity="right|fill|center" />
+
+
+        </LinearLayout>
+
+
+
+        <TextView
+            android:id="@+id/habitDescription"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="24dp"
+            android:layout_marginBottom="5dp"
+            android:fontFamily="sans-serif-black"
+            android:textColor="#000000"
+            android:text="Habit Description"
+            android:textSize="16sp" />
+
+        <EditText
+            android:id="@+id/taskDescLabel"
+            android:layout_width="match_parent"
+            android:layout_height="160dp"
+            android:layout_marginStart="24dp"
+            android:layout_marginEnd="24dp"
+            android:layout_marginBottom="16dp"
+            android:autofillHints="textMultiLine"
+            android:background="@drawable/rounded_card"
+            android:ems="10"
+            android:gravity="start|top"
+            android:hint="Describe your custom habit"
+            android:inputType="textMultiLine"
+            android:paddingStart="14dp"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:paddingEnd="14dp"
+            android:textColor="#000000"
+            android:fontFamily="sans-serif"
+            android:textColorHint="#858585" />
+
+        <LinearLayout
+            android:id="@+id/buttonLayout"
+            style="?android:attr/buttonBarStyle"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="24dp"
+            android:layout_marginBottom="50dp"
+            android:orientation="horizontal">
+
+            <!--
+            The cancel button is set to be 100dp wide
+            The start and end margins ensure the spacing between the frame and
+                the adjacent button
+            The background tint of the button matches the text field inputs
+            The colour is meant to be less attractive than the create task button
+                so that users are more inclined to create the task after entering their info
+            The button's text is set to be centred within the button
+            The padding within the button also ensures centering within the text
+            The button is aligned to the left of the layout
+            -->
+            <Button
+                android:id="@+id/cancelButton"
+                style="?android:attr/buttonBarButtonStyle"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="15dp"
+                android:layout_weight="1"
+                android:background="@drawable/rounded_button"
+                android:backgroundTint="#D75757"
+                android:gravity="center_horizontal|center_vertical"
+                android:paddingLeft="5dp"
+                android:paddingTop="6dp"
+                android:paddingRight="5dp"
+                android:paddingBottom="6dp"
+                android:text="Cancel"
+                android:textColor="#000000"
+                tools:layout_gravity="left" />
+
+            <!--
+            The create task button is set to be 100dp wide
+            The start and end margins ensure the spacing between the layout and
+                the adjacent button
+            The background tint of the button is meant to stand out among the other UI elements
+            The button's text is set to be centred within the button
+            The padding within the button also ensures centering within the text
+            The button is aligned to the right of the layout
+            -->
+            <Button
+                android:id="@+id/createTaskButton"
+                style="?android:attr/buttonBarButtonStyle"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="15dp"
+                android:layout_marginEnd="10dp"
+                android:layout_weight="1"
+                android:background="@drawable/rounded_button"
+                android:gravity="center_horizontal|center_vertical"
+                android:paddingLeft="5dp"
+                android:paddingTop="6dp"
+                android:paddingRight="5dp"
+                android:paddingBottom="6dp"
+                android:text="Add Habit"
+                android:textColor="#000000"
+                tools:layout_gravity="right" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

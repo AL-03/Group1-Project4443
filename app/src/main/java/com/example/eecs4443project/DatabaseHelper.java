@@ -25,6 +25,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 "title TEXT," +
                 "description TEXT," +
                 "starred INTEGER)");
+
+        db.execSQL("CREATE TABLE selected_habits (" +
+                "habitId INTEGER)");
+
     }
 
     @Override

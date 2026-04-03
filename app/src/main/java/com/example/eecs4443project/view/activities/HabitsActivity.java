@@ -1,7 +1,10 @@
 package com.example.eecs4443project.view.activities;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
+// added for testing
+import android.widget.Button;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
@@ -20,6 +23,8 @@ public class HabitsActivity extends AppCompatActivity implements HabitDashboardA
 
     private HabitViewModel habitViewModel;
     private HabitDashboardAdapter adapter;
+
+    public Button addNewHabit;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +45,17 @@ public class HabitsActivity extends AppCompatActivity implements HabitDashboardA
         habitViewModel.getAllHabits().observe(this, habits -> {
             adapter.setHabits(habits);
         });
+
+
+        addNewHabit = findViewById(R.id.addHabitBtn);
+        addNewHabit.setOnClickListener(v -> {
+            // Cancel then takes the user back to the Main Activity
+            Intent intent = new Intent(HabitsActivity.this, NewHabitsActivity.class);
+            startActivity(intent);
+
+        });
+
+
 
         // TEMP: Dummy habits
         //remove
@@ -89,9 +105,12 @@ public class HabitsActivity extends AppCompatActivity implements HabitDashboardA
         intent.putExtra("desc", habit.getDescription());
         intent.putExtra("progress", habit.getProgress());
         intent.putExtra("starred", habit.getStarred());
+        intent.putExtra("isSelected", habit.getIsSelected());
 
         startActivity(intent);
     }
+
+
 
     @Override
     public void onHabitLongPressed(Habit habit) {
@@ -107,4 +126,8 @@ public class HabitsActivity extends AppCompatActivity implements HabitDashboardA
     public void onStarToggled(Habit habit) {
         habitViewModel.toggleStar(habit);
     }
+
+    // Add a new habit from a pre-determined list
+
+
 }

@@ -1,4 +1,7 @@
 <resources>
     <string name="app_name">EECS4443Project</string>
     <string name="login_button">Login</string>
+    <string name="add_habit">Add Habit</string>
+    <string name="create_custom_habit">Create Custom Habit</string>
+    <string name="add_a_custom_habit">Add a custom habit</string>
 </resources>

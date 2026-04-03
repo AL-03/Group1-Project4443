@@ -32,6 +32,8 @@ public class HabitDashboardAdapter extends RecyclerView.Adapter<HabitDashboardAd
         void onHabitClicked(Habit habit);
         void onHabitLongPressed(Habit habit);
         void onStarToggled(Habit habit);
+
+        // Adding the onAddNewHabitClicked(Button addNewHabit
     }
 
     public HabitDashboardAdapter(Context context, HabitClickListener listener) {
