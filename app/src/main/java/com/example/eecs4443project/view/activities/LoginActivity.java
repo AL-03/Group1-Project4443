@@ -33,9 +33,15 @@ public class LoginActivity extends AppCompatActivity {
         userViewModel = new ViewModelProvider(this).get(UserViewModel.class);
 
         // TEMP test user - remove when done testing
-        if (userViewModel.getUser("testuser", "password123") == null) {
-            userViewModel.register(new User("testuser", "password123"));
-        }
+        userViewModel.getUser("testuser", "password123")
+                .observe(this, user -> {
+                    if (user == null) {
+                        // User does NOT exist, so we can register them
+                        userViewModel.register(new User("testuser", "password123"));
+                    } else {
+                        // User already exists, so we don't need to do anything
+                    }
+                });
 
         loginBtn.setOnClickListener(v -> {
 
