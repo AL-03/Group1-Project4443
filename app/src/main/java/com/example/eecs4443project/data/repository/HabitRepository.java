@@ -16,13 +16,13 @@ import java.util.concurrent.Executors;
 public class HabitRepository {
     private HabitDao habitDao;
 
-    private SelectedHabitDao selHabitDao;
+    //private SelectedHabitDao selHabitDao;
     private LiveData<List<Habit>> allHabits;
 
     public HabitRepository(Application app) {
         AppDatabase db = AppDatabase.getInstance(app);
         habitDao = db.habitDao();
-        selHabitDao = db.selHabitDao();
+        //selHabitDao = db.selHabitDao();
         allHabits = habitDao.getAllHabits();
     }
 
@@ -96,9 +96,9 @@ public class HabitRepository {
         return selHabitDao.getSelectedHabits();
     }*/
 
-    public LiveData<List<Integer>> getSelectedHabitIds() {
-        return selHabitDao.getSelectedHabitIds();
-    }
+    //public LiveData<List<Integer>> getSelectedHabitIds() {
+    //    return selHabitDao.getSelectedHabitIds();
+    //}
 
 
     // Temporary dummy data - this is actually the full list of habits, but only a few will be added to the selected habits for the user initially
@@ -142,21 +142,24 @@ public class HabitRepository {
                 habitDao.insertHabit(meditate);
 
                 // add this to the selected list for users to see in their dashboard
+                study.setIsSelected(true);
                 habitDao.insertHabit(study);
-                habitDao.updateIsSelected(study.getId(), true);
+                //habitDao.updateIsSelected(study.getId(), true);
                 //selHabitDao.insertSelectedHabit(new SelectedHabit(habitDao.getHabit(study.getId()).getId()));
                 //selHabitDao.insertSelectedHabit(new SelectedHabit(study.getId()));
 
 
                 // add this to the selected list for users to see in their dashboard
+                study.setIsSelected(true);
                 habitDao.insertHabit(finishApp);
-                habitDao.updateIsSelected(finishApp.getId(), true);
+                //habitDao.updateIsSelected(finishApp.getId(), true);
                 //selHabitDao.insertSelectedHabit(new SelectedHabit(finishApp.getId()));
                 //selHabitDao.insertSelectedHabit(new SelectedHabit(habitDao.getHabit(finishApp.getId()).getId()));
 
                 // add this to the selected list for users to see in their dashboard
+                makeDinner.setIsSelected(true);
                 habitDao.insertHabit(makeDinner);
-                habitDao.updateIsSelected(makeDinner.getId(), true);
+                //habitDao.updateIsSelected(makeDinner.getId(), true);
                 //selHabitDao.insertSelectedHabit(new SelectedHabit(makeDinner.getId()));
                 //selHabitDao.insertSelectedHabit(new SelectedHabit(habitDao.getHabit(makeDinner.getId()).getId()));
             }

@@ -42,10 +42,14 @@ public class HabitsActivity extends AppCompatActivity implements HabitDashboardA
         habitViewModel = new ViewModelProvider(this).get(HabitViewModel.class);
 
         // Observe LiveData from Room
+        /*
         habitViewModel.getAllHabits().observe(this, habits -> {
             adapter.setHabits(habits);
         });
-
+        */
+        habitViewModel.getSelectedHabits().observe(this, habits -> {
+            adapter.setHabits(habits);
+        });
 
         addNewHabit = findViewById(R.id.addHabitBtn);
         addNewHabit.setOnClickListener(v -> {

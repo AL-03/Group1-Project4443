@@ -22,7 +22,7 @@ import java.util.ArrayList;
 import java.util.List;
 public class HabitListAdapter extends RecyclerView.Adapter<HabitListAdapter.ViewHolder> {
 
-    Context context;
+    //Context context;
     private List<Habit> habits = new ArrayList<>();
     // Ensures adapter (view) doesn't directly interact with the data (model)
     //private List<Integer> selectedHabits = new ArrayList<>();
@@ -34,7 +34,7 @@ public class HabitListAdapter extends RecyclerView.Adapter<HabitListAdapter.View
     }
 
     public HabitListAdapter(onHabitSelectedListener listener) {
-        this.context = context;
+       // this.context = context;
         this.listener = listener;
     }
 
@@ -67,8 +67,13 @@ public class HabitListAdapter extends RecyclerView.Adapter<HabitListAdapter.View
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.habit_list_item, parent, false);
+        return new ViewHolder(view);
+        /*
         return new ViewHolder(LayoutInflater.from(context)
                 .inflate(R.layout.habit_list_item, parent, false));
+
+        */
     }
 
     @Override

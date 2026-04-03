@@ -22,6 +22,8 @@ public class HabitDetailActivity extends AppCompatActivity {
     private SeekBar progressSeekBar;
     private ImageView starIcon;
 
+    private boolean isSelected;
+
     private boolean isChanged = false;
     private boolean isInitializing=true;
     private int starState = 0;
@@ -50,9 +52,13 @@ public class HabitDetailActivity extends AppCompatActivity {
         String desc = getIntent().getStringExtra("desc");
         int progress = getIntent().getIntExtra("progress", 0);
         int starred = getIntent().getIntExtra("starred", 0);
+        // When the habits from the selected habits are being updated in detail, "isSelected" should be true
+        isSelected = getIntent().getBooleanExtra("isSelected", true);
 
         //create a new habit item based on the intent data gathered
         habit = new Habit(id, title, desc, starred, progress);
+        // Set the isSelected to true for the new habit (by default would be false in constructor)
+        habit.setIsSelected(isSelected);
 
         //Set UI
         habitTitle.setText(title);
@@ -226,6 +232,7 @@ public class HabitDetailActivity extends AppCompatActivity {
         habit.setDescription(desc);
         habit.setProgress(progress);
         habit.setStarred(starState);
+        habit.setIsSelected(isSelected);
 
         viewModel.update(habit);
 

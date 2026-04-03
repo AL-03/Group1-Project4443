@@ -52,10 +52,15 @@ public class NewHabitsActivity extends AppCompatActivity implements HabitListAda
         habitListVM = new ViewModelProvider(this).get(HabitListViewModel.class);
 
         // Observe LiveData from Room
-        //habitViewModel.getFilteredHabits().observe(this, adapter::setHabits);
+        habitListVM.getFilteredHabits().observe(this, adapter::setHabits);
 
         //habitViewModel.getSelectedHabitIds().observe(this, adapter::setSelectedHabits);
 
+        // if the user wants to create a customHabit, they will open the activity
+        // that will create the custom habit and immediately add it to both lists
+        // by way of
+        //  -> setting the isSelected attribute of the new habit to true (selectedHabits can see it)
+        //  -> inserting the habit into the database (filteredHabits can see it)
         customHabit = findViewById(R.id.createCustomBtn);
         customHabit.setOnClickListener(v -> {
             Intent customIntent = new Intent(NewHabitsActivity.this, CustomHabitActivity.class);
@@ -65,17 +70,23 @@ public class NewHabitsActivity extends AppCompatActivity implements HabitListAda
 
         // Set up searchView
         habitSearch = findViewById(R.id.searchHabits);
+
+        // initially, the searchView does not have a cursor inside it
         habitSearch.clearFocus();
+
+        // whether the user submits the text they are quering, or they just change
+        // the text, the textListener will dynamically allow for the filtered list
+        // to be displayed rather than the initial full list of habits
         habitSearch.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
-            public boolean onQueryTextSubmit(String query) {
-                habitListVM.setFilterQuery(query);
+            public boolean onQueryTextSubmit(String habitQuery) {
+                habitListVM.setFilterQuery(habitQuery);
                 return true;
             }
 
             @Override
-            public boolean onQueryTextChange(String habitText) {
-                habitListVM.setFilterQuery(habitText);
+            public boolean onQueryTextChange(String habitQuery) {
+                habitListVM.setFilterQuery(habitQuery);
                 return true;
             }
         });
@@ -83,6 +94,9 @@ public class NewHabitsActivity extends AppCompatActivity implements HabitListAda
 
     }
 
+    // If a habit is selected among the list, a popup will allow the user
+    // to add the habit, which should really only update the isSelected
+    // flag to true
     @Override
     public void onHabitSelected(Habit habit) {
 
