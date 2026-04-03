@@ -13,12 +13,15 @@ public class Habit {
     private String title;
     private String description;
     private int starred;
+    private int progress;
 
     // Constructor
-    public Habit(String title, String description, int starred) {
+    public Habit(int id, String title, String description, int starred, int progress) {
+        this.id=id;
         this.title = title;
         this.description = description;
         this.starred = starred;
+        this.progress=progress;
     }
 
     // Getters and setters
@@ -54,4 +57,13 @@ public class Habit {
     public void setStarred(int starred) {
         this.starred = starred;
     }
+
+    public int getProgress() {
+        return progress;
+    }
+
+    public void setProgress(int progress) {
+        this.progress = progress;
+    }
+
 }

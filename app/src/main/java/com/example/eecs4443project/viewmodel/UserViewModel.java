@@ -36,4 +36,8 @@ public class UserViewModel extends AndroidViewModel {
     {
         return repository.getUser(id);
     }
+  
+    public User getUser(String username, String password) {
+        return repository.getUser(username, password);
     }
+}

@@ -30,7 +30,6 @@ public class LoginActivity extends AppCompatActivity {
         password = findViewById(R.id.password);
         loginBtn = findViewById(R.id.loginBtn);
 
-
         userViewModel = new ViewModelProvider(this).get(UserViewModel.class);
 
         // TEMP test user - remove when done testing
@@ -51,22 +50,35 @@ public class LoginActivity extends AppCompatActivity {
                 return;
             }
 
-            userViewModel.getUser(user, pass).observe(this, loggedInUser -> {
-                if (loggedInUser != null) {
+            new Thread(() -> {
+                try {
+                    User loggedInUser = userViewModel.getUser(user, pass);
 
-                    int userId = loggedInUser.getId();
+                    runOnUiThread(() -> {
+                        if (loggedInUser != null) {
 
-                    SessionManager.setUserId(LoginActivity.this, userId);
+                            int userId = loggedInUser.getId();
 
-                    Toast.makeText(this, "Login Successful", Toast.LENGTH_SHORT).show();
+                            SessionManager.setUserId(LoginActivity.this, userId);
 
-                    startActivity(new Intent(LoginActivity.this, DashboardActivity.class));
-                    finish();
+                            Toast.makeText(this, "Login Successful", Toast.LENGTH_SHORT).show();
 
-                } else {
-                    Toast.makeText(this, "Invalid credentials", Toast.LENGTH_SHORT).show();
+                            startActivity(new Intent(LoginActivity.this, DashboardActivity.class));
+                            finish();
+
+                        } else {
+                            Toast.makeText(this, "Invalid credentials", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+
+                } catch (Exception e) {
+                    Log.e("LOGIN_ERROR", "Error during login", e);
+
+                    runOnUiThread(() ->
+                            Toast.makeText(this, "Login error", Toast.LENGTH_SHORT).show()
+                    );
                 }
-            });
+            }).start();
         });
     }
 }

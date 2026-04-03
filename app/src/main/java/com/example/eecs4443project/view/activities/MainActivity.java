@@ -8,6 +8,7 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.example.eecs4443project.NotificationHelper;
 import com.example.eecs4443project.R;
 
 public class MainActivity extends AppCompatActivity {
@@ -22,5 +23,7 @@ public class MainActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+        NotificationHelper.createNotificationChannel(this);
     }
+
 }

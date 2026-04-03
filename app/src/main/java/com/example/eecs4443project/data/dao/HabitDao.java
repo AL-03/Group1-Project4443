@@ -37,4 +37,7 @@ public interface HabitDao {
 
     @Query("UPDATE habits SET starred = :newVal WHERE id = :id")
     void updateStar(int id, int newVal);
+
+    @Query("SELECT COUNT(*) FROM habits")
+    int getCount();
 }

@@ -10,47 +10,51 @@ public class Reminder {
 
     @PrimaryKey(autoGenerate = true)
     private int id;
+
     private String title;
     private String date;
     private String time;
 
-    public Reminder(String title, String date, String time) {
+    private boolean completed;
+    private boolean recurring;
+
+    public Reminder(String title, String date, String time, boolean completed, boolean recurring) {
         this.title = title;
         this.date = date;
         this.time = time;
+        this.completed = completed;
+        this.recurring = recurring;
     }
 
-    // Getters and setters
+    // getters and setters
 
     public int getId() {
-        return id;
-    }
-
+        return id; }
     public void setId(int id) {
-        this.id = id;
-    }
+        this.id = id; }
 
     public String getTitle() {
-        return title;
-    }
-
+        return title; }
     public void setTitle(String title) {
-        this.title = title;
-    }
+        this.title = title; }
 
     public String getDate() {
-        return date;
-    }
-
+        return date; }
     public void setDate(String date) {
-        this.date = date;
-    }
+        this.date = date; }
 
     public String getTime() {
-        return time;
-    }
-
+        return time; }
     public void setTime(String time) {
-        this.time = time;
-    }
+        this.time = time; }
+
+    public boolean isCompleted() {
+        return completed; }
+    public void setCompleted(boolean completed) {
+        this.completed = completed; }
+
+    public boolean isRecurring() {
+        return recurring; }
+    public void setRecurring(boolean recurring) {
+        this.recurring = recurring; }
 }

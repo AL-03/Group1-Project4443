@@ -14,8 +14,10 @@ import java.util.List;
 @Dao
 public interface ReminderDao {
 
+    //insert, update, and delete functions
+
     @Insert
-    void insertReminder(Reminder reminder);
+    long insertReminder(Reminder reminder);
 
     @Update
     void updateReminder(Reminder reminder);
@@ -23,9 +25,30 @@ public interface ReminderDao {
     @Delete
     void deleteReminder(Reminder reminder);
 
-    @Query("SELECT * FROM reminders ORDER BY date, time")
+    //get all from database
+    @Query("SELECT * FROM reminders ORDER BY date ASC, time ASC")
     LiveData<List<Reminder>> getAllReminders();
 
-    @Query("SELECT * FROM reminders WHERE id = :id ORDER BY date, time")
-    LiveData<Reminder> getReminder(int id);
+    //get only active reminders
+    @Query("SELECT * FROM reminders WHERE completed = 0 ORDER BY date ASC, time ASC")
+    LiveData<List<Reminder>> getActiveReminders();
+
+    //gets completed reminders
+    @Query("SELECT * FROM reminders WHERE completed = 1 ORDER BY date DESC, time DESC")
+    LiveData<List<Reminder>> getCompletedReminders();
+
+    //get a single reminder
+    @Query("SELECT * FROM reminders WHERE id = :id LIMIT 1")
+    Reminder getReminderById(int id);
+
+    //count
+    @Query("SELECT COUNT(*) FROM reminders")
+    int getCount();
+
+   //update status
+    @Query("UPDATE reminders SET completed = 1 WHERE id = :id")
+    void markAsCompleted(int id);
+
+    @Query("UPDATE reminders SET completed = 0 WHERE id = :id")
+    void markAsActive(int id);
 }

@@ -4,7 +4,7 @@
     android:layout_height="wrap_content"
     android:orientation="vertical">
 
-    <!-- HABIT ROW -->
+    <!-- habit row -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -12,7 +12,7 @@
         android:padding="12dp"
         android:gravity="center_vertical">
 
-        <!-- LEFT SIDE: Title + Progress -->
+        <!-- left side title and progress bar -->
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -26,26 +26,30 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
 
-            <!-- SHORTER PROGRESS BAR -->
+            <!-- horizontal progress bar -->
             <ProgressBar
                 android:id="@+id/habitProgress"
                 style="?android:attr/progressBarStyleHorizontal"
                 android:layout_width="200dp"
+                android:progressTint="#003775"
+                android:indeterminateTint="#002147"
                 android:layout_height="wrap_content"
                 android:max="100"/>
         </LinearLayout>
 
-        <!-- RIGHT SIDE: STAR -->
-        <ImageButton
+        <!-- heart on the right side -->
+        <ImageView
             android:id="@+id/starIcon"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
             android:background="@android:color/transparent"
-            android:src="@android:drawable/btn_star_big_off"
+            android:src="@drawable/baseline_favorite_border_24"
+            android:clickable="true"
+            android:focusable="true"
             android:contentDescription="Star habit"/>
     </LinearLayout>
 
-    <!-- DIVIDER LINE -->
+    <!-- divider line -->
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"

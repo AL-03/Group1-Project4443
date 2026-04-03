@@ -3,22 +3,20 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="#CFE8FF"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    >
+    android:layout_height="match_parent">
 
-    <!--set the page as a scrollview so users can scroll the entire page
-    to access the different cards -->
+    <!-- Sets the entire page to be scrollable -->
     <ScrollView
         android:id="@+id/scrollContent"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:fillViewport="true"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toTopOf="@id/bottomNav"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
 
-
-        <!-- constrain everything in a linear layout -->
+        <!-- Set up a vertical linear layout to display the page-->
         <LinearLayout
             android:orientation="vertical"
             android:paddingTop="32dp"
@@ -28,10 +26,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <!-- greeting message for the user to appear at the top of the dashboard screen
-             the message is dependant on the time of day and the username-->
+            <!-- Greeting -->
             <TextView
                 android:id="@+id/greetingText"
+                android:textColor="#002147"
                 android:textSize="22sp"
                 android:textStyle="bold"
                 android:layout_marginTop="16dp"
@@ -39,64 +37,156 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
 
-            <!-- this sets up a habits card to display the chosen habits -->
+        <!--Create a linear layout for the stats section -->
+        <LinearLayout
+            android:orientation="vertical"
+            android:background="@drawable/rounded_card"
+            android:padding="20dp"
+            android:layout_marginBottom="16dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+
+            <TextView
+                android:id="@+id/lineChartTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="8dp"
+                android:text="Average Habit Progress"
+                android:textColor="#002147"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+                <!-- line chart -->
+                <com.github.mikephil.charting.charts.BarChart
+                    android:id="@+id/progressChart"
+                    android:layout_width="match_parent"
+                    android:layout_height="250dp"
+                    android:layout_marginTop="16dp" />
+
+                <TextView
+                    android:id="@+id/xAxisLabel"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Completion Percentage"
+                    android:textAlignment="center"
+                    android:textSize="12sp"
+                    android:textColor="@color/black"
+                    android:paddingTop="4dp"/>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="#CCCCCC"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginBottom="16dp"/>
+
+
+                <TextView
+                    android:id="@+id/pieChartTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Habit Completion Breakdown"
+                    android:textColor="#002147"
+                    android:textStyle="bold"
+                    android:textSize="18sp"
+                    android:layout_marginTop="12dp"
+                    android:layout_marginBottom="8dp"/>
+
+                <!-- Pie chart -->
+                <com.github.mikephil.charting.charts.PieChart
+                    android:id="@+id/pieChart"
+                    android:layout_width="match_parent"
+                    android:layout_height="250dp"
+                    android:layout_marginTop="16dp"/>
+        </LinearLayout>
+
+            <!-- Sets up a vertical linear layout for the habits section -->
             <LinearLayout
                 android:orientation="vertical"
                 android:background="@drawable/rounded_card"
-                android:padding="12dp"
+                android:padding="20dp"
                 android:layout_marginBottom="16dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-                <!-- textview for the habit stats -->
+
                 <TextView
                     android:id="@+id/statsText"
                     android:textSize="16sp"
+                    android:textColor="#003775"
                     android:layout_marginBottom="12dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
 
-                <!-- sets the label as "My Habits" -->
                 <TextView
                     android:text="My Habits"
+                    android:textColor="#002147"
                     android:textStyle="bold"
                     android:textSize="18sp"
                     android:layout_marginBottom="8dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
 
+                <!-- This creates a textview which appears if the user has
+                not yet favourited any habits to display-->
                 <TextView
                     android:id="@+id/emptyHabitsText"
-                    android:text="Favourite habits to display them here"
+                    android:text="Favourite some habits to display them here"
                     android:textColor="#666"
                     android:visibility="gone"
                     android:layout_marginBottom="8dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
 
-                <!-- sets up a recyclerview for the habits -->
-                <androidx.recyclerview.widget.RecyclerView
+                <com.example.eecs4443project.view.NonScrollableRecyclerView
                     android:id="@+id/habitsRecycler"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"/>
+                    android:layout_height="wrap_content"
+                    android:nestedScrollingEnabled="false"
+                    android:overScrollMode="never"/>
             </LinearLayout>
 
-            <!-- reminders card -->
+            <!-- Sets up a vertical linear layout for the reminders section -->
             <LinearLayout
                 android:orientation="vertical"
                 android:background="@drawable/rounded_card"
-                android:padding="12dp"
+                android:padding="20dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical|center_horizontal"
+                    android:orientation="horizontal">
                 <TextView
-                    android:text="Reminders"
+                    android:text="My Reminders"
+                    android:textColor="#002147"
                     android:textStyle="bold"
+                    android:gravity="left"
+                    android:layout_weight="4"
                     android:textSize="18sp"
+                    android:layout_marginTop="8dp"
                     android:layout_marginBottom="8dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
 
+
+                <!-- Uses an image as a button to add a new reminder -->
+                <ImageButton
+                    android:id="@+id/addReminderBtn"
+                    android:src="@drawable/outline_reminder"
+                    android:layout_weight="1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+
+                    android:background="?attr/selectableItemBackgroundBorderless"/>
+
+                </LinearLayout>
+
+                <!-- This textview will appear if the user does not have any reminders-->
                 <TextView
                     android:id="@+id/emptyRemindersText"
                     android:text="No upcoming reminders"
@@ -106,28 +196,29 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
 
-                <androidx.recyclerview.widget.RecyclerView
+
+                <com.example.eecs4443project.view.NonScrollableRecyclerView
                     android:id="@+id/reminderRecycler"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"/>
+                    android:layout_height="wrap_content"
+                    android:nestedScrollingEnabled="false"
+                    android:overScrollMode="never"/>
             </LinearLayout>
 
         </LinearLayout>
     </ScrollView>
 
-    <!-- bottom navigation bar -->
+    <!-- Bottom Navigation -->
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottomNav"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-
         app:menu="@menu/bottom_nav_menu"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:itemIconTint="@drawable/nav_item_color"
         app:itemTextColor="@drawable/nav_item_color"
-        android:background="@color/nav_background"
-        />
+        android:background="@color/nav_background"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
