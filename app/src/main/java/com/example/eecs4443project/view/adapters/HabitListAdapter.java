@@ -83,7 +83,7 @@ public class HabitListAdapter extends RecyclerView.Adapter<HabitListAdapter.View
         holder.title.setText(habit.getTitle());
 
         // colour shift and make sure they cannot select something that is already selected
-        if (selHabits.contains(habit.getId())) {
+        if (habit.getIsSelected()) {
             holder.itemView.setAlpha(0.5f);
             holder.itemView.setClickable(false);
         }
