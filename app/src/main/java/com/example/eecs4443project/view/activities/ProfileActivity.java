@@ -31,7 +31,7 @@ public class ProfileActivity extends AppCompatActivity {
 
     private UserViewModel viewModel;
     private EditText usernameDisplay, passwordDisplay;
-    private static EditText journalPassword;
+    private static EditText journalDisplay;
     private Button saveChanges, lightTheme, darkTheme;
     private Switch journalPasswordToggle;
     private LinearLayout journalSettings;
@@ -60,10 +60,8 @@ public class ProfileActivity extends AppCompatActivity {
         usernameDisplay = findViewById(R.id.username);
         passwordDisplay = findViewById(R.id.password);
         saveChanges = findViewById(R.id.saveButton);
-        lightTheme = findViewById(R.id.lightButton);
-        darkTheme = findViewById(R.id.darkButton);
         journalSettings = findViewById(R.id.journalSettings);
-        journalPassword = findViewById(R.id.journalPassword);
+        journalDisplay = findViewById(R.id.journalPassword);
         journalPasswordToggle = findViewById(R.id.privacyToggle);
         nav = findViewById(R.id.bottomNav);
 
@@ -105,20 +103,6 @@ public class ProfileActivity extends AppCompatActivity {
             }
         });
 
-        // Change themes
-        darkTheme.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                nightMode = true;
-            }
-        });
-        lightTheme.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                nightMode = false;
-            }
-        });
-
         // When clicked, allow editing of credentials
         usernameDisplay.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -134,6 +118,20 @@ public class ProfileActivity extends AppCompatActivity {
             }
         });
         passwordDisplay.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Allow editing
+                passwordDisplay.setInputType(InputType.TYPE_CLASS_TEXT);
+                // Makes keyboard appear
+                passwordDisplay.setFocusableInTouchMode(true);
+                // Shows caret
+                passwordDisplay.setCursorVisible(true);
+                // Enters edit mode
+                passwordDisplay.requestFocus();
+            }
+        });
+
+        journalDisplay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // Allow editing
@@ -171,6 +169,18 @@ public class ProfileActivity extends AppCompatActivity {
             }
         });
 
+        journalDisplay.setOnFocusChangeListener((v, hasFocus) -> {
+            if (!hasFocus) {
+                passwordDisplay.setInputType(InputType.TYPE_TEXT_VARIATION_PASSWORD);
+                passwordDisplay.setFocusable(false);
+                passwordDisplay.setCursorVisible(false);
+
+                // Hide keyboard
+                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
+            }
+        });
+
         // If privacyToggle is off, hide the journal password content
         journalPasswordToggle.setOnCheckedChangeListener((buttonView, isChecked) -> {
             if (isChecked) {
@@ -195,16 +205,6 @@ public class ProfileActivity extends AppCompatActivity {
                 if (!passwordDisplay.getText().toString().isEmpty() && !usernameDisplay.getText().toString().isEmpty() && (!user.getUsername().equals(usernameDisplay.getText().toString()) || ! user.getPassword().equals(passwordDisplay.getText().toString()))) {
                     user.setUsername(usernameDisplay.getText().toString());
                     user.setPassword(passwordDisplay.getText().toString());
-                }
-
-                // Change themes
-                if(nightMode)
-                {
-                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
-                }
-                else
-                {
-                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
                 }
 
                 Toast.makeText(ProfileActivity.this, "Successfully saved changes", Toast.LENGTH_SHORT).show();
@@ -243,6 +243,6 @@ public class ProfileActivity extends AppCompatActivity {
 
     public static String getJournalPassword()
     {
-        return journalPassword.getText().toString();
+        return journalDisplay.getText().toString();
     }
 }

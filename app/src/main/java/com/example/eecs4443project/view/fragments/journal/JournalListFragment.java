@@ -1,5 +1,6 @@
 package com.example.eecs4443project.view.fragments.journal;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
@@ -10,6 +11,8 @@ import android.view.ViewGroup;
 import android.widget.PopupWindow;
 import android.widget.Toast;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
@@ -33,6 +36,21 @@ public class JournalListFragment extends Fragment {
     private JournalListAdapter adapter;
     //journal password
     private static boolean isPasswordCorrect = false;
+
+    private Journal pendingJournal;
+
+    private final ActivityResultLauncher<Intent> passwordLauncher = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            result -> {
+                if (result.getResultCode() == Activity.RESULT_OK) {
+                    // This runs ONLY after the user enters the correct password and the activity finishes
+                    if(isPasswordCorrect && pendingJournal != null)
+                    {
+                        navigateToJournalDetail(pendingJournal);
+                    }
+                }
+            }
+    );
 
     // Inflates the fragment's view
     @Override
@@ -79,21 +97,14 @@ public class JournalListFragment extends Fragment {
                 // Passes journal ID to detailed fragment
                 if(ProfileActivity.isJournalPassword())
                 {
+                    pendingJournal = journal;
                     Intent intent = new Intent(requireContext(), JournalPasswordPopupActivity.class);
                     startActivity(intent);
                 }
 
-                if(isPasswordCorrect || !ProfileActivity.isJournalPassword())
+                else
                 {
-
-                    isPasswordCorrect = false;
-                    JournalDetailFragment fragment = JournalDetailFragment.newInstance(journal.getId());
-                    // Replaces current fragment with JournalDetailFragment and will return to current fragment if Back button is clicked
-                    requireActivity().getSupportFragmentManager()
-                            .beginTransaction()
-                            .replace(R.id.journal_fragment_container, fragment)
-                            .addToBackStack(null)
-                            .commit();
+                    navigateToJournalDetail(journal);
                 }
             }
 
@@ -133,7 +144,17 @@ public class JournalListFragment extends Fragment {
         });
     }
 
-    public static void  isJournalPasswordCorrect(boolean bol)
+    private void navigateToJournalDetail(Journal journal) {
+        JournalDetailFragment fragment = JournalDetailFragment.newInstance(journal.getId());
+        // Replaces current fragment with JournalDetailFragment and will return to current fragment if Back button is clicked
+        requireActivity().getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.journal_fragment_container, fragment)
+                .addToBackStack(null)
+                .commit();
+    }
+
+    public static void  setJournalPasswordCorrect(boolean bol)
     {
         isPasswordCorrect = bol;
     }

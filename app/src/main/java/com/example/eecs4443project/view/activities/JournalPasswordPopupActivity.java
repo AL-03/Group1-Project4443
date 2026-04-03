@@ -37,7 +37,8 @@ public class JournalPasswordPopupActivity extends AppCompatActivity {
             public void onClick(View v) {
                 if(!passwordInput.getText().toString().isEmpty() && passwordInput.getText().toString().equals(ProfileActivity.getJournalPassword()))
                 {
-                    JournalListFragment.isJournalPasswordCorrect(true);
+                    JournalListFragment.setJournalPasswordCorrect(true);
+                    finish();
                 }
                 else
                 {
@@ -51,8 +52,8 @@ public class JournalPasswordPopupActivity extends AppCompatActivity {
         cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                notification.setText("");
                 finish();
-
             }
 
         });
