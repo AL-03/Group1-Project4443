@@ -33,7 +33,7 @@ public interface HabitDao {
 
     // Get a specific habit
     @Query("SELECT * FROM habits WHERE id = :id")
-    Habit getHabit(int id);
+    LiveData<Habit> getHabit(int id);
 
     @Query("UPDATE habits SET starred = :newVal WHERE id = :id")
     void updateStar(int id, int newVal);

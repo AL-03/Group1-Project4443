@@ -19,6 +19,19 @@ public class UserRepository {
         AppDatabase.databaseWriteExecutor.execute(() -> userDao.insertUser(user));
     }
 
+    public LiveData<User> getUser(String username, String password) {
+        return userDao.getUser(username, password);
+    }
+
+    public void delete(String username)
+    {
+        AppDatabase.databaseWriteExecutor.execute(() -> userDao.delete(username));
+    }
+
+    public LiveData<User> getUser(int id)
+    {
+        return userDao.getUser(id);
+    }
     public User getUser(String username, String password) {
         return userDao.getUser(username, password);
     }

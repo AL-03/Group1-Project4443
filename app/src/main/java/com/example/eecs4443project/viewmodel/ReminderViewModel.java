@@ -33,6 +33,10 @@ public class ReminderViewModel extends AndroidViewModel {
         return allReminders;
     }
 
+    public LiveData<Reminder> getReminder(int id) {
+        return repo.getReminder(id);
+    }
+  
     public LiveData<List<Reminder>> getActiveReminders() {
         return activeReminders;
     }

@@ -13,7 +13,6 @@ import androidx.lifecycle.ViewModelProvider;
 import com.example.eecs4443project.R;
 import com.example.eecs4443project.SessionManager;
 import com.example.eecs4443project.data.entity.User;
-import com.example.eecs4443project.SessionManager;
 import com.example.eecs4443project.viewmodel.UserViewModel;
 
 public class LoginActivity extends AppCompatActivity {
@@ -33,7 +32,7 @@ public class LoginActivity extends AppCompatActivity {
 
         userViewModel = new ViewModelProvider(this).get(UserViewModel.class);
 
-        // temp test user
+        // TEMP test user - remove when done testing
         userViewModel.register(new User("testuser", "password123"));
 
         loginBtn.setOnClickListener(v -> {

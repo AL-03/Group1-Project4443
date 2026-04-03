@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
+    <!-- Get permission to access microphone for audio -->
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <!-- Get permission to create notifications -->
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS"/>
     <application
         android:allowBackup="true"
@@ -14,6 +17,18 @@
 
 
         <activity
+            android:name=".view.activities.JournalPasswordPopupActivity"
+            android:exported="false" />
+        <activity
+            android:name=".view.activities.ProfileActivity"
+            android:exported="false" />
+        <activity
+            android:name=".view.activities.NavActivity"
+            android:exported="false" />
+        <activity
+            android:name=".view.activities.JournalActivity"
+            android:exported="false" />
+        <activity
             android:name=".view.activities.LoginActivity"
             android:exported="true">
             <intent-filter>
@@ -22,12 +37,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-
-        <activity android:name=".view.activities.DashboardActivity"/>
-        <activity android:name=".view.activities.HabitsActivity"/>
-        <activity android:name=".view.activities.HabitDetailActivity"/>
-
+        <activity android:name=".view.activities.DashboardActivity" />
+        <activity android:name=".view.activities.HabitsActivity" />
+        <activity android:name=".view.activities.HabitDetailActivity" />
     </application>
 
 

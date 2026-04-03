@@ -346,12 +346,14 @@ public class DashboardActivity extends AppCompatActivity {
             }
 
             if (item.getItemId() == R.id.nav_journal) {
-                Toast.makeText(this, "Journal page coming soon", Toast.LENGTH_SHORT).show();
+                startActivity(new Intent(this, JournalActivity.class));
+                overridePendingTransition(0, 0);
                 return true;
             }
 
             if (item.getItemId() == R.id.nav_account) {
-                Toast.makeText(this, "Account page coming soon", Toast.LENGTH_SHORT).show();
+                startActivity(new Intent(this, ProfileActivity.class));
+                overridePendingTransition(0, 0);
                 return true;
             }
 

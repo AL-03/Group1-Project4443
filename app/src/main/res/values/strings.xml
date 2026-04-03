@@ -1,4 +1,32 @@
 <resources>
     <string name="app_name">EECS4443Project</string>
     <string name="login_button">Login</string>
+    <string name="journal_page_title">Journal</string>
+    <string name="journal_page_subtitle">Record your day-to-day events here</string>
+    <string name="error_invalid_journal_password">Invalid password</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="add_journal_entry">Add journal entry</string>
+    <string name="visual_divider">Visual divider</string>
+    <string name="edit">Edit</string>
+    <string name="delete">Delete</string>
+    <string name="save_journal_entry">Save journal entry</string>
+    <string name="edit_title">Edit title</string>
+    <string name="edit_label">Edit label</string>
+    <string name="default_journal_input_text">Write down your thoughts...</string>
+    <string name="transcribed_text_here">Transcribed text here.</string>
+    <string name="record">Record</string>
+    <string name="undo">Undo</string>
+    <string name="redo">Redo</string>
+    <string name="draw">Draw</string>
+    <string name="clear">Clear</string>
+    <string name="set_title">Set title</string>
+    <string name="set_label">Set label</string>
+    <string name="default_journal_title">My First Journal Entry</string>
+    <string name="default_journal_label">Mood</string>
+    <string name="edit_journal">Edit Journal</string>
+    <string name="create_new_journal">Create New Journal</string>
+    <string name="entry_title">Entry title</string>
+    <string name="entry_label">Entry label</string>
+
 </resources>
