@@ -1,9 +1,14 @@
 package com.example.eecs4443project.view.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.widget.*;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.SeekBar;
+import android.widget.Toast;
+
 import androidx.activity.OnBackPressedCallback;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -11,16 +16,16 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.example.eecs4443project.R;
 import com.example.eecs4443project.data.entity.Habit;
-import com.example.eecs4443project.viewmodel.HabitViewModel;
+import com.example.eecs4443project.viewmodel.HabitCustomViewModel;
 
-public class HabitDetailActivity extends AppCompatActivity {
 
-    private HabitViewModel viewModel;
+public class HabitAddActivity extends AppCompatActivity {
+
+    private HabitCustomViewModel viewModel;
     private Habit habit;
 
-    private EditText habitTitle, habitDesc, progressInput;
-    private SeekBar progressSeekBar;
-    private ImageView starIcon;
+    private EditText addHabitTitle, addHabitDesc, addProgressInput;
+    private SeekBar addProgressSeekBar;
 
     private boolean isSelected;
 
@@ -28,23 +33,23 @@ public class HabitDetailActivity extends AppCompatActivity {
     private boolean isInitializing=true;
     private int starState = 0;
 
+    Button addBtn, cancelBtn;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_habit_detail);
+        setContentView(R.layout.activity_add_habit);
 
         //Creates a viewmodel
-        viewModel = new ViewModelProvider(this).get(HabitViewModel.class);
+        viewModel = new ViewModelProvider(this).get(HabitCustomViewModel.class);
 
         //Set all ui elements
-        habitTitle = findViewById(R.id.detailHabitTitle);
-        habitDesc = findViewById(R.id.detailHabitDesc);
-        progressInput = findViewById(R.id.detailProgressInput);
-        progressSeekBar = findViewById(R.id.detailProgressSeekBar);
-        starIcon = findViewById(R.id.starIcon);
+        addHabitTitle = findViewById(R.id.addHabitTitle);
+        addHabitDesc = findViewById(R.id.addHabitDesc);
+        addProgressInput = findViewById(R.id.addProgressInput);
+        addProgressSeekBar = findViewById(R.id.addProgressSeekBar);
 
-        Button updateBtn = findViewById(R.id.updateButton);
-        Button deleteBtn = findViewById(R.id.deleteButton);
+
 
         // Get data sent from the intent
         int id = getIntent().getIntExtra("habit_id", -1);
@@ -61,26 +66,18 @@ public class HabitDetailActivity extends AppCompatActivity {
         habit.setIsSelected(isSelected);
 
         //Set UI
-        habitTitle.setText(title);
-        habitDesc.setText(desc);
-        progressInput.setText(String.valueOf(progress));
-        progressSeekBar.setProgress(progress);
+        addHabitTitle.setText(title);
+        addHabitDesc.setText(desc);
+        addProgressInput.setText(String.valueOf(progress));
+        addProgressSeekBar.setProgress(progress);
 
         starState = starred;
-
         isInitializing=false;
-        updateStarUI();
 
-        //Heart toggle change
-        starIcon.setOnClickListener(v -> {
-            starState = (starState == 1) ? 0 : 1;
-            updateStarUI();
-            isChanged = true;
-        });
 
         //Title change
         //Create a textwatcher to detect change in the page text
-        habitTitle.addTextChangedListener(new TextWatcher(){
+        addHabitTitle.addTextChangedListener(new TextWatcher(){
             @Override
             public void afterTextChanged(Editable s) {
             }
@@ -99,7 +96,7 @@ public class HabitDetailActivity extends AppCompatActivity {
         });
 
         //description change
-        habitDesc.addTextChangedListener(new TextWatcher(){
+        addHabitDesc.addTextChangedListener(new TextWatcher(){
             @Override
             public void afterTextChanged(Editable s) {
             }
@@ -118,10 +115,10 @@ public class HabitDetailActivity extends AppCompatActivity {
         });
 
         //progress seekbar change
-        progressSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+        addProgressSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int value, boolean fromUser) {
-                progressInput.setText(String.valueOf(value));
+                addProgressInput.setText(String.valueOf(value));
                 isChanged = true;
             }
 
@@ -131,7 +128,7 @@ public class HabitDetailActivity extends AppCompatActivity {
 
         //sync the progress text input to the seekbar
         //updates the value based on the user's change
-        progressInput.addTextChangedListener(new TextWatcher() {
+        addProgressInput.addTextChangedListener(new TextWatcher() {
             @Override
             public void afterTextChanged(Editable s) {
 
@@ -149,29 +146,69 @@ public class HabitDetailActivity extends AppCompatActivity {
                     if (value > 100) value = 100;
                     if (value < 0) value = 0;
 
-                    progressSeekBar.setProgress(value);
+                    addProgressSeekBar.setProgress(value);
                     isChanged = true;
                 }
             }
         });
 
-        // Update button sets new changes user made
-        updateBtn.setOnClickListener(v -> saveChanges());
+        addBtn = findViewById(R.id.addAddButton);
+        cancelBtn = findViewById(R.id.addCancelButton);
 
-        // Delete button
-        //gives an alert popup asking if they intended to delete the habit
-        deleteBtn.setOnClickListener(v -> {
+        cancelBtn.setOnClickListener(v -> {
             new AlertDialog.Builder(this)
-                    .setTitle("Delete Habit")
+                    .setTitle("Cancel Task")
                     .setMessage("Are you sure?")
                     .setPositiveButton("Yes", (d, i) -> {
                         //viewModel.delete(habit);
+                        // modified this to be unselected instead of edited - maintaining the instance idea
                         viewModel.unselectHabit(habit);
+                        Intent cancelAdd = new Intent(HabitAddActivity.this, NewHabitsActivity.class);
+                        startActivity(cancelAdd);
                         finish();
                     })
                     .setNegativeButton("No", null)
                     .show();
         });
+
+
+        // If the add button is clicked, the values are updated based on what the user changed
+        addBtn.setOnClickListener(v -> {
+            String habitTitle = addHabitTitle.getText().toString().trim();
+            String habitDesc = addHabitDesc.getText().toString().trim();
+            int newProgress = addProgressSeekBar.getProgress();
+            boolean isValid = true;
+
+            if (habitTitle.isEmpty()) {
+                // provide an error if the title is empty - there should always be a title
+                Toast.makeText(this, "Invalid habit title", Toast.LENGTH_SHORT).show();
+                isValid = false;
+            }
+
+            if (!isValid) {
+                return;
+            }
+
+            else {
+                // set the new values of the habit
+                habit.setTitle(habitTitle);
+                habit.setDescription(habitDesc);
+                habit.setProgress(newProgress);
+                // The habit is automatically selected
+                habit.setIsSelected(true);
+                // The habit is updated, not inserted (unlike CustomHabitActivity)
+                viewModel.update(habit);
+
+                // Let users know the habit has been added
+                Toast.makeText(this, "Habit added", Toast.LENGTH_SHORT).show();
+                // Navigate back to where users can see all their selected habits
+                Intent addedHabit = new Intent(HabitAddActivity.this, HabitsActivity.class);
+                startActivity(addedHabit);
+            }
+
+
+        });
+
 
         // Back handler
         OnBackPressedCallback callback = new OnBackPressedCallback(true) {
@@ -182,7 +219,7 @@ public class HabitDetailActivity extends AppCompatActivity {
             @Override
             public void handleOnBackPressed() {
                 if (isChanged) {
-                    new AlertDialog.Builder(HabitDetailActivity.this)
+                    new AlertDialog.Builder(HabitAddActivity.this)
                             .setTitle("Unsaved Changes")
                             .setMessage("Save changes before leaving?")
                             .setPositiveButton("Save", (d, i) -> {
@@ -202,25 +239,19 @@ public class HabitDetailActivity extends AppCompatActivity {
             }
         };
 
+
         getOnBackPressedDispatcher().addCallback(this, callback);
+
     }
 
-    //function to update the star ui to change based on previous state
-    private void updateStarUI() {
-        starIcon.setImageResource(
-                starState == 1 ?
-                        R.drawable.baseline_favorite_24 :
-                        R.drawable.baseline_favorite_border_24
-        );
-    }
 
-//saves the current input of all fields
+    //saves the current input of all fields
     private void saveChanges() {
-        String title = habitTitle.getText().toString();
-        String desc = habitDesc.getText().toString();
+        String title = addHabitTitle.getText().toString();
+        String desc = addHabitDesc.getText().toString();
         int progress;
         try {
-            progress = Integer.parseInt(progressInput.getText().toString());
+            progress = Integer.parseInt(addProgressInput.getText().toString());
         } catch (Exception e) {
             progress = 0;
         }
@@ -239,4 +270,9 @@ public class HabitDetailActivity extends AppCompatActivity {
         Toast.makeText(this, "Habit Changes Saved", Toast.LENGTH_SHORT).show();
         isChanged = false;
     }
+
+
+
+
+
 }

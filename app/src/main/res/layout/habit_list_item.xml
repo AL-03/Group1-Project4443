@@ -10,9 +10,10 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:padding="12dp"
+        android:background="@drawable/rounded_input"
         android:gravity="center_vertical">
 
-        <!-- left side title and progress bar -->
+        <!-- Just contains a title, as opposed to progress and additional info -->
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -22,7 +23,7 @@
             <TextView
                 android:id="@+id/habitListTitle"
                 android:textStyle="bold"
-                android:textSize="16sp"
+                android:textSize="24sp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
 
@@ -30,11 +31,11 @@
 
     </LinearLayout>
 
-    <!-- divider line -->
+    <!-- divider line, matches background colour of the page itself -->
     <View
         android:layout_width="match_parent"
         android:layout_height="2dp"
-        android:background="#DDDDDD"
+        android:background="#CFE8FF"
         />
 
 

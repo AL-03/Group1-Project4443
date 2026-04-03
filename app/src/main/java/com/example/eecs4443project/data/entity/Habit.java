@@ -9,15 +9,23 @@ import androidx.room.PrimaryKey;
 @Entity(tableName = "habits")
 public class Habit {
     // Defines columns in Habits table
+    // id is a primary key and is automatically generated
     @PrimaryKey(autoGenerate = true)
     private int id;
 
+    // habit title
     private String title;
+
+    // habit description
     private String description;
+
+    // habit favourited
     private int starred;
+
+    // habit progress
     private int progress;
 
-    //Trying this method instead of the SelectedHabit list
+    // boolean flag to check if habit has been selected already
     private boolean isSelected;
 
     // Constructor for Habit creation - should not have a manual id, since it is auto-generated
@@ -26,6 +34,7 @@ public class Habit {
         this.description = description;
         this.starred = starred;
         this.progress=progress;
+        // by default, habit is not selected
         this.isSelected = false;
     }
 
@@ -37,6 +46,7 @@ public class Habit {
         this.description = description;
         this.starred = starred;
         this.progress=progress;
+        // by default, habit is not selected
         this.isSelected=false;
     }
 
@@ -82,7 +92,6 @@ public class Habit {
         this.progress = progress;
     }
 
-    // Trying this method instead of the SelectedHabit DAO
     public boolean getIsSelected() {return this.isSelected;}
 
     public void setIsSelected(boolean isSelected) {this.isSelected = isSelected;}

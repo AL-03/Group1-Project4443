@@ -1,6 +1,5 @@
 package com.example.eecs4443project.view.activities;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
@@ -8,23 +7,16 @@ import android.widget.Button;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 import androidx.lifecycle.ViewModelProvider;
-//import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.eecs4443project.R;
 import com.example.eecs4443project.data.entity.Habit;
-import com.example.eecs4443project.view.adapters.HabitDashboardAdapter;
 import com.example.eecs4443project.view.adapters.HabitListAdapter;
 import com.example.eecs4443project.viewmodel.HabitListViewModel;
-import com.example.eecs4443project.viewmodel.HabitViewModel;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class NewHabitsActivity extends AppCompatActivity implements HabitListAdapter.onHabitSelectedListener{
 
-    //private HabitViewModel habitViewModel;
 
     private HabitListViewModel habitListVM;
     private HabitListAdapter adapter;
@@ -44,7 +36,13 @@ public class NewHabitsActivity extends AppCompatActivity implements HabitListAda
         habitListRV.setLayoutManager(new LinearLayoutManager(this));
 
         // Set up RecyclerView adapter
-        adapter = new HabitListAdapter(habit -> {habitListVM.selectHabit(habit);});
+        adapter = new HabitListAdapter(habit -> {
+            // The adapter first makes sure the habit is selected, then performs the onClick event of the habit
+            habitListVM.selectHabit(habit);
+            onHabitSelected(habit);
+        });
+
+        // Link the recyclerView adapter to the defined adapter
         habitListRV.setAdapter(adapter);
 
 
@@ -52,9 +50,10 @@ public class NewHabitsActivity extends AppCompatActivity implements HabitListAda
         habitListVM = new ViewModelProvider(this).get(HabitListViewModel.class);
 
         // Observe LiveData from Room
+        // This only collects the filtered list of habits. By default, the query is an empty string, which will show all habits
+        // Filtered habits will be sorted in alphabetical order with priority given to ones that have not been selected yet
         habitListVM.getFilteredHabits().observe(this, adapter::setHabits);
 
-        //habitViewModel.getSelectedHabitIds().observe(this, adapter::setSelectedHabits);
 
         // if the user wants to create a customHabit, they will open the activity
         // that will create the custom habit and immediately add it to both lists
@@ -99,7 +98,16 @@ public class NewHabitsActivity extends AppCompatActivity implements HabitListAda
     // flag to true
     @Override
     public void onHabitSelected(Habit habit) {
+        Intent intent = new Intent(this, HabitAddActivity.class);
 
+        intent.putExtra("habit_id", habit.getId());
+        intent.putExtra("title", habit.getTitle());
+        intent.putExtra("desc", habit.getDescription());
+        intent.putExtra("progress", habit.getProgress());
+        intent.putExtra("starred", habit.getStarred());
+        intent.putExtra("isSelected", habit.getIsSelected());
+
+        startActivity(intent);
     }
 }
 

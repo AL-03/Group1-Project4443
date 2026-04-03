@@ -18,26 +18,16 @@ public class HabitViewModel extends AndroidViewModel {
     private final HabitRepository repo;
     private final LiveData<List<Habit>> allHabits;
 
+    // Comparitvely to the HabitListViewModel, this viewModel only shows the selected habits, not the whole list with filtering
     private final LiveData<List<Habit>> selectedHabits;
-
-    //private MutableLiveData<String> filteredHabits = new MutableLiveData<>();
 
     public HabitViewModel(@NonNull Application application) {
         super(application);
         repo = new HabitRepository(application);
+        // Both the selected habits and all the habits are fetched
         selectedHabits = repo.getSelectedHabits();
         allHabits = repo.getAllHabits();
 
-        /*
-        Transformations.switchMap(filteredHabits, habitQuery -> {
-            if (habitQuery == null || habitQuery.isEmpty()) {
-                return repo.getAllHabits();
-            }
-            else {
-                return repo.getFilteredHabits(habitQuery);
-            }
-        });
-        */
     }
 
     public LiveData<List<Habit>> getAllHabits() {
@@ -46,28 +36,8 @@ public class HabitViewModel extends AndroidViewModel {
 
     public LiveData<List<Habit>> getSelectedHabits() {return selectedHabits;}
 
-    // should theoretically replace the "delete" method
-    //public void unselectHabit(Habit habit) {
-    //    repo.unselectHabit(habit);
-    //}
 
-
-    //public void setHabitQuery(String habitQuery) {
-    //    filteredHabits.setValue(habitQuery);
-    //}
-
-
-    /*
-    public LiveData<List<Habit>> getFilteredHabits() {
-        return Transformations.switchMap(filteredHabits, habitQuery -> repo.filterHabits(habitQuery != null ? habitQuery: ""));
-    }
-    */
-
-
-    //public LiveData<List<Integer>> getSelectedHabitIds() {
-    //    return repo.getSelectedHabitIds();
-    //}
-
+    // Not used, but kept for now
     public void selectHabit(Habit habit) {
         repo.selectHabit(habit);
     }
@@ -83,6 +53,10 @@ public class HabitViewModel extends AndroidViewModel {
 
     public void delete(Habit habit) {
         repo.delete(habit);
+    }
+
+    public void unselectHabit(Habit habit) {
+        repo.unselectHabit(habit);
     }
 
     public void toggleStar(Habit habit) {

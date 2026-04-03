@@ -8,18 +8,16 @@ import androidx.room.RoomDatabase;
 
 import com.example.eecs4443project.data.dao.HabitDao;
 import com.example.eecs4443project.data.dao.ReminderDao;
-import com.example.eecs4443project.data.dao.SelectedHabitDao;
 import com.example.eecs4443project.data.dao.UserDao;
 import com.example.eecs4443project.data.entity.Habit;
 import com.example.eecs4443project.data.entity.Reminder;
-import com.example.eecs4443project.data.entity.SelectedHabit;
 import com.example.eecs4443project.data.entity.User;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 // Creates actual SQLite database
-@Database(entities = {Habit.class, Reminder.class, User.class, SelectedHabit.class}, version = 1, exportSchema = false)
+@Database(entities = {Habit.class, Reminder.class, User.class}, version = 1, exportSchema = false)
 public abstract class AppDatabase extends RoomDatabase {
     // Volatile (and "synchronized" later) ensure only 1 thread can create the database at a time
     private static volatile AppDatabase INSTANCE;
@@ -43,8 +41,6 @@ public abstract class AppDatabase extends RoomDatabase {
     }
 
     public abstract HabitDao habitDao();
-
-    public abstract SelectedHabitDao selHabitDao();
 
     public abstract ReminderDao reminderDao();
     public abstract UserDao userDao();

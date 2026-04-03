@@ -20,7 +20,7 @@
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/habitTitle"
+                android:id="@+id/cstmHabitTitleLabel"
                 android:textStyle="bold"
                 android:textSize="16sp"
                 android:layout_width="wrap_content"

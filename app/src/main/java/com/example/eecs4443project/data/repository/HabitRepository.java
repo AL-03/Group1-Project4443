@@ -6,9 +6,7 @@ import androidx.lifecycle.LiveData;
 
 import com.example.eecs4443project.data.AppDatabase;
 import com.example.eecs4443project.data.dao.HabitDao;
-import com.example.eecs4443project.data.dao.SelectedHabitDao;
 import com.example.eecs4443project.data.entity.Habit;
-import com.example.eecs4443project.data.entity.SelectedHabit;
 
 import java.util.List;
 import java.util.concurrent.Executors;
@@ -60,17 +58,7 @@ public class HabitRepository {
         });
     }
 
-    // SelectHabit methods here
 
-    /*
-    public void selectHabit(Habit habit) {
-        AppDatabase.databaseWriteExecutor.execute(() -> selHabitDao.insertSelectedHabit(new SelectedHabit(habit.getId())));
-    }
-
-    public void unselectHabit(Habit habit) {
-        AppDatabase.databaseWriteExecutor.execute(() -> selHabitDao.unselectHabit(habit.getId()));
-    }
-    */
     public void selectHabit(Habit habit) {
         AppDatabase.databaseWriteExecutor.execute(() -> {
            habit.setIsSelected(true);
@@ -83,14 +71,14 @@ public class HabitRepository {
     public void unselectHabit(Habit habit) {
         AppDatabase.databaseWriteExecutor.execute(() -> {
             habit.setIsSelected(false);
-            /*
             habit.setDescription("");
             habit.setProgress(0);
             habit.setStarred(0);
-            */
+
             habitDao.updateHabit(habit);
         });
     }
+
     /*
     public LiveData<List<Habit>> getSelectedHabits() {
         return selHabitDao.getSelectedHabits();
@@ -116,6 +104,8 @@ public class HabitRepository {
                 Habit makeDinner = new Habit("Make Dinner", "Cook dinner and clean up after", 0, 0);
                 Habit draw = new Habit("Draw", "Draw something every day", 0, 0);
                  */
+
+                // Instantiate habits that will be present in the app immediately
                 Habit drinkWater = new Habit("Drink Water", "Stay hydrated", 0, 0);
                 Habit workout = new Habit("Workout", "Exercise daily", 0, 0);
                 Habit read = new Habit("Read Book", "Read 20 pages", 0, 0);
@@ -124,10 +114,30 @@ public class HabitRepository {
                 Habit finishApp = new Habit("Finish App", "Finish working on the wellness app", 1, 30);
                 Habit makeDinner = new Habit("Make Dinner", "Cook dinner and clean up after", 0, 0);
                 Habit draw = new Habit("Draw", "Draw something every day", 0, 0);
+                Habit journal = new Habit("Journal", "Write your thoughts for the day", 0, 0);
+                Habit sleep = new Habit("Sleep", "6 - 8 hours daily", 0, 0);
+                Habit walk = new Habit("Walk", "Ensure 10,000 steps a day", 0, 0);
+                Habit clean = new Habit("Clean", "Ensure living space is cleaned once a week", 0, 0);
 
 
                 // do not add to selected list initially
+                habitDao.insertHabit(clean);
+
+                // do not add to selected list initially
+                habitDao.insertHabit(draw);
+
+                // do not add to selected list initially
                 habitDao.insertHabit(drinkWater);
+
+
+                // do not add to selected list initially
+                habitDao.insertHabit(walk);
+
+                // do not add to selected list initially
+                habitDao.insertHabit(sleep);
+
+                // do not add to selected list initially
+                habitDao.insertHabit(journal);
 
                 // do not add to selected list initially
                 habitDao.insertHabit(workout);
@@ -135,8 +145,6 @@ public class HabitRepository {
                 // do not add to selected list initially
                 habitDao.insertHabit(read);
 
-                // do not add to selected list initially
-                habitDao.insertHabit(draw);
 
                 // do not add to selected list
                 habitDao.insertHabit(meditate);
@@ -144,24 +152,16 @@ public class HabitRepository {
                 // add this to the selected list for users to see in their dashboard
                 study.setIsSelected(true);
                 habitDao.insertHabit(study);
-                //habitDao.updateIsSelected(study.getId(), true);
-                //selHabitDao.insertSelectedHabit(new SelectedHabit(habitDao.getHabit(study.getId()).getId()));
-                //selHabitDao.insertSelectedHabit(new SelectedHabit(study.getId()));
-
 
                 // add this to the selected list for users to see in their dashboard
                 study.setIsSelected(true);
                 habitDao.insertHabit(finishApp);
-                //habitDao.updateIsSelected(finishApp.getId(), true);
-                //selHabitDao.insertSelectedHabit(new SelectedHabit(finishApp.getId()));
-                //selHabitDao.insertSelectedHabit(new SelectedHabit(habitDao.getHabit(finishApp.getId()).getId()));
+
 
                 // add this to the selected list for users to see in their dashboard
                 makeDinner.setIsSelected(true);
                 habitDao.insertHabit(makeDinner);
-                //habitDao.updateIsSelected(makeDinner.getId(), true);
-                //selHabitDao.insertSelectedHabit(new SelectedHabit(makeDinner.getId()));
-                //selHabitDao.insertSelectedHabit(new SelectedHabit(habitDao.getHabit(makeDinner.getId()).getId()));
+
             }
         });
     }

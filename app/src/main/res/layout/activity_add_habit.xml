@@ -1,50 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/customHabitMain"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:padding="16dp"
     android:background="#CFE8FF">
 
-    <!-- Initial space created with a view -->
-    <View
-        android:id="@+id/view"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:layout_editor_absoluteY="19dp" />
-
-    <!-- Linear layout to contain everyting within -->
+    <!-- Everything is contained within a linearLayout -->
     <LinearLayout
-        android:id="@+id/mainLinearLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0">
 
-        <!-- Description of the activity "Add A Custom Habit" -->
+        <!-- The description of the activity "Add Habit" -->
         <TextView
-            android:id="@+id/activityDesc"
+            android:id="@+id/addactivityDesc"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
             android:layout_marginTop="48dp"
             android:layout_marginEnd="20dp"
-            android:text="Add A Custom Habit"
+            android:text="Add Habit"
             android:textAlignment="textStart"
             android:textColor="#000000"
             android:textSize="30dp"
             android:textStyle="bold" />
 
-        <!-- Label describing the title edittext beneath it -->
+        <!-- A label describing the title -->
         <TextView
-            android:id="@+id/cstmHabitTitleLabel"
+            android:id="@+id/addHabitTitleLabel"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="24dp"
@@ -56,52 +47,62 @@
             android:textColor="#000000"
             android:textSize="16sp" />
 
-        <!-- Editable title of the habit that is meant to be nonNull (checked in backend) -->
+        <!-- The editable title fo the habit which is checked to not be null before adding -->
         <EditText
-            android:id="@+id/cstmHabitTitle"
+            android:id="@+id/addHabitTitle"
             android:layout_width="match_parent"
             android:layout_height="48dp"
+            android:layout_gravity="center_vertical"
             android:layout_marginStart="24dp"
             android:layout_marginEnd="24dp"
             android:layout_marginBottom="16dp"
+            android:layout_weight="0"
+            android:hint="Habit title"
+            android:textColor="#000C1A"
+
             android:autofillHints="text"
             android:background="@drawable/rounded_card"
             android:ems="10"
-            android:hint="Name your custom habit"
+
             android:inputType="text"
             android:paddingStart="14dp"
             android:paddingEnd="14dp"
             android:text=""
-            android:textColor="#000000"
-            android:textColorHint="#858585" />
+            android:textColorHint="#858585"/>
 
-        <!-- Label to define the progress attribute beneath it -->
+
+        <!-- Dividing view -->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#DDDDDD" />
+
+        <!-- A label to describe the purpose of the seekbar and edittext with % hint -->
         <TextView
-            android:id="@+id/progressLabel"
+            android:id="@+id/detailProgressLabel"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="24dp"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="20dp"
             android:layout_marginEnd="24dp"
             android:layout_marginBottom="5dp"
-            android:text="Starting Progress"
+            android:text="Progress"
             android:textColor="#002147"
             android:textSize="16sp"
             android:textStyle="bold" />
 
-        <!-- The linear layout contains the seekbar and
-        edittext side by side, while the seekbar and editttext themselves
-        will be synced in the backend -->
+        <!-- A container for the progress seek bar and corresponding text field -->
         <LinearLayout
-            android:id="@+id/progressLayout"
+            android:id="@+id/addProgressLayout"
             android:layout_width="fill_parent"
             android:layout_height="50dp"
             android:layout_marginBottom="16dp"
             android:gravity="center_vertical|center_horizontal"
             android:orientation="horizontal">
 
+            <!-- The progress bar that corresponds to the edittext field next to it-->
             <SeekBar
-                android:id="@+id/cstmProgressSeekBar"
+                android:id="@+id/addProgressSeekBar"
                 style="?android:attr/progressBarStyleHorizontal"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
@@ -112,8 +113,9 @@
                 android:progressTint="#003775"
                 tools:layout_gravity="left|center" />
 
+            <!-- The progress integer, which is synced with the bar in the backend -->
             <EditText
-                android:id="@+id/cstmProgressInput"
+                android:id="@+id/addProgressInput"
                 android:layout_width="26dp"
                 android:layout_height="match_parent"
                 android:layout_marginEnd="24dp"
@@ -127,24 +129,29 @@
 
         </LinearLayout>
 
+        <!-- A divider view -->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:background="#DDDDDD" />
 
-        <!-- Describes the description edittext beneath it -->
+        <!-- The label describing the description editText beneath it-->
         <TextView
-            android:id="@+id/cstmHabitDescLabel"
+            android:id="@+id/addHabitDescLabel"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="24dp"
             android:layout_marginTop="20dp"
             android:layout_marginEnd="24dp"
             android:layout_marginBottom="5dp"
-            android:fontFamily="sans-serif-black"
             android:text="Habit Description"
-            android:textColor="#000000"
-            android:textSize="16sp" />
+            android:textColor="#002147"
+            android:textSize="16sp"
+            android:textStyle="bold" />
 
-        <!-- The habit description is a multilin editable text field -->
+        <!-- The description of the habit is multiline editable field-->
         <EditText
-            android:id="@+id/cstmHabitDesc"
+            android:id="@+id/addHabitDesc"
             android:layout_width="match_parent"
             android:layout_height="160dp"
             android:layout_marginStart="24dp"
@@ -153,18 +160,14 @@
             android:autofillHints="textMultiLine"
             android:background="@drawable/rounded_card"
             android:ems="10"
-            android:fontFamily="sans-serif"
             android:gravity="start|top"
-            android:hint="Describe your custom habit"
-            android:inputType="textMultiLine"
+            android:hint="Description"
             android:paddingStart="14dp"
             android:paddingTop="10dp"
             android:paddingEnd="14dp"
-            android:paddingBottom="10dp"
-            android:textColor="#000000"
-            android:textColorHint="#858585" />
+            android:paddingBottom="10dp" />
 
-        <!-- The button layout appropriately contains both buttons side by side -->
+    <!-- Linear Layout to contain the buttons in a horizontal manner -->
         <LinearLayout
             android:id="@+id/buttonLayout"
             style="?android:attr/buttonBarStyle"
@@ -199,7 +202,7 @@
             -->
 
             <Button
-                android:id="@+id/cancelCstmButton"
+                android:id="@+id/addCancelButton"
                 style="?android:attr/buttonBarButtonStyle"
                 android:layout_width="100dp"
                 android:layout_height="wrap_content"
@@ -218,7 +221,7 @@
                 tools:layout_gravity="left" />
 
             <Button
-                android:id="@+id/addCstmButton"
+                android:id="@+id/addAddButton"
                 style="?android:attr/buttonBarButtonStyle"
                 android:layout_width="100dp"
                 android:layout_height="wrap_content"
@@ -238,4 +241,6 @@
         </LinearLayout>
 
     </LinearLayout>
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>

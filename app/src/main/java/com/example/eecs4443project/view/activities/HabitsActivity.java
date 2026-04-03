@@ -42,27 +42,18 @@ public class HabitsActivity extends AppCompatActivity implements HabitDashboardA
         habitViewModel = new ViewModelProvider(this).get(HabitViewModel.class);
 
         // Observe LiveData from Room
-        /*
-        habitViewModel.getAllHabits().observe(this, habits -> {
-            adapter.setHabits(habits);
-        });
-        */
+        // Only views the selectedHabits now, not all of them
         habitViewModel.getSelectedHabits().observe(this, habits -> {
             adapter.setHabits(habits);
         });
 
         addNewHabit = findViewById(R.id.addHabitBtn);
         addNewHabit.setOnClickListener(v -> {
-            // Cancel then takes the user back to the Main Activity
+            // A new habit will navigate users to the list of habits
             Intent intent = new Intent(HabitsActivity.this, NewHabitsActivity.class);
             startActivity(intent);
 
         });
-
-
-
-        // TEMP: Dummy habits
-        //remove
 
 
         // NAV BAR
@@ -121,6 +112,7 @@ public class HabitsActivity extends AppCompatActivity implements HabitDashboardA
         new AlertDialog.Builder(this)
                 .setTitle("Delete Habit")
                 .setMessage("Are you sure?")
+                // Might change this to be unselected ------------------------------------------------------------
                 .setPositiveButton("Yes", (d, i) -> habitViewModel.delete(habit))
                 .setNegativeButton("No", null)
                 .show();
@@ -130,8 +122,6 @@ public class HabitsActivity extends AppCompatActivity implements HabitDashboardA
     public void onStarToggled(Habit habit) {
         habitViewModel.toggleStar(habit);
     }
-
-    // Add a new habit from a pre-determined list
 
 
 }

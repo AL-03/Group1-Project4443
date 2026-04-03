@@ -28,6 +28,8 @@
         <activity android:name=".view.activities.HabitsActivity"/>
         <activity android:name=".view.activities.HabitDetailActivity"/>
         <activity android:name=".view.activities.NewHabitsActivity"/>
+        <activity android:name=".view.activities.CustomHabitActivity"/>
+        <activity android:name=".view.activities.HabitAddActivity"/>
 
     </application>
 
