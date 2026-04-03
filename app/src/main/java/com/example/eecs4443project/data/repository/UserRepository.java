@@ -25,6 +25,10 @@ public class UserRepository {
         return userDao.getUser(username, password);
     }
 
+    public void update(User user) {
+        AppDatabase.databaseWriteExecutor.execute(() -> userDao.update(user));
+    }
+
     public void delete(String username)
     {
         AppDatabase.databaseWriteExecutor.execute(() -> userDao.delete(username));

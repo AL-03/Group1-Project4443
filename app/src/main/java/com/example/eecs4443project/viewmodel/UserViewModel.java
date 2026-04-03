@@ -27,6 +27,10 @@ public class UserViewModel extends AndroidViewModel {
         return repository.getUser(username, password);
     }
 
+    public void update(User user) {
+        repository.update(user);
+    }
+
     public void delete(String username)
     {
         repository.delete(username);

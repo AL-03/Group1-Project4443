@@ -84,11 +84,6 @@ public class JournalViewModel extends AndroidViewModel {
         });
     }
 
-    // TEMP: add fake data to test with
-    public void insertFakeData(int userId) {
-        repo.insertFakeData(userId);
-    }
-
     // Get an entry by its id
     public LiveData<Journal> getJournal(int id) {
         return repo.getJournal(id);

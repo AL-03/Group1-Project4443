@@ -195,6 +195,7 @@ public class ProfileActivity extends AppCompatActivity {
                 if (!passwordDisplay.getText().toString().isEmpty() && !usernameDisplay.getText().toString().isEmpty() && (!user.getUsername().equals(usernameDisplay.getText().toString()) || ! user.getPassword().equals(passwordDisplay.getText().toString()))) {
                     user.setUsername(usernameDisplay.getText().toString());
                     user.setPassword(passwordDisplay.getText().toString());
+                    viewModel.update(user);
                 }
 
                 // Change themes

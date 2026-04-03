@@ -5,6 +5,7 @@ import androidx.room.Dao;
 import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
+import androidx.room.Update;
 
 import com.example.eecs4443project.data.entity.User;
 
@@ -19,6 +20,9 @@ public interface UserDao {
 
     @Query("SELECT * FROM users WHERE id = :id LIMIT 1")
     LiveData<User> getUser(int id);
+
+    @Update
+    void update(User user);
 
     @Query("DELETE FROM users WHERE username = :username")
     void delete(String username);
