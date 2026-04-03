@@ -36,7 +36,8 @@ public class ReminderViewModel extends AndroidViewModel {
     public LiveData<Reminder> getReminder(int id) {
         return repo.getReminder(id);
     }
-  
+
+    //get a single reminder
     public LiveData<List<Reminder>> getActiveReminders() {
         return activeReminders;
     }
@@ -67,11 +68,6 @@ public class ReminderViewModel extends AndroidViewModel {
     public void markActive(Reminder reminder) {
         reminder.setCompleted(false);
         repo.update(reminder);
-    }
-
-    //get a single reminder
-    public Reminder getReminder(int id) {
-        return repo.getReminder(id);
     }
 
   //dummy data

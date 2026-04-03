@@ -1,5 +1,6 @@
 package com.example.eecs4443project.data.dao;
 
+import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
 import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
@@ -21,5 +22,4 @@ public interface UserDao {
 
     @Query("DELETE FROM users WHERE username = :username")
     void delete(String username);
-    User getUser(String username, String password);
 }

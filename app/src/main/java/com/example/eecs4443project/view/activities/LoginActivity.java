@@ -50,35 +50,22 @@ public class LoginActivity extends AppCompatActivity {
                 return;
             }
 
-            new Thread(() -> {
-                try {
-                    User loggedInUser = userViewModel.getUser(user, pass);
+            // Log in the user
+            userViewModel.getUser(user, pass).observe(this, loggedInUser -> {
+                if (loggedInUser != null) {
 
-                    runOnUiThread(() -> {
-                        if (loggedInUser != null) {
+                    int userId = loggedInUser.getId();
+                    SessionManager.setUserId(LoginActivity.this, userId);
 
-                            int userId = loggedInUser.getId();
+                    Toast.makeText(this, "Login Successful", Toast.LENGTH_SHORT).show();
 
-                            SessionManager.setUserId(LoginActivity.this, userId);
+                    startActivity(new Intent(LoginActivity.this, DashboardActivity.class));
+                    finish();
 
-                            Toast.makeText(this, "Login Successful", Toast.LENGTH_SHORT).show();
-
-                            startActivity(new Intent(LoginActivity.this, DashboardActivity.class));
-                            finish();
-
-                        } else {
-                            Toast.makeText(this, "Invalid credentials", Toast.LENGTH_SHORT).show();
-                        }
-                    });
-
-                } catch (Exception e) {
-                    Log.e("LOGIN_ERROR", "Error during login", e);
-
-                    runOnUiThread(() ->
-                            Toast.makeText(this, "Login error", Toast.LENGTH_SHORT).show()
-                    );
+                } else {
+                    Toast.makeText(this, "Invalid credentials", Toast.LENGTH_SHORT).show();
                 }
-            }).start();
+            });
         });
     }
 }

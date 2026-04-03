@@ -2,6 +2,8 @@ package com.example.eecs4443project.data.repository;
 
 import android.app.Application;
 
+import androidx.lifecycle.LiveData;
+
 import com.example.eecs4443project.data.AppDatabase;
 import com.example.eecs4443project.data.dao.UserDao;
 import com.example.eecs4443project.data.entity.User;
@@ -31,8 +33,5 @@ public class UserRepository {
     public LiveData<User> getUser(int id)
     {
         return userDao.getUser(id);
-    }
-    public User getUser(String username, String password) {
-        return userDao.getUser(username, password);
     }
 }
