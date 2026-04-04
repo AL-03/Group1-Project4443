@@ -37,7 +37,6 @@ public class ProfileActivity extends AppCompatActivity {
     private LinearLayout journalSettings;
     private static boolean isJournalPassword;
     private User user;
-    private boolean nightMode;
 
     private BottomNavigationView nav;
 
@@ -64,6 +63,7 @@ public class ProfileActivity extends AppCompatActivity {
         journalDisplay = findViewById(R.id.journalPassword);
         journalPasswordToggle = findViewById(R.id.privacyToggle);
         nav = findViewById(R.id.bottomNav);
+        isJournalPassword = false;
 
         // Set whole view as focused
         ConstraintLayout root = findViewById(R.id.profile);
