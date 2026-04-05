@@ -26,6 +26,22 @@ public class JournalListFragment extends Fragment {
     // Allow indirect access to data
     private JournalViewModel viewModel;
     private JournalListAdapter adapter;
+    private static boolean isPasswordCorrect = false;
+    private Journal pendingJournal;
+
+    private final ActivityResultLauncher<Intent> passwordLauncher = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            result -> {
+                if (result.getResultCode() == Activity.RESULT_OK) {
+                    // This runs ONLY after the user enters the correct password and the activity finishes
+                    if(isPasswordCorrect && pendingJournal != null)
+                    {
+                        navigateToJournalDetail(pendingJournal);
+                    }
+                }
+            }
+    );
+
 
     // Creates new instance of this fragment
     public static JournalListFragment newInstance() {
@@ -70,14 +86,18 @@ public class JournalListFragment extends Fragment {
             // On short click, go to entry's detailed view
             @Override
             public void onJournalClick(Journal journal) {
-                // Passes journal ID to detailed fragment
-                JournalDetailFragment fragment = JournalDetailFragment.newInstance(journal.getId());
-                // Replaces current fragment with JournalDetailFragment and will return to current fragment if Back button is clicked
-                requireActivity().getSupportFragmentManager()
-                        .beginTransaction()
-                        .replace(R.id.journal_fragment_container, fragment)
-                        .addToBackStack(null)
-                        .commit();
+            // Passes journal ID to detailed fragment
+                if(ProfileActivity.isJournalPassword())
+                {
+                    pendingJournal = journal;
+                    Intent intent = new Intent(requireContext(), JournalPasswordPopupActivity.class);
+                    startActivity(intent);
+                }
+
+                else
+                {
+                    navigateToJournalDetail(journal);
+                }
             }
 
             // On long click, offer option to edit or delete the entry
@@ -157,5 +177,19 @@ public class JournalListFragment extends Fragment {
                     .addToBackStack(null)
                     .commit();
         });
+    }
+    private void navigateToJournalDetail(Journal journal) {
+        JournalDetailFragment fragment = JournalDetailFragment.newInstance(journal.getId());
+        // Replaces current fragment with JournalDetailFragment and will return to current fragment if Back button is clicked
+        requireActivity().getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.journal_fragment_container, fragment)
+                .addToBackStack(null)
+                .commit();
+    }
+
+    public static void  setJournalPasswordCorrect(boolean bol)
+    {
+        isPasswordCorrect = bol;
     }
 }
