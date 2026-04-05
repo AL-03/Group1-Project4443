@@ -1,12 +1,15 @@
 package com.example.eecs4443project.view.fragments.journal;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
 import android.widget.Toast;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
@@ -18,6 +21,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.eecs4443project.R;
 import com.example.eecs4443project.SessionManager;
 import com.example.eecs4443project.data.entity.Journal;
+import com.example.eecs4443project.view.activities.JournalPasswordPopupActivity;
+import com.example.eecs4443project.view.activities.ProfileActivity;
 import com.example.eecs4443project.view.adapters.JournalListAdapter;
 import com.example.eecs4443project.viewmodel.JournalViewModel;
 
