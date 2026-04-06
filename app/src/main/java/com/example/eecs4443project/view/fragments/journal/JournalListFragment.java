@@ -26,7 +26,7 @@ import com.example.eecs4443project.view.activities.ProfileActivity;
 import com.example.eecs4443project.view.adapters.JournalListAdapter;
 import com.example.eecs4443project.viewmodel.JournalViewModel;
 
-// Displays list of user's journals
+//Displays list of user's journals
 public class JournalListFragment extends Fragment {
     // Allow indirect access to data
     private JournalViewModel viewModel;
@@ -34,6 +34,7 @@ public class JournalListFragment extends Fragment {
     private static boolean isPasswordCorrect = false;
     private Journal pendingJournal;
 
+    /*wasn't tested
     private final ActivityResultLauncher<Intent> passwordLauncher = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(),
             result -> {
@@ -46,6 +47,7 @@ public class JournalListFragment extends Fragment {
                 }
             }
     );
+    */
 
 
     // Creates new instance of this fragment
@@ -92,6 +94,7 @@ public class JournalListFragment extends Fragment {
             @Override
             public void onJournalClick(Journal journal) {
             // Passes journal ID to detailed fragment
+                /* wasn't tested
                 if(ProfileActivity.isJournalPassword())
                 {
                     pendingJournal = journal;
@@ -103,6 +106,15 @@ public class JournalListFragment extends Fragment {
                 {
                     navigateToJournalDetail(journal);
                 }
+                */
+
+                JournalDetailFragment fragment = JournalDetailFragment.newInstance(journal.getId());
+                // Replaces current fragment with JournalDetailFragment and will return to current fragment if Back button is clicked.
+                requireActivity().getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.journal_fragment_container, fragment)
+                .addToBackStack(null)
+                .commit();
             }
 
             // On long click, offer option to edit or delete the entry
